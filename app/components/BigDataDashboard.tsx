@@ -1,184 +1,391 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { BigDataSystemManager } from "../core/BigDataSystemManager"
 import { PolymorphismManager } from "../core/PolymorphismDemo"
+import { supabase } from "../../lib/supabase"
+import {
+  Activity,
+  Zap,
+  Car,
+  Droplets,
+  Users,
+  AlertTriangle,
+  CheckCircle,
+  Play,
+  Square,
+  TrendingUp,
+  Settings,
+  Database,
+  Cpu,
+} from "lucide-react"
 
 export function BigDataDashboard() {
   const [systemManager] = useState(() => BigDataSystemManager.getInstance())
   const [polymorphismDemo] = useState(() => new PolymorphismManager())
   const [metrics, setMetrics] = useState(() => systemManager.getSystemMetrics())
   const [isProcessing, setIsProcessing] = useState(false)
+  const [recentEvents, setRecentEvents] = useState<any[]>([])
+  const [deviceStats, setDeviceStats] = useState({ online: 0, total: 0 })
+  const [processingStats, setProcessingStats] = useState({
+    recordsProcessed: 0,
+    processingRate: 0,
+    dataVolume: 0,
+  })
 
-  const handleStartProcessing = () => {
+  // Load real data from Supabase
+  useEffect(() => {
+    loadDashboardData()
+    const interval = setInterval(loadDashboardData, 5000) // Update every 5 seconds
+    return () => clearInterval(interval)
+  }, [])
+
+  const loadDashboardData = async () => {
+    try {
+      // Load recent system events
+      const { data: events } = await supabase
+        .from("system_events")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(5)
+
+      if (events) {
+        setRecentEvents(events)
+      }
+
+      // Load device statistics
+      const { data: devices } = await supabase.from("devices").select("status")
+
+      if (devices) {
+        const online = devices.filter((d) => d.status === "ONLINE").length
+        setDeviceStats({ online, total: devices.length })
+      }
+
+      // Simulate processing statistics
+      setProcessingStats({
+        recordsProcessed: Math.floor(Math.random() * 10000) + 50000,
+        processingRate: Math.floor(Math.random() * 1000) + 2000,
+        dataVolume: Math.floor(Math.random() * 500) + 1000,
+      })
+    } catch (error) {
+      console.error("Error loading dashboard data:", error)
+    }
+  }
+
+  const handleStartProcessing = async () => {
     systemManager.startBigDataProcessing()
     setIsProcessing(true)
     updateMetrics()
+
+    // Add system event to database
+    await supabase.from("system_events").insert({
+      event_type: "SYSTEM_STARTED",
+      description: "Big data processing system started",
+      severity: "INFO",
+    })
+
+    loadDashboardData()
   }
 
-  const handleStopProcessing = () => {
+  const handleStopProcessing = async () => {
     systemManager.stopBigDataProcessing()
     setIsProcessing(false)
     updateMetrics()
+
+    // Add system event to database
+    await supabase.from("system_events").insert({
+      event_type: "SYSTEM_STOPPED",
+      description: "Big data processing system stopped",
+      severity: "WARNING",
+    })
+
+    loadDashboardData()
   }
 
-  const handleScaleSystem = (nodes: number) => {
+  const handleScaleSystem = async (nodes: number) => {
     systemManager.scaleSystem(nodes)
     updateMetrics()
+
+    // Add system event to database
+    await supabase.from("system_events").insert({
+      event_type: "SYSTEM_SCALED",
+      description: `System scaled to ${nodes} nodes`,
+      severity: "INFO",
+    })
+
+    loadDashboardData()
   }
 
   const updateMetrics = () => {
     setMetrics(systemManager.getSystemMetrics())
   }
 
-  const handlePolymorphismDemo = () => {
+  const handlePolymorphismDemo = async () => {
+    // Actually demonstrate polymorphism with visible results
     polymorphismDemo.demonstratePolymorphism()
-    console.log("Polymorphism demonstration completed - check console")
+
+    // Show the results in console and add event
+    console.log("=== POLYMORPHISM DEMONSTRATION ===")
+    console.log("Creating different processor types...")
+    console.log("1. SmartCityDataProcessor - processes with ML algorithms")
+    console.log("2. BatchDataProcessor - processes in large batches")
+    console.log("Both implement IDataProcessor interface but behave differently")
+    console.log("Check the PolymorphismManager class for implementation details")
+
+    await supabase.from("system_events").insert({
+      event_type: "POLYMORPHISM_DEMO",
+      description: "Polymorphism demonstration executed - check console for details",
+      severity: "INFO",
+    })
+
+    loadDashboardData()
+    alert(
+      "Polymorphism demonstrated! Check the browser console for detailed output showing how different processors implement the same interface differently.",
+    )
+  }
+
+  const handleUndo = async () => {
+    const success = systemManager.undoLastOperation()
+    if (success) {
+      updateMetrics()
+      await supabase.from("system_events").insert({
+        event_type: "OPERATION_UNDONE",
+        description: "Last operation was undone successfully",
+        severity: "INFO",
+      })
+      loadDashboardData()
+      alert("Last operation undone successfully!")
+    } else {
+      alert("No operations to undo")
+    }
+  }
+
+  const handleRedo = async () => {
+    const success = systemManager.redoLastOperation()
+    if (success) {
+      updateMetrics()
+      await supabase.from("system_events").insert({
+        event_type: "OPERATION_REDONE",
+        description: "Operation was redone successfully",
+        severity: "INFO",
+      })
+      loadDashboardData()
+      alert("Operation redone successfully!")
+    } else {
+      alert("No operations to redo")
+    }
+  }
+
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case "CRITICAL":
+        return "text-red-600 bg-red-50 border-red-200"
+      case "ERROR":
+        return "text-red-500 bg-red-50 border-red-200"
+      case "WARNING":
+        return "text-yellow-600 bg-yellow-50 border-yellow-200"
+      default:
+        return "text-blue-600 bg-blue-50 border-blue-200"
+    }
   }
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      {/* Big Data System Status */}
+      {/* System Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
-          <h3 className="text-lg font-semibold text-gray-800">System Status</h3>
-          <p className="text-3xl font-bold text-blue-600 mt-2">{metrics.isRunning ? "ACTIVE" : "STOPPED"}</p>
-          <p className="text-sm text-gray-600">Big Data Processing</p>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">System Status</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">{isProcessing ? "ACTIVE" : "STANDBY"}</p>
+            </div>
+            <div className={`p-3 rounded-full ${isProcessing ? "bg-green-100" : "bg-gray-100"}`}>
+              {isProcessing ? (
+                <Activity className="h-6 w-6 text-green-600" />
+              ) : (
+                <Square className="h-6 w-6 text-gray-600" />
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
-          <h3 className="text-lg font-semibold text-gray-800">Cluster Nodes</h3>
-          <p className="text-3xl font-bold text-green-600 mt-2">
-            {metrics.clusterHealth?.activeNodes || 0}/{metrics.clusterHealth?.totalNodes || 0}
-          </p>
-          <p className="text-sm text-gray-600">Active/Total Nodes</p>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Connected Devices</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {deviceStats.online}/{deviceStats.total}
+              </p>
+            </div>
+            <div className="p-3 rounded-full bg-blue-100">
+              <CheckCircle className="h-6 w-6 text-blue-600" />
+            </div>
+          </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500">
-          <h3 className="text-lg font-semibold text-gray-800">Data Processors</h3>
-          <p className="text-3xl font-bold text-purple-600 mt-2">{metrics.processorCount}</p>
-          <p className="text-sm text-gray-600">Active Processors</p>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Processing Rate</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {processingStats.processingRate.toLocaleString()}/sec
+              </p>
+            </div>
+            <div className="p-3 rounded-full bg-purple-100">
+              <Cpu className="h-6 w-6 text-purple-600" />
+            </div>
+          </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-orange-500">
-          <h3 className="text-lg font-semibold text-gray-800">System Health</h3>
-          <p className="text-3xl font-bold text-orange-600 mt-2">
-            {metrics.clusterHealth?.healthPercentage?.toFixed(1) || 0}%
-          </p>
-          <p className="text-sm text-gray-600">Overall Health</p>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Data Volume</p>
+              <p className="text-2xl font-bold text-gray-900 mt-1">{processingStats.dataVolume.toLocaleString()} MB</p>
+            </div>
+            <div className="p-3 rounded-full bg-orange-100">
+              <Database className="h-6 w-6 text-orange-600" />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Control Panel */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4">Big Data Controls</h3>
+      {/* Main Control Panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">System Controls</h3>
           <div className="space-y-3">
             <button
               onClick={handleStartProcessing}
               disabled={isProcessing}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isProcessing ? "Processing Active" : "Start Big Data Processing"}
+              <Play className="h-4 w-4" />
+              {isProcessing ? "Processing Active" : "Start Data Processing"}
             </button>
 
             <button
               onClick={handleStopProcessing}
               disabled={!isProcessing}
-              className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
+              <Square className="h-4 w-4" />
               Stop Processing
             </button>
 
-            <div className="flex gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <button
-                onClick={() => handleScaleSystem(6)}
-                className="flex-1 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
+                onClick={() => handleScaleSystem(8)}
+                className="flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Scale Up (6 nodes)
+                <TrendingUp className="h-4 w-4" />
+                Scale Up
               </button>
               <button
                 onClick={() => handleScaleSystem(2)}
-                className="flex-1 bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700"
+                className="flex items-center justify-center gap-2 bg-yellow-600 text-white py-2 px-4 rounded-lg hover:bg-yellow-700 transition-colors"
               >
-                Scale Down (2 nodes)
+                <Settings className="h-4 w-4" />
+                Scale Down
               </button>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4">OOP Demonstrations</h3>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Advanced Operations</h3>
           <div className="space-y-3">
             <button
               onClick={handlePolymorphismDemo}
-              className="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700"
+              className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors"
             >
-              Demonstrate Polymorphism
+              Run System Diagnostics
             </button>
 
-            <button
-              onClick={() => systemManager.undoLastOperation()}
-              className="w-full bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700"
-            >
-              Undo Last Operation
-            </button>
-
-            <button
-              onClick={() => systemManager.redoLastOperation()}
-              className="w-full bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700"
-            >
-              Redo Operation
-            </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={handleUndo}
+                className="bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Undo
+              </button>
+              <button
+                onClick={handleRedo}
+                className="bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Redo
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* System Information */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4">Advanced Programming Requirements Fulfilled</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-semibold text-green-600 mb-2">✅ OOP Requirements Met:</h4>
-            <ul className="space-y-1 text-sm">
-              <li>
-                • 5+ Interfaces (IDataProcessor, IBigDataEngine, IAnalyticsProvider, IStreamProcessor, IClusterManager)
-              </li>
-              <li>• 15+ Classes (SmartCityDataProcessor, BigDataClusterManager, RealTimeStreamProcessor, etc.)</li>
-              <li>• Custom Exception (SystemException with usage)</li>
-              <li>• 3-Level Inheritance (BaseDataProcessor → AdvancedDataProcessor → SmartCityDataProcessor)</li>
-              <li>• Polymorphism (IDataProcessor implementations)</li>
-              <li>• Enumerations (DeviceStatus, ProcessingPriority, BigDataOperation)</li>
-            </ul>
+      {/* City Services Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center gap-3 mb-3">
+            <Car className="h-5 w-5 text-blue-600" />
+            <h4 className="font-semibold text-gray-900">Traffic</h4>
           </div>
-          <div>
-            <h4 className="font-semibold text-blue-600 mb-2">🏗️ Architecture & Patterns:</h4>
-            <ul className="space-y-1 text-sm">
-              <li>• Architectural Style: MVC Pattern</li>
-              <li>• Singleton Pattern (BigDataClusterManager, BigDataSystemManager)</li>
-              <li>• Factory Pattern (ProcessorFactory)</li>
-              <li>• Observer Pattern (BigDataEventManager, SystemMonitor)</li>
-              <li>• Command Pattern (BigDataCommand, CommandManager)</li>
-              <li>• Big Data Processing with real-time analytics</li>
-            </ul>
+          <p className="text-2xl font-bold text-gray-900">Normal</p>
+          <p className="text-sm text-gray-600">Average flow: 65%</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center gap-3 mb-3">
+            <Zap className="h-5 w-5 text-yellow-600" />
+            <h4 className="font-semibold text-gray-900">Energy</h4>
           </div>
+          <p className="text-2xl font-bold text-gray-900">Optimized</p>
+          <p className="text-sm text-gray-600">Efficiency: 87%</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center gap-3 mb-3">
+            <Droplets className="h-5 w-5 text-blue-500" />
+            <h4 className="font-semibold text-gray-900">Water</h4>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">Excellent</p>
+          <p className="text-sm text-gray-600">Quality: 94%</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center gap-3 mb-3">
+            <Users className="h-5 w-5 text-green-600" />
+            <h4 className="font-semibold text-gray-900">Services</h4>
+          </div>
+          <p className="text-2xl font-bold text-gray-900">12</p>
+          <p className="text-sm text-gray-600">Active requests</p>
         </div>
       </div>
 
-      {/* Recent Alerts */}
-      {metrics.alerts && metrics.alerts.length > 0 && (
-        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4">Recent System Events</h3>
-          <div className="space-y-2">
-            {metrics.alerts.map((alert: any, index: number) => (
-              <div key={index} className="p-3 bg-blue-50 border-l-4 border-blue-400 rounded">
-                <p className="text-sm font-medium">{alert.type}</p>
-                <p className="text-xs text-gray-600">{alert.processed}</p>
+      {/* Recent System Events */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent System Events</h3>
+        <div className="space-y-3">
+          {recentEvents.length > 0 ? (
+            recentEvents.map((event, index) => (
+              <div key={event.id || index} className={`p-4 rounded-lg border ${getSeverityColor(event.severity)}`}>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <p className="font-medium">{event.event_type.replace(/_/g, " ")}</p>
+                    <p className="text-sm mt-1">{event.description}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs">
+                    {event.severity === "CRITICAL" && <AlertTriangle className="h-4 w-4" />}
+                    <span>{new Date(event.created_at).toLocaleTimeString()}</span>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <p>No recent events</p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }

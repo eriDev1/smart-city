@@ -8,6 +8,8 @@ export class BatchDataProcessor implements IDataProcessor {
   private processingRate = 0
 
   public async processData(data: any[]): Promise<any[]> {
+    console.log(`BatchDataProcessor: Processing ${data.length} records in batches of ${this.batchSize}`)
+
     // Different processing logic for batch operations
     const batches = this.createBatches(data)
     const results: any[] = []
@@ -17,10 +19,12 @@ export class BatchDataProcessor implements IDataProcessor {
         ...item,
         batch_processed: true,
         batch_id: Math.random().toString(36),
+        processor_type: "BATCH",
       }))
       results.push(...processed)
     }
 
+    console.log(`BatchDataProcessor: Completed processing ${results.length} records`)
     return results
   }
 
@@ -75,7 +79,10 @@ export class PolymorphismManager {
     })
   }
 
-  public demonstratePolymorphism(): void {
+  public async demonstratePolymorphism(): Promise<void> {
+    console.log("🔄 POLYMORPHISM DEMONSTRATION STARTING...")
+    console.log("=".repeat(50))
+
     // Create different processor types
     const smartCityProcessor = new SmartCityDataProcessor()
     const batchProcessor = new BatchDataProcessor()
@@ -84,7 +91,41 @@ export class PolymorphismManager {
     this.addProcessor(smartCityProcessor)
     this.addProcessor(batchProcessor)
 
+    // Create sample data
+    const sampleData = [
+      { id: 1, value: 25.5, timestamp: new Date().toISOString() },
+      { id: 2, value: 67.2, timestamp: new Date().toISOString() },
+      { id: 3, value: 89.1, timestamp: new Date().toISOString() },
+    ]
+
+    console.log("📊 Sample data created:", sampleData)
+    console.log("")
+
     // Polymorphic behavior - same interface, different implementations
-    console.log("Demonstrating polymorphism with different processor types")
+    console.log("🎯 DEMONSTRATING POLYMORPHISM:")
+    console.log("Both processors implement IDataProcessor interface but behave differently:")
+    console.log("")
+
+    // Process with SmartCityDataProcessor
+    console.log("1️⃣ SmartCityDataProcessor (ML-enhanced processing):")
+    const smartResults = await smartCityProcessor.processData([...sampleData])
+    console.log("   - Adds ML scores and anomaly detection")
+    console.log("   - Applies machine learning algorithms")
+    console.log("   - Result sample:", smartResults[0])
+    console.log("")
+
+    // Process with BatchDataProcessor
+    console.log("2️⃣ BatchDataProcessor (Batch processing):")
+    const batchResults = await batchProcessor.processData([...sampleData])
+    console.log("   - Processes in large batches")
+    console.log("   - Adds batch IDs and batch processing flags")
+    console.log("   - Result sample:", batchResults[0])
+    console.log("")
+
+    console.log("✅ POLYMORPHISM DEMONSTRATED!")
+    console.log("Same method call (processData) but different behaviors:")
+    console.log("- SmartCityDataProcessor: ML processing with predictions")
+    console.log("- BatchDataProcessor: Batch processing with batch IDs")
+    console.log("=".repeat(50))
   }
 }
