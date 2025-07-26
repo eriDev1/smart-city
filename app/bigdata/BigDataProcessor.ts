@@ -71,7 +71,6 @@ export class BigDataProcessor {
   }
 
   private async generateDataBatch(): Promise<DataBatch> {
-    // Simulate large-scale IoT data generation
     const data: any[] = []
     const batchTypes = ["sensor_readings", "traffic_data", "energy_consumption"]
     const batchType = batchTypes[Math.floor(Math.random() * batchTypes.length)]

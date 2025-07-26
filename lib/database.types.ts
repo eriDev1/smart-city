@@ -10,10 +10,82 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "12.2.12 (cd3cf9e)"
   }
   public: {
     Tables: {
+      cached_air_quality: {
+        Row: {
+          api_source: string | null
+          aqi: number
+          cached_at: string | null
+          city_name: string
+          co: number | null
+          created_at: string | null
+          dominant_pollutant: string | null
+          health_level: string
+          humidity: number | null
+          id: string
+          latitude: number
+          longitude: number
+          no2: number | null
+          o3: number | null
+          pm10: number | null
+          pm25: number | null
+          pressure: number | null
+          so2: number | null
+          temperature: number | null
+          timestamp: string
+          wind_speed: number | null
+        }
+        Insert: {
+          api_source?: string | null
+          aqi: number
+          cached_at?: string | null
+          city_name: string
+          co?: number | null
+          created_at?: string | null
+          dominant_pollutant?: string | null
+          health_level: string
+          humidity?: number | null
+          id?: string
+          latitude: number
+          longitude: number
+          no2?: number | null
+          o3?: number | null
+          pm10?: number | null
+          pm25?: number | null
+          pressure?: number | null
+          so2?: number | null
+          temperature?: number | null
+          timestamp: string
+          wind_speed?: number | null
+        }
+        Update: {
+          api_source?: string | null
+          aqi?: number
+          cached_at?: string | null
+          city_name?: string
+          co?: number | null
+          created_at?: string | null
+          dominant_pollutant?: string | null
+          health_level?: string
+          humidity?: number | null
+          id?: string
+          latitude?: number
+          longitude?: number
+          no2?: number | null
+          o3?: number | null
+          pm10?: number | null
+          pm25?: number | null
+          pressure?: number | null
+          so2?: number | null
+          temperature?: number | null
+          timestamp?: string
+          wind_speed?: number | null
+        }
+        Relationships: []
+      }
       devices: {
         Row: {
           created_at: string | null
@@ -49,36 +121,32 @@ export type Database = {
           consumption_kwh: number
           created_at: string | null
           device_id: string
-          efficiency_category: string | null
-          efficiency_rating: number
           id: string
-          processed_at: string | null
-          timestamp: string | null
-          worker_id: string | null
+          timestamp: string
         }
         Insert: {
           consumption_kwh: number
           created_at?: string | null
           device_id: string
-          efficiency_category?: string | null
-          efficiency_rating?: number
           id?: string
-          processed_at?: string | null
-          timestamp?: string | null
-          worker_id?: string | null
+          timestamp: string
         }
         Update: {
           consumption_kwh?: number
           created_at?: string | null
           device_id?: string
-          efficiency_category?: string | null
-          efficiency_rating?: number
           id?: string
-          processed_at?: string | null
-          timestamp?: string | null
-          worker_id?: string | null
+          timestamp?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "energy_consumption_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["device_id"]
+          },
+        ]
       }
       ml_models: {
         Row: {
@@ -86,139 +154,129 @@ export type Database = {
           created_at: string | null
           id: string
           last_trained: string | null
-          model_id: string
           model_name: string
           model_type: string
-          status: string | null
-          training_data_count: number | null
+          parameters: Json | null
+          status: string
         }
         Insert: {
           accuracy?: number | null
           created_at?: string | null
           id?: string
           last_trained?: string | null
-          model_id: string
           model_name: string
           model_type: string
-          status?: string | null
-          training_data_count?: number | null
+          parameters?: Json | null
+          status: string
         }
         Update: {
           accuracy?: number | null
           created_at?: string | null
           id?: string
           last_trained?: string | null
-          model_id?: string
           model_name?: string
           model_type?: string
-          status?: string | null
-          training_data_count?: number | null
+          parameters?: Json | null
+          status?: string
         }
         Relationships: []
       }
       processing_batches: {
         Row: {
           batch_id: string
-          batch_type: string
-          completed_at: string | null
           created_at: string | null
-          error_message: string | null
+          end_time: string | null
           id: string
-          processing_time_ms: number | null
-          record_count: number
-          status: string | null
+          records_processed: number | null
+          start_time: string
+          status: string
+          worker_id: string | null
         }
         Insert: {
           batch_id: string
-          batch_type: string
-          completed_at?: string | null
           created_at?: string | null
-          error_message?: string | null
+          end_time?: string | null
           id?: string
-          processing_time_ms?: number | null
-          record_count?: number
-          status?: string | null
+          records_processed?: number | null
+          start_time: string
+          status: string
+          worker_id?: string | null
         }
         Update: {
           batch_id?: string
-          batch_type?: string
-          completed_at?: string | null
           created_at?: string | null
-          error_message?: string | null
+          end_time?: string | null
           id?: string
-          processing_time_ms?: number | null
-          record_count?: number
-          status?: string | null
+          records_processed?: number | null
+          start_time?: string
+          status?: string
+          worker_id?: string | null
         }
         Relationships: []
       }
       sensor_readings: {
         Row: {
-          anomaly_detected: boolean | null
           created_at: string | null
           device_id: string
           id: string
-          ml_score: number | null
-          processed: boolean | null
-          reading_type: string
-          timestamp: string | null
-          unit: string | null
+          sensor_type: string
+          timestamp: string
           value: number
         }
         Insert: {
-          anomaly_detected?: boolean | null
           created_at?: string | null
           device_id: string
           id?: string
-          ml_score?: number | null
-          processed?: boolean | null
-          reading_type: string
-          timestamp?: string | null
-          unit?: string | null
+          sensor_type: string
+          timestamp: string
           value: number
         }
         Update: {
-          anomaly_detected?: boolean | null
           created_at?: string | null
           device_id?: string
           id?: string
-          ml_score?: number | null
-          processed?: boolean | null
-          reading_type?: string
-          timestamp?: string | null
-          unit?: string | null
+          sensor_type?: string
+          timestamp?: string
           value?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sensor_readings_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["device_id"]
+          },
+        ]
       }
       service_requests: {
         Row: {
-          citizen_id: string
           created_at: string | null
-          description: string
+          description: string | null
           id: string
+          location: string
           priority: string | null
-          request_id: string
+          request_type: string
           status: string | null
           updated_at: string | null
         }
         Insert: {
-          citizen_id: string
           created_at?: string | null
-          description: string
+          description?: string | null
           id?: string
+          location: string
           priority?: string | null
-          request_id: string
+          request_type: string
           status?: string | null
           updated_at?: string | null
         }
         Update: {
-          citizen_id?: string
           created_at?: string | null
-          description?: string
+          description?: string | null
           id?: string
+          location?: string
           priority?: string | null
-          request_id?: string
+          request_type?: string
           status?: string | null
           updated_at?: string | null
         }
@@ -227,72 +285,57 @@ export type Database = {
       system_events: {
         Row: {
           created_at: string | null
-          description: string | null
-          device_id: string | null
           event_data: Json | null
           event_type: string
           id: string
-          service_type: string | null
-          severity: string | null
+          severity: string
+          source: string
+          timestamp: string
         }
         Insert: {
           created_at?: string | null
-          description?: string | null
-          device_id?: string | null
           event_data?: Json | null
           event_type: string
           id?: string
-          service_type?: string | null
-          severity?: string | null
+          severity: string
+          source: string
+          timestamp: string
         }
         Update: {
           created_at?: string | null
-          description?: string | null
-          device_id?: string | null
           event_data?: Json | null
           event_type?: string
           id?: string
-          service_type?: string | null
-          severity?: string | null
+          severity?: string
+          source?: string
+          timestamp?: string
         }
         Relationships: []
       }
       traffic_data: {
         Row: {
-          average_speed: number
           congestion_level: number
           created_at: string | null
-          device_id: string
-          efficiency_score: number | null
           id: string
-          processed_at: string | null
-          timestamp: string | null
+          location: string
+          timestamp: string
           vehicle_count: number
-          worker_id: string | null
         }
         Insert: {
-          average_speed?: number
-          congestion_level?: number
+          congestion_level: number
           created_at?: string | null
-          device_id: string
-          efficiency_score?: number | null
           id?: string
-          processed_at?: string | null
-          timestamp?: string | null
-          vehicle_count?: number
-          worker_id?: string | null
+          location: string
+          timestamp: string
+          vehicle_count: number
         }
         Update: {
-          average_speed?: number
           congestion_level?: number
           created_at?: string | null
-          device_id?: string
-          efficiency_score?: number | null
           id?: string
-          processed_at?: string | null
-          timestamp?: string | null
+          location?: string
+          timestamp?: string
           vehicle_count?: number
-          worker_id?: string | null
         }
         Relationships: []
       }

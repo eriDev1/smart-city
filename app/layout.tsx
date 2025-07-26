@@ -1,17 +1,35 @@
-import type React from "react"
 import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
+import { QueryProvider } from "../components/providers/query-provider"
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+})
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
-  title: "Smart City Big Data System - Advanced Programming Project",
-  description: "University Project: Big Data Processing System for Smart City Management with Advanced OOP Concepts",
-    generator: 'v0.dev'
+  title: "Smart City System - Real-Time Big Data Analytics",
+  description: "Advanced smart city management system with real-time air quality monitoring powered by AQICN API and comprehensive OOP architecture with 15+ classes, design patterns, and inheritance",
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
     <html lang="en">
-      <body className="bg-gray-50">{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <QueryProvider>
+          {children}
+        </QueryProvider>
+      </body>
     </html>
   )
 }
