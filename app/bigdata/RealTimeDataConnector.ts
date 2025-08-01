@@ -90,113 +90,90 @@ export interface ProcessedAirQualityData {
 // Class 21: Real-Time Data Connector for AQICN Big Data APIs
 export class RealTimeDataConnector {
   private readonly BASE_URL = "http://api.waqi.info"
-  private readonly DEMO_TOKEN = "demo" // Free demo token for testing
+  private readonly API_TOKEN = "demo" // Replace with real token: process.env.AQICN_API_TOKEN || "demo"
   private requestCount = 0
 
-  // Global cities for comprehensive air quality monitoring
-  private readonly GLOBAL_CITIES = [
-    { name: "shanghai", displayName: "Shanghai, China" },
-    { name: "beijing", displayName: "Beijing, China" },
-    { name: "london", displayName: "London, UK" },
-    { name: "new-york", displayName: "New York, USA" }, 
-    { name: "paris", displayName: "Paris, France" },
-    { name: "tokyo", displayName: "Tokyo, Japan" },
-    { name: "delhi", displayName: "Delhi, India" },
-        { name: "los-angeles", displayName: "Los Angeles, USA" }, 
-    { name: "mumbai", displayName: "Mumbai, India" },
-    { name: "singapore", displayName: "Singapore" },
-    { name: "sydney", displayName: "Sydney, Australia" },
-    { name: "bangkok", displayName: "Bangkok, Thailand" },
-    { name: "seoul", displayName: "Seoul, South Korea" },
-    { name: "berlin", displayName: "Berlin, Germany" },
-    { name: "moscow", displayName: "Moscow, Russia" }
+  private readonly SUPPORTED_CITIES = [
+    "shanghai", "beijing", "paris", "london", "tokyo", "delhi", "new-york", "los-angeles"
   ]
 
   constructor() {
-    console.log("Initialized AQICN Real-Time Data Connector with demo token")
+    console.log("🌍 AQICN Real-Time Data Connector initialized")
+    console.warn("⚠️  Using demo token - register at https://aqicn.org/data-platform/token/ for full access")
   }
 
   public async fetchAirQualityByCity(cityName: string): Promise<ProcessedAirQualityData | null> {
     try {
       this.requestCount++
-      console.log(`Fetching air quality for: ${cityName}`)
+      console.log(`🔍 Fetching real-time data for: ${cityName}`)
       
-      const url = `${this.BASE_URL}/feed/${cityName}/?token=${this.DEMO_TOKEN}`
-      console.log(`Request URL: ${url}`)
+      const url = `${this.BASE_URL}/feed/${cityName}/?token=${this.API_TOKEN}`
       
       const response = await fetch(url)
       
       if (!response.ok) {
-        console.error(`HTTP error for ${cityName}: ${response.status} ${response.statusText}`)
+        console.error(`❌ HTTP error for ${cityName}: ${response.status} ${response.statusText}`)
         return null
       }
 
       const data: AQICNResponse = await response.json()
-      console.log(`API response for ${cityName}:`, data)
+      console.log(`📊 API response for ${cityName}:`, data.status)
 
       if (data.status !== "ok") {
-        console.error(`API error for ${cityName}:`, data.status)
+        console.error(`❌ API error for ${cityName}:`, data.status)
+        
+        if (data.status === "error" && !this.SUPPORTED_CITIES.includes(cityName)) {
+          console.warn(`⚠️  City ${cityName} not available with demo token. Register for free token at https://aqicn.org/data-platform/token/`)
+        }
+        
         return null
       }
 
       return this.processAQICNData(data.data)
     } catch (error) {
-      console.error(`Error fetching data for ${cityName}:`, error)
+      console.error(`❌ Error fetching data for ${cityName}:`, error)
       return null
     }
   }
 
   public async fetchAirQualityByCoordinates(lat: number, lng: number): Promise<ProcessedAirQualityData | null> {
     try {
-      const url = `${this.BASE_URL}/feed/geo:${lat};${lng}/?token=${this.DEMO_TOKEN}`
+      const url = `${this.BASE_URL}/feed/geo:${lat};${lng}/?token=${this.API_TOKEN}`
       this.requestCount++
       
-      console.log(`Fetching air quality data for coordinates ${lat}, ${lng}...`)
+      console.log(`🔍 Fetching data for coordinates ${lat}, ${lng}...`)
       
       const response = await fetch(url)
       const data: AQICNResponse = await response.json()
       
       if (data.status !== "ok" || !data.data) {
-        console.error(`Failed to fetch data for coordinates ${lat}, ${lng}:`, data)
+        console.error(`❌ Failed to fetch data for coordinates ${lat}, ${lng}:`, data)
         return null
       }
 
-      return this.processAQICNData(data.data, `${lat},${lng}`)
+      return this.processAQICNData(data.data)
     } catch (error) {
-      console.error(`Error fetching air quality data for coordinates ${lat}, ${lng}:`, error)
+      console.error(`❌ Error fetching data for coordinates ${lat}, ${lng}:`, error)
       return null
     }
   }
 
   public async fetchMultipleCitiesData(limit?: number): Promise<ProcessedAirQualityData[]> {
-    const cities = limit ? this.GLOBAL_CITIES.slice(0, limit) : this.GLOBAL_CITIES
+    const citiesToFetch = limit ? this.SUPPORTED_CITIES.slice(0, limit) : this.SUPPORTED_CITIES.slice(0, 4)
     const results: ProcessedAirQualityData[] = []
 
-    console.log(`Fetching air quality data for ${cities.length} cities...`)
+    console.log(`🌐 Fetching real-time data for ${citiesToFetch.length} cities...`)
 
-    const batchSize = 5
-    for (let i = 0; i < cities.length; i += batchSize) {
-      const batch = cities.slice(i, i + batchSize)
-      
-      const batchPromises = batch.map(city => 
-        this.fetchAirQualityByCity(city.name)
-      )
-      
-      const batchResults = await Promise.all(batchPromises)
-      
-      batchResults.forEach((result, index) => {
-        if (result) {
-          result.location = batch[index].displayName
-          results.push(result)
-        }
-      })
-
-      if (i + batchSize < cities.length) {
-        await new Promise(resolve => setTimeout(resolve, 1000))
+    for (const cityName of citiesToFetch) {
+      const cityData = await this.fetchAirQualityByCity(cityName)
+      if (cityData) {
+        results.push(cityData)
       }
+      
+      await new Promise(resolve => setTimeout(resolve, 100))
     }
 
-    console.log(`Successfully fetched data for ${results.length} cities`)
+    console.log(`✅ Successfully fetched data for ${results.length}/${citiesToFetch.length} cities`)
     return results
   }
 
@@ -263,7 +240,7 @@ export class RealTimeDataConnector {
 
   public async searchStations(query: string): Promise<ProcessedAirQualityData[]> {
     try {
-      const url = `${this.BASE_URL}/search/?token=${this.DEMO_TOKEN}&keyword=${encodeURIComponent(query)}`
+      const url = `${this.BASE_URL}/search/?token=${this.API_TOKEN}&keyword=${encodeURIComponent(query)}`
       this.requestCount++
       
       const response = await fetch(url)
@@ -280,12 +257,12 @@ export class RealTimeDataConnector {
       for (const station of stations) {
         if (station.uid) {
           try {
-            const detailUrl = `${this.BASE_URL}/feed/@${station.uid}/?token=${this.DEMO_TOKEN}`
+            const detailUrl = `${this.BASE_URL}/feed/@${station.uid}/?token=${this.API_TOKEN}`
             const detailResponse = await fetch(detailUrl)
             const detailData: AQICNResponse = await detailResponse.json()
             
             if (detailData.status === "ok" && detailData.data) {
-              const processed = this.processAQICNData(detailData.data, station.station?.name || query)
+              const processed = this.processAQICNData(detailData.data)
               results.push(processed)
             }
           } catch (error) {
@@ -346,47 +323,37 @@ export class RealTimeDataConnector {
   }
 
   public async getGlobalAirQualityInsights(): Promise<{
-    averageAQI: number;
-    worstCity: { name: string; aqi: number };
-    bestCity: { name: string; aqi: number };
-    citiesWithAlerts: number;
     totalCitiesMonitored: number;
-    dominantPollutants: { [key: string]: number };
-  }> {
-    const data = await this.fetchMultipleCitiesData(10) // Sample 10 cities
-
-    if (data.length === 0) {
-      return {
-        averageAQI: 0,
-        worstCity: { name: "Unknown", aqi: 0 },
-        bestCity: { name: "Unknown", aqi: 0 },
-        citiesWithAlerts: 0,
-        totalCitiesMonitored: 0,
-        dominantPollutants: {}
+    averageAQI: number;
+    citiesWithAlerts: number;
+    bestCity: { name: string; aqi: number };
+    worstCity: { name: string; aqi: number };
+  } | null> {
+    try {
+      const citiesData = await this.fetchMultipleCitiesData(6)
+      
+      if (citiesData.length === 0) {
+        return null
       }
-    }
 
-    const totalAQI = data.reduce((sum, city) => sum + city.aqi, 0)
-    const averageAQI = Math.round(totalAQI / data.length)
+      const totalAQI = citiesData.reduce((sum, city) => sum + city.aqi, 0)
+      const averageAQI = Math.round(totalAQI / citiesData.length)
+      const citiesWithAlerts = citiesData.filter(city => city.aqi > 100).length
 
-    const sortedByAQI = [...data].sort((a, b) => b.aqi - a.aqi)
-    const worstCity = { name: sortedByAQI[0].location, aqi: sortedByAQI[0].aqi }
-    const bestCity = { name: sortedByAQI[sortedByAQI.length - 1].location, aqi: sortedByAQI[sortedByAQI.length - 1].aqi }
+      const sortedByAQI = [...citiesData].sort((a, b) => a.aqi - b.aqi)
+      const bestCity = { name: sortedByAQI[0].location, aqi: sortedByAQI[0].aqi }
+      const worstCity = { name: sortedByAQI[sortedByAQI.length - 1].location, aqi: sortedByAQI[sortedByAQI.length - 1].aqi }
 
-    const citiesWithAlerts = data.filter(city => city.aqi > 100).length
-
-    const dominantPollutants: { [key: string]: number } = {}
-    data.forEach(city => {
-      dominantPollutants[city.dominantPollutant] = (dominantPollutants[city.dominantPollutant] || 0) + 1
-    })
-
-    return {
-      averageAQI,
-      worstCity,
-      bestCity,
-      citiesWithAlerts,
-      totalCitiesMonitored: data.length,
-      dominantPollutants
+      return {
+        totalCitiesMonitored: citiesData.length,
+        averageAQI,
+        citiesWithAlerts,
+        bestCity,
+        worstCity
+      }
+    } catch (error) {
+      console.error("❌ Error getting global insights:", error)
+      return null
     }
   }
 }
