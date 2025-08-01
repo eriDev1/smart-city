@@ -9,8 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { getAirQualityByCity, getMultipleCitiesAirQuality, getGlobalAirQualityInsights, aqicnQueryKeys } from './bigdata/AQICNQueries'
 import { RealTimeAnalytics } from './bigdata/RealTimeAnalytics'
-import type { ProcessedAirQualityData } from './bigdata/RealTimeDataConnector'
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle, Sparkles } from 'lucide-react'
+
+// Magic UI Components
+import RetroGrid from '@/components/magic-ui/retro-grid'
+import AnimatedCounter from '@/components/magic-ui/animated-counter'
+import GradientText from '@/components/magic-ui/gradient-text'
 
 // Initialize analytics engine
 const analytics = new RealTimeAnalytics()
@@ -32,7 +36,7 @@ function AirQualityCard({ city }: { city: string }) {
 
   const getHealthColor = (healthLevel: string) => {
     switch (healthLevel.toLowerCase()) {
-      case 'good': return 'bg-green-100 text-green-800 border-green-200'
+      case 'good': return 'bg-emerald-100 text-emerald-800 border-emerald-200'
       case 'moderate': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'unhealthy for sensitive groups': return 'bg-orange-100 text-orange-800 border-orange-200'
       case 'unhealthy': return 'bg-red-100 text-red-800 border-red-200'
@@ -43,7 +47,7 @@ function AirQualityCard({ city }: { city: string }) {
   }
 
   const getAQIColor = (aqi: number) => {
-    if (aqi <= 50) return 'text-green-600'
+    if (aqi <= 50) return 'text-emerald-600'
     if (aqi <= 100) return 'text-yellow-600'
     if (aqi <= 150) return 'text-orange-600'
     if (aqi <= 200) return 'text-red-600'
@@ -53,7 +57,7 @@ function AirQualityCard({ city }: { city: string }) {
 
   if (isLoading) {
     return (
-      <Card className="animate-pulse">
+      <Card className="animate-pulse bg-white/70 backdrop-blur-sm shadow-lg border-gray-200">
         <CardHeader>
           <div className="h-4 bg-gray-200 rounded w-3/4"></div>
           <div className="h-3 bg-gray-200 rounded w-1/2"></div>
@@ -71,7 +75,7 @@ function AirQualityCard({ city }: { city: string }) {
 
   if (error) {
     return (
-      <Card className="border-red-200">
+      <Card className="border-red-200 bg-red-50/70 backdrop-blur-sm shadow-lg">
         <CardHeader>
           <CardTitle className="text-red-600">{city}</CardTitle>
           <CardDescription>Failed to load air quality data</CardDescription>
@@ -87,7 +91,7 @@ function AirQualityCard({ city }: { city: string }) {
 
   if (!airQuality) {
     return (
-      <Card className="border-gray-200">
+      <Card className="border-gray-200 bg-white/70 backdrop-blur-sm shadow-lg">
         <CardHeader>
           <CardTitle>{city}</CardTitle>
           <CardDescription>No data available</CardDescription>
@@ -97,55 +101,71 @@ function AirQualityCard({ city }: { city: string }) {
   }
 
   return (
-    <Card className="transition-all hover:shadow-lg">
+    <Card className="transition-all hover:shadow-xl hover:-translate-y-1 bg-white/80 backdrop-blur-sm shadow-lg border-gray-200">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          {airQuality.location}
+          <span className="text-lg font-bold text-gray-900">
+            {airQuality.location}
+          </span>
           <Badge variant="outline" className={getHealthColor(airQuality.healthLevel)}>
             {airQuality.healthLevel}
           </Badge>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="flex items-center gap-1 text-gray-600">
+          <Sparkles className="w-3 h-3" />
           Real-time data from {airQuality.apiSource}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold">AQI</span>
+            <span className="text-2xl font-bold text-gray-700">AQI</span>
             <span className={`text-3xl font-bold ${getAQIColor(airQuality.aqi)}`}>
-              {airQuality.aqi}
+              <AnimatedCounter value={airQuality.aqi} duration={1500} />
             </span>
           </div>
           
           <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
+            <div className="flex justify-between">
               <span className="text-gray-500">PM2.5:</span>
-              <span className="ml-1 font-medium">{airQuality.pm25} μg/m³</span>
+              <span className="ml-1 font-medium text-gray-900">
+                <AnimatedCounter value={airQuality.pm25} duration={1200} /> μg/m³
+              </span>
             </div>
-            <div>
+            <div className="flex justify-between">
               <span className="text-gray-500">PM10:</span>
-              <span className="ml-1 font-medium">{airQuality.pm10} μg/m³</span>
+              <span className="ml-1 font-medium text-gray-900">
+                <AnimatedCounter value={airQuality.pm10} duration={1200} /> μg/m³
+              </span>
             </div>
-            <div>
+            <div className="flex justify-between">
               <span className="text-gray-500">NO₂:</span>
-              <span className="ml-1 font-medium">{airQuality.no2} μg/m³</span>
+              <span className="ml-1 font-medium text-gray-900">
+                <AnimatedCounter value={airQuality.no2} duration={1200} /> μg/m³
+              </span>
             </div>
-            <div>
+            <div className="flex justify-between">
               <span className="text-gray-500">O₃:</span>
-              <span className="ml-1 font-medium">{airQuality.o3} μg/m³</span>
+              <span className="ml-1 font-medium text-gray-900">
+                <AnimatedCounter value={airQuality.o3} duration={1200} /> μg/m³
+              </span>
             </div>
           </div>
 
           {airQuality.temperature && (
-            <div className="flex items-center justify-between pt-2 border-t">
+            <div className="flex items-center justify-between pt-2 border-t border-gray-100">
               <span className="text-gray-500">Temperature:</span>
-              <span className="font-medium">{airQuality.temperature}°C</span>
+              <span className="font-medium text-gray-900">
+                <AnimatedCounter value={airQuality.temperature} duration={1000} />°C
+              </span>
             </div>
           )}
 
-          <div className="text-xs text-gray-400">
-            Dominant pollutant: {airQuality.dominantPollutant.toUpperCase()}
+          <div className="text-xs text-gray-400 flex items-center gap-1">
+            <span>Dominant pollutant:</span>
+            <Badge variant="secondary" className="text-xs">
+              {airQuality.dominantPollutant.toUpperCase()}
+            </Badge>
           </div>
         </div>
       </CardContent>
@@ -163,7 +183,7 @@ function GlobalInsightsWidget() {
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="bg-white/70 backdrop-blur-sm shadow-lg border-gray-200">
         <CardHeader>
           <CardTitle>Global Air Quality Insights</CardTitle>
         </CardHeader>
@@ -180,7 +200,7 @@ function GlobalInsightsWidget() {
 
   if (error || !insights) {
     return (
-      <Card>
+      <Card className="bg-white/70 backdrop-blur-sm shadow-lg border-gray-200">
         <CardHeader>
           <CardTitle>Global Air Quality Insights</CardTitle>
         </CardHeader>
@@ -220,7 +240,7 @@ function GlobalInsightsWidget() {
         {insights.citiesWithAlerts > 0 && (
           <Alert className="mt-4">
             <AlertDescription>
-              ⚠️ {insights.citiesWithAlerts} cities currently have unhealthy air quality (AQI > 100). 
+              ⚠️ {insights.citiesWithAlerts} cities currently have unhealthy air quality (AQI {`>`} 100). 
               Consider limiting outdoor activities in affected areas.
             </AlertDescription>
           </Alert>
@@ -281,7 +301,7 @@ function AnalyticsDashboard() {
       <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-white">
-            📊 Real-Time Analytics Dashboard
+              📊 Real-Time Analytics Dashboard
             <Button
               onClick={() => setIsRunning(!isRunning)}
               variant={isRunning ? "destructive" : "secondary"}
@@ -407,7 +427,7 @@ function AnalyticsDashboard() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                🔄 Live Processing Status
+                  🔄 Live Processing Status
                 <Badge variant="default" className="bg-green-100 text-green-800 animate-pulse">
                   ACTIVE
                 </Badge>
@@ -490,7 +510,7 @@ function AnalyticsDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  🔍 Recent AI-Generated Insights
+                    🔍 Recent AI-Generated Insights
                   <Badge variant="outline" className="text-xs">
                     {dashboardData.recentInsights.length} active
                   </Badge>
@@ -613,26 +633,60 @@ export default function SmartCityDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            🏙️ Smart City System
-          </h1>
-          <p className="text-xl text-gray-600 mb-4">
-            Real-Time Air Quality Monitoring & Big Data Analytics
-          </p>
-          <Badge variant="outline" className="text-sm">
-            Powered by Multi-Source API • 30+ Global Cities • AI-Powered Insights
-          </Badge>
+        {/* Hero Section with Retro Grid */}
+        <div className="text-center mb-8 relative">
+          <div className="relative bg-white/80 backdrop-blur-sm px-8 py-12 rounded-2xl shadow-2xl border border-gray-200">
+            {/* Retro Grid Background */}
+            <div className="absolute inset-0 rounded-2xl overflow-hidden">
+              <RetroGrid 
+                gridSize={60}
+                strokeWidth={1}
+                opacity={0.15}
+                fade={true}
+              />
+            </div>
+            
+            {/* Content */}
+            <div className="relative z-10">
+              <h1 className="text-5xl font-bold mb-4">
+                <GradientText 
+                  className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600"
+                >
+                  🏙️ Smart City System
+                </GradientText>
+              </h1>
+              <p className="text-xl text-gray-600 mb-6">
+                Real-Time Air Quality Monitoring & Big Data Analytics
+              </p>
+              <Badge variant="outline" className="text-sm px-4 py-2 bg-white/60 backdrop-blur-sm border-blue-200">
+                <Sparkles className="w-3 h-3 mr-1" />
+                Powered by Multi-Source API • 30+ Global Cities • AI-Powered Insights
+              </Badge>
+            </div>
+          </div>
         </div>
 
         <Tabs defaultValue="monitoring" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="monitoring">🌍 Global Monitoring</TabsTrigger>
-            <TabsTrigger value="analytics">📊 Real-Time Analytics</TabsTrigger>
-            <TabsTrigger value="insights">🔍 Big Data Insights</TabsTrigger>
-            <TabsTrigger value="presentation">🎯 Project Presentation</TabsTrigger>
-          </TabsList>
+          <div className="flex justify-center">
+            <TabsList className="grid w-full grid-cols-4 bg-white/80 backdrop-blur-sm shadow-lg">
+              <TabsTrigger value="monitoring" className="data-[state=active]:bg-blue-100 data-[state=active]:text-blue-900">
+                <Sparkles className="w-4 h-4 mr-1" />
+                🌍 Global Monitoring
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="data-[state=active]:bg-purple-100 data-[state=active]:text-purple-900">
+                <Sparkles className="w-4 h-4 mr-1" />
+                📊 Real-Time Analytics
+              </TabsTrigger>
+              <TabsTrigger value="insights" className="data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-900">
+                <Sparkles className="w-4 h-4 mr-1" />
+                🔍 Big Data Insights
+              </TabsTrigger>
+              <TabsTrigger value="presentation" className="data-[state=active]:bg-pink-100 data-[state=active]:text-pink-900">
+                <Sparkles className="w-4 h-4 mr-1" />
+                🎯 Project Presentation
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="monitoring" className="space-y-6">
             {/* Global Insights */}
@@ -641,11 +695,11 @@ export default function SmartCityDashboard() {
             {/* City Grid */}
             <div>
               <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-                🌍 Major Cities Air Quality Dashboard
-              </h2>
+                    🌍 Major Cities Air Quality Dashboard
+                </h2>
               <p className="text-gray-600 mb-6">
-                Real-time pollution monitoring across 6 major global cities with complete health assessments
-              </p>
+                  Real-time pollution monitoring across 6 major global cities with complete health assessments
+                </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {majorCities.map((city) => (
                   <AirQualityCard key={city} city={city} />
@@ -718,7 +772,7 @@ export default function SmartCityDashboard() {
 
                 <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
                   <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
-                    📊 Live Big Data Statistics
+                      📊 Live Big Data Statistics
                     <Badge variant="default" className="bg-green-100 text-green-800 animate-pulse">LIVE</Badge>
                   </h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -729,7 +783,7 @@ export default function SmartCityDashboard() {
                     <div className="text-center">
                       <div className="text-2xl font-bold text-green-600">18</div>
                       <div className="text-green-700">Health Alerts Active</div>
-                    </div>
+                      </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-purple-600">95%</div>
                       <div className="text-purple-700">Prediction Accuracy</div>
@@ -752,7 +806,7 @@ export default function SmartCityDashboard() {
             <Card className="bg-gradient-to-r from-purple-600 to-pink-600 text-white overflow-hidden">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
-                  🎯 Project Presentation Dashboard
+                    🎯 Project Presentation Dashboard
                   <Badge variant="secondary" className="bg-white text-purple-600">
                     Ready for Demo
                   </Badge>
@@ -885,7 +939,7 @@ export default function SmartCityDashboard() {
 
                 <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200">
                   <h4 className="font-bold text-green-900 mb-3 flex items-center gap-2">
-                    🎓 Academic Excellence Achieved
+                      🎓 Academic Excellence Achieved
                     <Badge variant="default" className="bg-green-600 text-white">A+ Ready</Badge>
                   </h4>
                   <p className="text-green-800 text-sm leading-relaxed">
