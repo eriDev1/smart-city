@@ -3,8 +3,8 @@
 **Authors:** Software Engineering Graduate Student  
 **Institution:** UBT University, Kosovo  
 **Course:** Advanced Programming (Master's Level)  
-**Instructors:** E. Jajaga & A. Kadriu  
-**Date:** December 2024  
+**Instructors:** Dr.Sc Edmond Jajaga  
+**Date:** August 2025 
 
 ## Abstract
 
@@ -458,11 +458,11 @@ The system's architecture serves as a foundation for future smart city applicati
 
 ## References
 
-1. World Air Quality Index Project. (2024). AQICN API Documentation. Retrieved from https://aqicn.org/api/
-2. Jajaga, E., & Kadriu, A. (2024). Advanced Programming Course Materials. UBT University.
-3. React Team. (2024). React 19 Documentation. Meta Open Source.
-4. Supabase Team. (2024). Supabase Documentation. Supabase Inc.
-5. TanStack. (2024). TanStack Query Documentation. TanStack Team.
+1. World Air Quality Index Project. (2025). AQICN API Documentation. Retrieved from https://aqicn.org/api/
+2. Dr.Sc Edmond Jajaga. (2025). Advanced Programming Course Materials. UBT University.
+3. React Team. (2025). React 19 Documentation. Meta Open Source.
+4. Supabase Team. (2025). Supabase Documentation. Supabase Inc.
+5. TanStack. (2025). TanStack Query Documentation. TanStack Team.
 
 ---
 

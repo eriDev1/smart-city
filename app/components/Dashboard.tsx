@@ -12,7 +12,6 @@ import {
   Zap,
   Droplets,
   AlertTriangle,
-  Activity,
   Database,
   TrendingUp,
   Cpu,
@@ -20,9 +19,7 @@ import {
   Wifi,
   Server,
 } from "lucide-react"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts"
 
-// Import our enhanced system classes
 import { CityManager } from "../core/CityManager"
 import { useBigDataContext } from "../context/BigDataContext"
 
@@ -52,8 +49,8 @@ export function Dashboard() {
   const initializeSystem = async () => {
     try {
       setSystemStatus("System Online - Big Data Processing Active")
-      setDeviceCount(12) // Simulated device count
-      setActiveServices(6) // Simulated service count
+      setDeviceCount(12) 
+      setActiveServices(6) 
       setAlerts([
         "Big Data processing engine started",
         "Real-time analytics active",
@@ -73,21 +70,11 @@ export function Dashboard() {
     setStreamMetrics(streamManager.getStreamMetrics())
   }
 
-  // Generate sample chart data
-  const generateChartData = () => {
-    return Array.from({ length: 24 }, (_, i) => ({
-      hour: `${i}:00`,
-      traffic: Math.floor(Math.random() * 100) + 20,
-      energy: Math.floor(Math.random() * 80) + 30,
-      efficiency: Math.floor(Math.random() * 30) + 70
-    }))
-  }
 
-  const chartData = generateChartData()
+
 
   return (
     <div className="container mx-auto p-6">
-      {/* Big Data Status Header */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -142,53 +129,7 @@ export function Dashboard() {
         </Card>
       </div>
 
-      {/* Real-time Analytics Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <BarChart3 className="mr-2 h-5 w-5" />
-              Real-time Data Processing
-            </CardTitle>
-            <CardDescription>Live data throughput and system performance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hour" />
-                <YAxis />
-                <Tooltip />
-                <Area type="monotone" dataKey="traffic" stackId="1" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                <Area type="monotone" dataKey="energy" stackId="1" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Activity className="mr-2 h-5 w-5" />
-              System Performance Trends
-            </CardTitle>
-            <CardDescription>Efficiency and optimization metrics</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hour" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="efficiency" stroke="#ff7300" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Control Panel */}
+   
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <Card>
           <CardHeader>
@@ -229,7 +170,6 @@ export function Dashboard() {
         </Card>
       </div>
 
-      {/* Enhanced Service Tabs with Big Data Features */}
       <Tabs defaultValue="bigdata" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="bigdata">Big Data</TabsTrigger>
