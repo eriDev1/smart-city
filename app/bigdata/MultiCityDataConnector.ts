@@ -47,19 +47,16 @@ export class MultiCityDataConnector {
   ]
 
   public async fetchMultipleCitiesData(limit?: number): Promise<CityData[]> {
-    console.log("🌍 Multi-City Data Connector: Fetching REAL BIG DATA from multiple cities...")
     
     const citiesToFetch = limit ? this.GLOBAL_CITIES.slice(0, limit) : this.GLOBAL_CITIES.slice(0, 15)
     const results: CityData[] = []
 
-    // Fetch data in parallel batches for performance
     const batchSize = 5
     for (let i = 0; i < citiesToFetch.length; i += batchSize) {
       const batch = citiesToFetch.slice(i, i + batchSize)
       
       const batchPromises = batch.map(async (city) => {
         try {
-          // Try multiple data generation approaches for realistic diversity
           return await this.generateRealisticCityData(city)
         } catch (error) {
           console.error(`Failed to fetch data for ${city.name}:`, error)
@@ -70,21 +67,17 @@ export class MultiCityDataConnector {
       const batchResults = await Promise.all(batchPromises)
       results.push(...batchResults.filter(result => result !== null) as CityData[])
       
-      // Rate limiting between batches
       if (i + batchSize < citiesToFetch.length) {
         await new Promise(resolve => setTimeout(resolve, 200))
       }
     }
 
-    console.log(`✅ Multi-City Connector: Successfully fetched data for ${results.length} cities`)
     return results
   }
 
   private async generateRealisticCityData(city: { name: string; country: string; lat: number; lng: number }): Promise<CityData> {
-    // Generate realistic air quality data based on city characteristics
     const baseData = this.getCityBaselineData(city.name, city.country)
     
-    // Add realistic variations based on time, weather, etc.
     const variations = this.generateTimeBasedVariations()
     
     const aqi = Math.max(10, Math.min(500, Math.round(baseData.baseAQI * variations.aqiMultiplier)))
@@ -119,9 +112,7 @@ export class MultiCityDataConnector {
   }
 
   private getCityBaselineData(cityName: string, country: string) {
-    // Realistic baselines based on real-world data patterns
     const cityProfiles: { [key: string]: any } = {
-      // Highly Polluted Cities
       "Delhi": { baseAQI: 180, basePM25: 85, baseNO2: 45, baseSO2: 25, baseO3: 35, baseCO: 2.5, baseTemp: 28, baseHumidity: 65 },
       "Shanghai": { baseAQI: 120, basePM25: 55, baseNO2: 35, baseSO2: 20, baseO3: 40, baseCO: 1.8, baseTemp: 18, baseHumidity: 70 },
       "Mexico City": { baseAQI: 140, basePM25: 65, baseNO2: 50, baseSO2: 15, baseO3: 85, baseCO: 2.2, baseTemp: 20, baseHumidity: 55 },
@@ -129,7 +120,6 @@ export class MultiCityDataConnector {
       "Jakarta": { baseAQI: 135, basePM25: 60, baseNO2: 38, baseSO2: 22, baseO3: 42, baseCO: 1.9, baseTemp: 30, baseHumidity: 80 },
       "Lagos": { baseAQI: 155, basePM25: 70, baseNO2: 42, baseSO2: 28, baseO3: 38, baseCO: 2.1, baseTemp: 32, baseHumidity: 75 },
 
-      // Moderately Polluted Cities
       "New York": { baseAQI: 85, basePM25: 32, baseNO2: 35, baseSO2: 8, baseO3: 65, baseCO: 1.2, baseTemp: 15, baseHumidity: 60 },
       "London": { baseAQI: 75, basePM25: 28, baseNO2: 42, baseSO2: 5, baseO3: 55, baseCO: 1.0, baseTemp: 12, baseHumidity: 75 },
       "Paris": { baseAQI: 80, basePM25: 30, baseNO2: 38, baseSO2: 6, baseO3: 58, baseCO: 1.1, baseTemp: 14, baseHumidity: 70 },
@@ -138,7 +128,6 @@ export class MultiCityDataConnector {
       "Berlin": { baseAQI: 65, basePM25: 22, baseNO2: 30, baseSO2: 4, baseO3: 55, baseCO: 0.8, baseTemp: 10, baseHumidity: 72 },
       "Istanbul": { baseAQI: 110, basePM25: 45, baseNO2: 40, baseSO2: 12, baseO3: 48, baseCO: 1.5, baseTemp: 17, baseHumidity: 68 },
 
-      // Cleaner Cities
       "Sydney": { baseAQI: 55, basePM25: 18, baseNO2: 25, baseSO2: 3, baseO3: 65, baseCO: 0.7, baseTemp: 22, baseHumidity: 60 },
       "Toronto": { baseAQI: 60, basePM25: 20, baseNO2: 28, baseSO2: 4, baseO3: 62, baseCO: 0.8, baseTemp: 8, baseHumidity: 68 },
       "São Paulo": { baseAQI: 105, basePM25: 42, baseNO2: 45, baseSO2: 10, baseO3: 70, baseCO: 1.6, baseTemp: 25, baseHumidity: 70 },
@@ -158,7 +147,6 @@ export class MultiCityDataConnector {
     const isRushHour = (hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)
     const isNight = hour < 6 || hour > 22
     
-    // Rush hour increases pollution
     const aqiMultiplier = isRushHour ? (1.2 + Math.random() * 0.3) : (0.8 + Math.random() * 0.4)
     const pmMultiplier = isRushHour ? (1.1 + Math.random() * 0.2) : (0.9 + Math.random() * 0.3)
     const gasMultiplier = isRushHour ? (1.3 + Math.random() * 0.4) : (0.7 + Math.random() * 0.4)
@@ -200,7 +188,7 @@ export class MultiCityDataConnector {
       citiesWithAlerts,
       bestCity,
       worstCity,
-      dataVolume: cityData.length * 7, // 7 pollutants per city
+      dataVolume: cityData.length * 7,
       countriesRepresented: [...new Set(cityData.map(c => c.country))].length
     }
   }

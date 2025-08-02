@@ -48,8 +48,6 @@ async function seedBigData() {
       }
     }
 
-    // Seed traffic data (Big Data - 500 records)
-    console.log("🚗 Seeding traffic data...")
     const trafficData = []
     const trafficDevices = ["TL001", "TL002", "TL003"]
 
@@ -141,7 +139,6 @@ async function seedBigData() {
     if (batchError) {
       console.error("Error inserting processing batches:", batchError)
     } else {
-      console.log("✅ Inserted processing batches")
     }
 
     // Get final counts
@@ -150,12 +147,7 @@ async function seedBigData() {
     const { data: energyCount } = await supabase.from("energy_consumption").select("id", { count: "exact", head: true })
     const { data: deviceCount } = await supabase.from("devices").select("id", { count: "exact", head: true })
 
-    console.log("\n🎉 Big data seeding completed!")
-    console.log("📈 Final counts:")
-    console.log(`   • Devices: ${deviceCount?.length || 0}`)
-    console.log(`   • Sensor Readings: ${sensorCount?.length || 0}`)
-    console.log(`   • Traffic Data: ${trafficCount?.length || 0}`)
-    console.log(`   • Energy Data: ${energyCount?.length || 0}`)
+
     console.log(`   • Processing Batches: ${processingBatches.length}`)
   } catch (error) {
     console.error("❌ Error seeding big data:", error)

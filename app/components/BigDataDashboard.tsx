@@ -124,13 +124,7 @@ export function BigDataDashboard() {
     // Actually demonstrate polymorphism with visible results
     polymorphismDemo.demonstratePolymorphism()
 
-    // Show the results in console and add event
-    console.log("=== POLYMORPHISM DEMONSTRATION ===")
-    console.log("Creating different processor types...")
-    console.log("1. SmartCityDataProcessor - processes with ML algorithms")
-    console.log("2. BatchDataProcessor - processes in large batches")
-    console.log("Both implement IDataProcessor interface but behave differently")
-    console.log("Check the PolymorphismManager class for implementation details")
+
 
     await supabase.from("system_events").insert({
       event_type: "POLYMORPHISM_DEMO",

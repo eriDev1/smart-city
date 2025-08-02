@@ -8,9 +8,7 @@ export class BatchDataProcessor implements IDataProcessor {
   private processingRate = 0
 
   public async processData(data: any[]): Promise<any[]> {
-    console.log(`BatchDataProcessor: Processing ${data.length} records in batches of ${this.batchSize}`)
 
-    // Different processing logic for batch operations
     const batches = this.createBatches(data)
     const results: any[] = []
 
@@ -24,7 +22,6 @@ export class BatchDataProcessor implements IDataProcessor {
       results.push(...processed)
     }
 
-    console.log(`BatchDataProcessor: Completed processing ${results.length} records`)
     return results
   }
 

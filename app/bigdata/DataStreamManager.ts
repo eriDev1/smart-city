@@ -50,7 +50,6 @@ export class DataStreamManager {
     if (this.isStreaming) return
 
     this.isStreaming = true
-    console.log("Data Stream Manager started - Managing real-time data streams")
 
     // Activate all streams
     this.streams.forEach((stream) => {
@@ -76,7 +75,6 @@ export class DataStreamManager {
       stream.isActive = false
     })
 
-    console.log("Data Stream Manager stopped")
   }
 
   private updateStreamMetrics(): void {

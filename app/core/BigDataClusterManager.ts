@@ -20,7 +20,6 @@ export class BigDataClusterManager implements IClusterManager {
   }
 
   private initializeCluster(): void {
-    // Initialize with 4 processing nodes
     for (let i = 1; i <= 4; i++) {
       this.nodes.push(new ClusterNode(`node-${i}`, 1000))
     }
@@ -34,17 +33,14 @@ export class BigDataClusterManager implements IClusterManager {
 
     const currentCount = this.nodes.length
     if (nodeCount > currentCount) {
-      // Add nodes
       for (let i = currentCount + 1; i <= nodeCount; i++) {
         this.nodes.push(new ClusterNode(`node-${i}`, 1000))
       }
     } else if (nodeCount < currentCount) {
-      // Remove nodes
       this.nodes = this.nodes.slice(0, nodeCount)
     }
 
     this.calculateTotalCapacity()
-    console.log(`Cluster scaled to ${nodeCount} nodes`)
   }
 
   public distributeLoad(): void {
@@ -78,7 +74,6 @@ export class BigDataClusterManager implements IClusterManager {
   }
 }
 
-// CLASS 3: Cluster Node
 export class ClusterNode {
   private id: string
   private capacity: number

@@ -52,7 +52,6 @@ export class RealTimeAnalytics {
 
   private async initializeBaselineData(): Promise<void> {
     try {
-      console.log("🚀 Initializing baseline analytics data...")
       
       this.apiCallsToday = Math.floor(Math.random() * 500) + 200
       this.processedDataPoints = Math.floor(Math.random() * 10000) + 5000
@@ -96,7 +95,6 @@ export class RealTimeAnalytics {
       
       this.alertsGenerated = this.activeInsights.length
       
-      console.log("✅ Baseline analytics data initialized")
     } catch (error) {
       console.error("Error initializing baseline data:", error)
     }
@@ -104,13 +102,11 @@ export class RealTimeAnalytics {
 
   public async getCachedCityData(cityName: string): Promise<ProcessedAirQualityData | null> {
     try {
-      console.log(`🔍 Checking cache for ${cityName}...`)
       
       const cacheKey = `city_${cityName}`
       const cached = inMemoryCache.get(cacheKey)
       
-      if (cached && (Date.now() - cached.timestamp) < 30 * 60 * 1000) { // 30 min cache
-        console.log(`✅ Found in-memory cache for ${cityName}`)
+      if (cached && (Date.now() - cached.timestamp) < 30 * 60 * 1000) {
         return cached.data
       }
 
@@ -149,23 +145,18 @@ export class RealTimeAnalytics {
         }
         
         inMemoryCache.set(cacheKey, { data: processedData, timestamp: Date.now() })
-        console.log(`✅ Found Supabase cache for ${cityName}`)
         return processedData
       }
 
-      console.log(`🔄 Fetching fresh data for ${cityName}...`)
       const freshData = await getAirQualityByCity(cityName)
       
       if (freshData) {
-        // Only cache if it's genuinely new data (not from Supabase)
         if (freshData.apiSource !== 'CACHED') {
           await this.cacheDataToSupabase(cityName, freshData)
         }
         
         inMemoryCache.set(cacheKey, { data: freshData, timestamp: Date.now() })
-        console.log(`✅ Processed data for ${cityName}`)
         
-        // Update API call counter
         this.apiCallsToday++
       }
       
@@ -186,7 +177,6 @@ export class RealTimeAnalytics {
 
   private async cacheDataToSupabase(cityName: string, data: ProcessedAirQualityData): Promise<void> {
     try {
-      // Ensure all required fields are present and properly formatted
       const cacheEntry = {
         city_name: cityName || 'Unknown',
         aqi: Number(data.aqi) || 50,
@@ -208,7 +198,6 @@ export class RealTimeAnalytics {
         timestamp: data.timestamp || new Date().toISOString()
       }
 
-      // Validate required fields
       if (!cacheEntry.city_name || !cacheEntry.health_level || !cacheEntry.timestamp) {
         console.warn(`Skipping cache for ${cityName}: missing required fields`)
         return
@@ -222,7 +211,6 @@ export class RealTimeAnalytics {
         console.warn("Failed to cache to Supabase:", error.message)
         console.warn("Data being inserted:", cacheEntry)
       } else {
-        console.log(`💾 Successfully cached ${cityName} data to Supabase`)
       }
     } catch (error) {
       console.warn("Supabase caching error:", error)
@@ -233,21 +221,15 @@ export class RealTimeAnalytics {
     if (this.isRunning) return
     
     this.isRunning = true
-    console.log("🚀 Starting Real-Time Analytics Engine...")
-    console.log("🌍 Initializing Multi-City Big Data Processing...")
     
-    // Immediately start processing data for instant results
     this.processMultipleCitiesData()
     
-    // Also populate some immediate data for dashboard
     this.populateInitialDashboardData()
   }
 
   private async populateInitialDashboardData(): Promise<void> {
     try {
-      console.log("📊 Populating initial dashboard data...")
       
-      // Get data for the home page cities immediately
       const majorCities = ['london', 'new-york', 'tokyo', 'paris', 'shanghai', 'delhi']
       
       const cityDataPromises = majorCities.map(async (city) => {
@@ -266,7 +248,6 @@ export class RealTimeAnalytics {
         this.processedDataPoints += validResults.length * 7
         this.apiCallsToday += validResults.length
         
-        console.log(`✅ Populated initial data for ${validResults.length} cities`)
       }
     } catch (error) {
       console.error("Error populating initial dashboard data:", error)
@@ -275,40 +256,32 @@ export class RealTimeAnalytics {
 
   public stopAnalytics(): void {
     this.isRunning = false
-    console.log("🛑 Stopping Real-Time Analytics Engine...")
   }
 
   private async processMultipleCitiesData(): Promise<void> {
     if (!this.isRunning) return
 
     try {
-      console.log("📊 Processing multi-city big data batch...")
       
-      // Get data efficiently - prioritize cached data
       const citiesData = await getMultipleCitiesAirQuality(15)
       
       if (citiesData.length > 0) {
-        this.processedDataPoints += citiesData.length * 7 // 7 pollutants per city
-        this.apiCallsToday += Math.floor(citiesData.length / 3) // More realistic API call count
+        this.processedDataPoints += citiesData.length * 7 
+        this.apiCallsToday += Math.floor(citiesData.length / 3) 
         this.updateProcessingRate()
         
-        // Detect anomalies across all cities
         const anomalies = this.detectAnomalies(citiesData)
         if (anomalies.length > 0) {
           this.activeInsights.push(...anomalies)
           this.alertsGenerated += anomalies.length
-          console.log(`🔍 Detected ${anomalies.length} anomalies across cities`)
           
-          // Keep only the most recent insights (prevent memory bloat)
           if (this.activeInsights.length > 50) {
             this.activeInsights = this.activeInsights.slice(-30)
           }
         }
 
-        // Only cache data that's not already cached (prevent endless caching)
         const uncachedData = citiesData.filter(cityData => cityData.apiSource !== 'CACHED')
         if (uncachedData.length > 0) {
-          console.log(`💾 Caching ${uncachedData.length} new cities...`)
           const cachePromises = uncachedData.map(async (cityData) => {
             const cityName = cityData.location.split(',')[0].trim()
             return this.cacheDataToSupabase(cityName, cityData)
@@ -317,13 +290,11 @@ export class RealTimeAnalytics {
           await Promise.all(cachePromises)
         }
         
-        console.log(`✅ Processed ${citiesData.length} cities with ${this.processedDataPoints} total data points`)
       }
     } catch (error) {
       console.error("Error processing multi-city data:", error)
     }
 
-    // Schedule next processing cycle - longer interval for less load
     if (this.isRunning) {
       setTimeout(() => this.processMultipleCitiesData(), 60000) // Every 60 seconds instead of 30
     }
@@ -384,11 +355,9 @@ export class RealTimeAnalytics {
 
   public async getLiveDataDashboard() {
     try {
-      // Get real-time insights from multiple cities
       const globalInsights = await getGlobalAirQualityInsights()
       const apiStats = getAQICNAPIStats()
       
-      // Calculate uptime
       const uptimeHours = Math.floor((Date.now() - this.systemStartTime) / (1000 * 60 * 60))
       const uptimeMinutes = Math.floor((Date.now() - this.systemStartTime) / (1000 * 60)) % 60
       
@@ -396,7 +365,7 @@ export class RealTimeAnalytics {
         systemMetrics: {
           apiCallsToday: this.apiCallsToday,
           alertsGenerated: this.alertsGenerated,
-          dataSourcesActive: 4, // MultiCityConnector, Supabase, TanStackQuery, InMemoryCache
+          dataSourcesActive: 4, 
           lastUpdated: new Date().toISOString(),
           systemUptime: `${uptimeHours}h ${uptimeMinutes}m`,
           processingRate: this.processingRate
@@ -406,7 +375,7 @@ export class RealTimeAnalytics {
           citiesMonitored: globalInsights?.totalCitiesMonitored || 15,
           countriesRepresented: globalInsights?.countriesRepresented || 19,
           processingRate: this.processingRate,
-          dataVolumeGB: Math.round((this.processedDataPoints * 0.002) * 100) / 100 // Estimate data volume
+          dataVolumeGB: Math.round((this.processedDataPoints * 0.002) * 100) / 100 
         },
         dataSourceStatus: {
           aqicnAPI: true,
@@ -456,7 +425,7 @@ export class RealTimeAnalytics {
       processingRate: this.processingRate,
       dataVolume: this.processedDataPoints,
       activeStreams: this.isRunning ? 3 : 0,
-      latency: Math.floor(Math.random() * 30) + 15, // Realistic latency 15-45ms
+      latency: Math.floor(Math.random() * 30) + 15, 
       cacheHitRate: 85 + Math.random() * 10,
       activeInsights: this.activeInsights.length,
       apiCalls: this.apiCallsToday,

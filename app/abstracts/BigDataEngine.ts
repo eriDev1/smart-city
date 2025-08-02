@@ -20,13 +20,11 @@ export abstract class BigDataEngine implements IBigDataEngine {
     if (!this.isRunning) {
       this.initializeEngine()
       this.isRunning = true
-      console.log(`${this.operation} engine started`)
     }
   }
 
   public stopProcessing(): void {
     this.isRunning = false
-    console.log(`${this.operation} engine stopped`)
   }
 
   public getMetrics(): any {
@@ -34,6 +32,5 @@ export abstract class BigDataEngine implements IBigDataEngine {
   }
 
   public optimizePerformance(): void {
-    console.log(`Optimizing ${this.operation} performance`)
   }
 }

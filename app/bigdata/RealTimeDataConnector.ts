@@ -87,7 +87,6 @@ export interface ProcessedAirQualityData {
   apiSource: string
 }
 
-// Class 21: Real-Time Data Connector for AQICN Big Data APIs
 export class RealTimeDataConnector {
   private readonly BASE_URL = "http://api.waqi.info"
   private readonly API_TOKEN = "demo" // Replace with real token: process.env.AQICN_API_TOKEN || "demo"
@@ -98,14 +97,12 @@ export class RealTimeDataConnector {
   ]
 
   constructor() {
-    console.log("🌍 AQICN Real-Time Data Connector initialized")
     console.warn("⚠️  Using demo token - register at https://aqicn.org/data-platform/token/ for full access")
   }
 
   public async fetchAirQualityByCity(cityName: string): Promise<ProcessedAirQualityData | null> {
     try {
       this.requestCount++
-      console.log(`🔍 Fetching real-time data for: ${cityName}`)
       
       const url = `${this.BASE_URL}/feed/${cityName}/?token=${this.API_TOKEN}`
       
@@ -117,7 +114,6 @@ export class RealTimeDataConnector {
       }
 
       const data: AQICNResponse = await response.json()
-      console.log(`📊 API response for ${cityName}:`, data.status)
 
       if (data.status !== "ok") {
         console.error(`❌ API error for ${cityName}:`, data.status)
@@ -141,7 +137,6 @@ export class RealTimeDataConnector {
       const url = `${this.BASE_URL}/feed/geo:${lat};${lng}/?token=${this.API_TOKEN}`
       this.requestCount++
       
-      console.log(`🔍 Fetching data for coordinates ${lat}, ${lng}...`)
       
       const response = await fetch(url)
       const data: AQICNResponse = await response.json()
@@ -162,7 +157,6 @@ export class RealTimeDataConnector {
     const citiesToFetch = limit ? this.SUPPORTED_CITIES.slice(0, limit) : this.SUPPORTED_CITIES.slice(0, 4)
     const results: ProcessedAirQualityData[] = []
 
-    console.log(`🌐 Fetching real-time data for ${citiesToFetch.length} cities...`)
 
     for (const cityName of citiesToFetch) {
       const cityData = await this.fetchAirQualityByCity(cityName)
@@ -173,7 +167,6 @@ export class RealTimeDataConnector {
       await new Promise(resolve => setTimeout(resolve, 100))
     }
 
-    console.log(`✅ Successfully fetched data for ${results.length}/${citiesToFetch.length} cities`)
     return results
   }
 
@@ -281,7 +274,7 @@ export class RealTimeDataConnector {
   public getAPIStats(): { requestCount: number; dailyLimit: number; isDemo: boolean } {
     return {
       requestCount: this.requestCount,
-      dailyLimit: 86400, // 1000 requests per second = effectively unlimited for daily use
+      dailyLimit: 86400,
       isDemo: true
     }
   }
@@ -358,7 +351,6 @@ export class RealTimeDataConnector {
   }
 }
 
-// Factory function to create data connector instance
 export function createAQICNDataConnector(): RealTimeDataConnector {
   return new RealTimeDataConnector()
 }

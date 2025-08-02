@@ -57,11 +57,9 @@ export abstract class IoTDevice implements IMonitorable, IControllable {
   }
 
   public startMonitoring(): void {
-    console.log(`Monitoring started for device ${this.id}`)
   }
 
   public stopMonitoring(): void {
-    console.log(`Monitoring stopped for device ${this.id}`)
   }
 
   public getMonitoringData(): any {

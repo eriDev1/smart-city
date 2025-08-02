@@ -33,7 +33,6 @@ export class BigDataProcessor {
   private workers: DataWorker[] = []
 
   constructor() {
-    // Initialize worker threads for parallel processing
     for (let i = 0; i < 4; i++) {
       this.workers.push(new DataWorker(`worker-${i}`))
     }
@@ -43,25 +42,20 @@ export class BigDataProcessor {
     if (this.isProcessing) return
 
     this.isProcessing = true
-    console.log("Big Data Processor started - Processing large-scale IoT data streams")
 
-    // Start processing loop
     this.processDataLoop()
   }
 
   public stopProcessing(): void {
     this.isProcessing = false
-    console.log("Big Data Processor stopped")
   }
 
   private async processDataLoop(): Promise<void> {
     while (this.isProcessing) {
       try {
-        // Simulate receiving large batches of IoT data
         const batch = await this.generateDataBatch()
         await this.processBatch(batch)
 
-        // Process every 100ms for high throughput
         await new Promise((resolve) => setTimeout(resolve, 100))
       } catch (error) {
         this.metrics.errorCount++
@@ -149,14 +143,11 @@ export class BigDataProcessor {
 
       await Promise.all(promises)
 
-      // Store processed data in Supabase
       await this.storeProcessedData(batch)
 
-      // Update metrics
       const processingTime = Date.now() - startTime
       this.updateMetrics(batch.size, processingTime)
 
-      console.log(`Processed batch ${batch.id}: ${batch.size} records in ${processingTime}ms`)
     } catch (error) {
       this.metrics.errorCount++
       console.error(`Error processing batch ${batch.id}:`, error)

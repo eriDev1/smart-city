@@ -12,22 +12,18 @@ export abstract class ManagementService implements IManagementService, IReportab
     this.serviceType = serviceType
   }
 
-  // Abstract methods
   abstract initialize(): void
   abstract processRequest(request: any): void
 
-  // Concrete implementations
   public start(): void {
     if (!this.isRunning) {
       this.initialize()
       this.isRunning = true
-      console.log(`${this.serviceType} service started`)
     }
   }
 
   public stop(): void {
     this.isRunning = false
-    console.log(`${this.serviceType} service stopped`)
   }
 
   public getServiceType(): ServiceType {
@@ -36,11 +32,9 @@ export abstract class ManagementService implements IManagementService, IReportab
 
   public handleEmergency(): void {
     this.emergencyMode = true
-    console.log(`${this.serviceType} service in emergency mode`)
   }
 
   public optimize(): void {
-    console.log(`${this.serviceType} service optimization started`)
   }
 
   public getStatus(): string {
@@ -60,6 +54,5 @@ export abstract class ManagementService implements IManagementService, IReportab
   }
 
   public exportReport(format: string): void {
-    console.log(`Exporting ${this.serviceType} report in ${format} format`)
   }
 }

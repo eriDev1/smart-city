@@ -94,7 +94,6 @@ export class MLModel {
   public train(data: any[]): void {
     this.lastTraining = new Date()
     this.accuracy = Math.min(100, this.accuracy + Math.random() * 5)
-    console.log(`Model ${this.id} trained with ${data.length} records`)
   }
 
   public generateInsight(): string {

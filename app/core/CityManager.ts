@@ -37,18 +37,15 @@ export class CityManager {
 
     this.isMonitoring = true
     this.services.forEach((service) => service.start())
-    console.log("City monitoring started")
   }
 
   public stopMonitoring(): void {
     this.isMonitoring = false
     this.services.forEach((service) => service.stop())
-    console.log("City monitoring stopped")
   }
 
   public activateEmergencyMode(): void {
     this.services.forEach((service) => service.handleEmergency())
-    console.log("Emergency mode activated across all services")
   }
 
   public optimizeEnergyConsumption(): void {
