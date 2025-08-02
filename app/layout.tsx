@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Smart City System - Real-Time Big Data Analytics",
-  description: "Advanced smart city management system with real-time air quality monitoring powered by AQICN API and comprehensive OOP architecture with 15+ classes, design patterns, and inheritance",
+  title: "Smart Air System - Real-Time Air Quality Intelligence",
+  description: "Advanced air quality monitoring system with real-time ACIQN data, Supabase integration, and comprehensive OOP architecture with 32+ classes, design patterns, and inheritance",
 }
 
 export default function RootLayout({

@@ -1,7 +1,8 @@
 {
-  "name": "my-v0-project",
+  "name": "smart-air-system",
   "version": "0.1.0",
   "private": true,
+  "description": "Real-Time Air Quality Intelligence & Environmental Analytics System powered by ACIQN API and Supabase",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
