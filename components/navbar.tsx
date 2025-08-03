@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Sparkles, Menu, X, BarChart3, Globe, Brain, Presentation } from 'lucide-react'
+import { Sparkles, Menu, X, BarChart3, Globe, Brain, Presentation, MessageCircle } from 'lucide-react'
 import { cn } from "@/lib/utils"
 
 interface NavbarProps {
@@ -24,6 +24,12 @@ const navItems = [
     label: 'Real-Time Analytics',
     icon: BarChart3,
     description: 'Live data processing',
+  },
+  {
+    id: 'chat',
+    label: 'AI Assistant',
+    icon: MessageCircle,
+    description: 'Chat with AI about air quality',
   },
   {
     id: 'insights',
@@ -46,7 +52,6 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
     <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and Brand */}
           <div className="flex items-center space-x-4">
             <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 p-1 shadow-lg">
               <Image
@@ -66,7 +71,6 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
             {navItems.map((item) => {
               const Icon = item.icon
@@ -94,7 +98,6 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
             })}
           </div>
 
-          {/* Real-time Status Badge */}
           <div className="hidden md:flex items-center space-x-3">
             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 animate-pulse">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-ping"></div>
@@ -102,7 +105,6 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
             </Badge>
           </div>
 
-          {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
@@ -117,7 +119,6 @@ export function Navbar({ activeTab, onTabChange }: NavbarProps) {
           </Button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="lg:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
             <div className="py-4 space-y-2">
