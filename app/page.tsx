@@ -7,6 +7,7 @@ import { HeroSection } from '@/components/sections/hero-section'
 import { GlobalMonitoring } from '@/components/sections/global-monitoring'
 import { AIInsights } from '@/components/sections/ai-insights'
 import { Presentation } from '@/components/sections/presentation'
+import { AIChat } from '@/components/ai-chat'
 import { RealTimeAnalytics } from './bigdata/RealTimeAnalytics'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -409,6 +410,11 @@ export default function SmartAirDashboard() {
         <div className="space-y-6">
           {activeTab === 'monitoring' && <GlobalMonitoring />}
           {activeTab === 'analytics' && <AnalyticsDashboard />}
+          {activeTab === 'chat' && (
+            <div className="max-w-4xl mx-auto">
+              <AIChat />
+            </div>
+          )}
           {activeTab === 'insights' && <AIInsights />}
           {activeTab === 'presentation' && <Presentation />}
         </div>

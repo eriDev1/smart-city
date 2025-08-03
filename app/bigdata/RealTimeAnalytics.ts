@@ -45,6 +45,7 @@ export class RealTimeAnalytics {
   private apiCallsToday = 0
   private alertsGenerated = 0
   private systemStartTime = Date.now()
+  private aiInsightRefreshTimer: NodeJS.Timeout | null = null
 
   constructor() {
     this.initializeBaselineData()
@@ -57,6 +58,14 @@ export class RealTimeAnalytics {
       this.processedDataPoints = Math.floor(Math.random() * 10000) + 5000
       this.processingRate = Math.floor(Math.random() * 50) + 25
       
+      // Initialize with AI-generated insights
+      await this.refreshAIInsights()
+      
+      this.alertsGenerated = this.activeInsights.length
+      
+    } catch (error) {
+      console.error("Error initializing baseline data:", error)
+      // Fallback to static insights if AI fails
       this.activeInsights = [
         {
           type: 'HEALTH_ALERT',
@@ -64,39 +73,78 @@ export class RealTimeAnalytics {
           severity: 'HIGH',
           confidence: 94,
           prediction: 'Delhi air quality has deteriorated to unhealthy levels (AQI: 185). Outdoor activities should be limited.',
-          dataSource: 'MULTI_SOURCE_REAL_TIME',
+          dataSource: 'FALLBACK_DATA',
           timeframe: 'Current',
           impact: 'HIGH',
           detectedAt: new Date().toISOString()
-        },
-        {
-          type: 'POLLUTION_SPIKE',
-          city: 'Mexico City, Mexico',
-          severity: 'MEDIUM',
-          confidence: 87,
-          prediction: 'Unusual pollution spike detected in Mexico City (AQI: 145). 2.1σ above normal levels.',
-          dataSource: 'MULTI_SOURCE_REAL_TIME',
-          timeframe: 'Real-time',
-          impact: 'MEDIUM',
-          detectedAt: new Date().toISOString()
-        },
-        {
-          type: 'TRAFFIC_IMPACT',
-          city: 'Los Angeles, USA',
-          severity: 'MEDIUM',
-          confidence: 82,
-          prediction: 'Rush hour traffic patterns correlating with increased NO₂ levels in Los Angeles.',
-          dataSource: 'MULTI_SOURCE_REAL_TIME',
-          timeframe: 'Next 2 hours',
-          impact: 'MEDIUM',
-          detectedAt: new Date().toISOString()
         }
       ]
+    }
+  }
+
+  /**
+   * Refresh AI insights by calling the DeepSeek service directly
+   */
+  public async refreshAIInsights(): Promise<void> {
+    try {
+      // Only attempt if we have an API key configured
+      const apiKey = process.env.Deepseek_API_KEY || process.env.DEEPSEEK_API_KEY;
+      if (!apiKey) {
+        console.warn('DeepSeek API key not configured, using fallback insights')
+        return
+      }
+
+      // Import DeepSeek service dynamically to avoid circular dependencies
+      const { DeepSeekInsightsService } = await import('../../lib/deepseek-service')
       
-      this.alertsGenerated = this.activeInsights.length
+      // Get real-time air quality data
+      const airQualityData = await getMultipleCitiesAirQuality(10)
+      
+      if (!airQualityData || airQualityData.length === 0) {
+        console.warn('No air quality data available for AI analysis')
+        return
+      }
+
+      // Convert to format expected by DeepSeek service
+      const processedData = airQualityData.map(city => ({
+        city: city.location,
+        aqi: city.aqi,
+        pm25: city.pm25 || 0,
+        pm10: city.pm10 || 0,
+        o3: city.o3 || 0,
+        no2: city.no2 || 0,
+        so2: city.so2 || 0,
+        co: city.co || 0,
+        timestamp: city.timestamp,
+        dominentPollutant: city.dominantPollutant
+      }))
+
+      // Generate AI insights using DeepSeek
+      const deepSeekService = new DeepSeekInsightsService()
+      const aiInsights = await deepSeekService.generateInsights(processedData)
+      
+      if (aiInsights && aiInsights.length > 0) {
+        // Convert AIInsight to AnomalyDetectionResult format
+        const convertedInsights: AnomalyDetectionResult[] = aiInsights.map(insight => ({
+          type: this.mapInsightType(insight.type),
+          city: insight.city,
+          severity: insight.severity as 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
+          confidence: insight.confidence,
+          prediction: insight.prediction,
+          dataSource: insight.dataSource,
+          timeframe: insight.timeframe,
+          impact: insight.impact as 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
+          detectedAt: insight.detectedAt
+        }))
+        
+        this.activeInsights = convertedInsights
+        this.alertsGenerated = convertedInsights.length
+        console.log(`Successfully updated ${convertedInsights.length} AI insights from DeepSeek`)
+      }
       
     } catch (error) {
-      console.error("Error initializing baseline data:", error)
+      console.error('Error refreshing AI insights:', error)
+      // Keep existing insights if refresh fails
     }
   }
 
@@ -225,6 +273,9 @@ export class RealTimeAnalytics {
     this.processMultipleCitiesData()
     
     this.populateInitialDashboardData()
+    
+    // Start AI insight refresh every 10 minutes
+    this.startAIInsightRefresh()
   }
 
   private async populateInitialDashboardData(): Promise<void> {
@@ -256,6 +307,54 @@ export class RealTimeAnalytics {
 
   public stopAnalytics(): void {
     this.isRunning = false
+    this.stopAIInsightRefresh()
+  }
+
+  /**
+   * Start periodic AI insight refresh
+   */
+  private startAIInsightRefresh(): void {
+    // Clear any existing timer
+    this.stopAIInsightRefresh()
+    
+    // Refresh AI insights every 10 minutes (600,000 ms)
+    this.aiInsightRefreshTimer = setInterval(async () => {
+      try {
+        await this.refreshAIInsights()
+        console.log('AI insights refreshed automatically')
+      } catch (error) {
+        console.error('Error in automatic AI insight refresh:', error)
+      }
+    }, 10 * 60 * 1000) // 10 minutes
+    
+    console.log('AI insight refresh timer started (every 10 minutes)')
+  }
+
+  /**
+   * Stop periodic AI insight refresh
+   */
+  private stopAIInsightRefresh(): void {
+    if (this.aiInsightRefreshTimer) {
+      clearInterval(this.aiInsightRefreshTimer)
+      this.aiInsightRefreshTimer = null
+      console.log('AI insight refresh timer stopped')
+    }
+  }
+
+  /**
+   * Map DeepSeek insight types to AnomalyDetectionResult types
+   */
+  private mapInsightType(aiType: string): AnomalyDetectionResult['type'] {
+    const typeMap: Record<string, AnomalyDetectionResult['type']> = {
+      'HEALTH_ALERT': 'HEALTH_ALERT',
+      'POLLUTION_SPIKE': 'POLLUTION_SPIKE',
+      'TRAFFIC_IMPACT': 'TRAFFIC_IMPACT',
+      'ENERGY_DEMAND': 'ENERGY_DEMAND',
+      'ANOMALY_DETECTION': 'UNUSUAL_PATTERN',
+      'GENERAL_ANALYSIS': 'UNUSUAL_PATTERN'
+    }
+    
+    return typeMap[aiType] || 'UNUSUAL_PATTERN'
   }
 
   private async processMultipleCitiesData(): Promise<void> {

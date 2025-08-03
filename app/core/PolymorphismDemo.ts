@@ -1,8 +1,6 @@
-// POLYMORPHISM DEMONSTRATION
 import type { IDataProcessor } from "../interfaces/IDataProcessor"
 import { SmartCityDataProcessor } from "./SmartCityDataProcessor"
 
-// CLASS 13: Batch Data Processor (Different implementation of IDataProcessor)
 export class BatchDataProcessor implements IDataProcessor {
   private batchSize = 5000
   private processingRate = 0
@@ -46,7 +44,6 @@ export class BatchDataProcessor implements IDataProcessor {
   }
 }
 
-// CLASS 14: Polymorphism Manager
 export class PolymorphismManager {
   private processors: IDataProcessor[] = []
 
@@ -54,12 +51,10 @@ export class PolymorphismManager {
     this.processors.push(processor)
   }
 
-  // POLYMORPHISM: Same method call, different implementations
   public async processAllData(data: any[]): Promise<any[]> {
     const results: any[] = []
 
     for (const processor of this.processors) {
-      // Polymorphic call - each processor implements processData differently
       const processed = await processor.processData(data)
       results.push(...processed)
     }
@@ -67,10 +62,8 @@ export class PolymorphismManager {
     return results
   }
 
-  // POLYMORPHISM: Same interface, different behaviors
   public optimizeAllProcessors(): void {
     this.processors.forEach((processor) => {
-      // Each processor may optimize differently
       const optimalSize = processor.getProcessingRate() > 1000 ? 2000 : 1000
       processor.setBatchSize(optimalSize)
     })
@@ -80,11 +73,9 @@ export class PolymorphismManager {
     console.log("🔄 POLYMORPHISM DEMONSTRATION STARTING...")
     console.log("=".repeat(50))
 
-    // Create different processor types
     const smartCityProcessor = new SmartCityDataProcessor()
     const batchProcessor = new BatchDataProcessor()
 
-    // Add to collection (all treated as IDataProcessor)
     this.addProcessor(smartCityProcessor)
     this.addProcessor(batchProcessor)
 
@@ -98,12 +89,10 @@ export class PolymorphismManager {
     console.log("📊 Sample data created:", sampleData)
     console.log("")
 
-    // Polymorphic behavior - same interface, different implementations
     console.log("🎯 DEMONSTRATING POLYMORPHISM:")
     console.log("Both processors implement IDataProcessor interface but behave differently:")
     console.log("")
 
-    // Process with SmartCityDataProcessor
     console.log("1️⃣ SmartCityDataProcessor (ML-enhanced processing):")
     const smartResults = await smartCityProcessor.processData([...sampleData])
     console.log("   - Adds ML scores and anomaly detection")
@@ -111,7 +100,6 @@ export class PolymorphismManager {
     console.log("   - Result sample:", smartResults[0])
     console.log("")
 
-    // Process with BatchDataProcessor
     console.log("2️⃣ BatchDataProcessor (Batch processing):")
     const batchResults = await batchProcessor.processData([...sampleData])
     console.log("   - Processes in large batches")
