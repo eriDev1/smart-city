@@ -1,10 +1,7 @@
-// CLASS 1: Smart City Data Processor (Level 3 - 3 levels of inheritance)
-// BaseDataProcessor -> AdvancedDataProcessor -> SmartCityDataProcessor
 import { BaseDataProcessor } from "../abstracts/BaseDataProcessor"
-import { ProcessingPriority } from "../enums/SystemEnums"
+import { ProcessingPriority, AlertSeverity } from "../enums/SystemEnums"
 import { SystemException } from "../exceptions/SystemException"
 
-// Level 2 inheritance
 abstract class AdvancedDataProcessor extends BaseDataProcessor {
   protected algorithms: string[] = []
 
@@ -14,12 +11,11 @@ abstract class AdvancedDataProcessor extends BaseDataProcessor {
 
   abstract applyMachineLearning(data: any[]): any[]
 
-  protected addAlgorithm(algorithm: string): void {
+protected addAlgorithm(algorithm: string): void {
     this.algorithms.push(algorithm)
   }
 }
 
-// Level 3 inheritance - demonstrates 3 levels of depth
 export class SmartCityDataProcessor extends AdvancedDataProcessor {
   private processedRecords = 0
   private errorCount = 0
@@ -36,7 +32,7 @@ export class SmartCityDataProcessor extends AdvancedDataProcessor {
 
     try {
       if (!data || data.length === 0) {
-        throw new SystemException("No data provided for processing", "DATA_EMPTY", "HIGH")
+        throw new SystemException("No data provided for processing", AlertSeverity.HIGH, "DATA_PROCESSOR", "DATA_EMPTY")
       }
 
       const validData = data.filter((item) => this.validateData(item))
@@ -49,19 +45,18 @@ export class SmartCityDataProcessor extends AdvancedDataProcessor {
     } catch (error) {
       this.errorCount++
       if (error instanceof SystemException) {
-        console.error("Processing error:", error.getFormattedError())
+        console.error("Processing error:", error.toJSON())
         throw error
       }
-      throw new SystemException("Data processing failed", "PROCESS_ERROR", "CRITICAL")
+      throw new SystemException("Data processing failed", AlertSeverity.CRITICAL, "DATA_PROCESSOR", "PROCESS_ERROR")
     }
   }
 
-  public validateData(data: any): boolean {
-    return data && typeof data === "object" && data.timestamp && data.value !== undefined
+public validateData(data: any): boolean {
+  return data && typeof data === "object" && data.timestamp && data.value !== undefined
   }
 
   public applyMachineLearning(data: any[]): any[] {
-    // Apply ML algorithms for big data processing
     return data.map((item) => ({
       ...item,
       processed: true,
@@ -73,18 +68,9 @@ export class SmartCityDataProcessor extends AdvancedDataProcessor {
 
   private generatePrediction(item: any): any {
     return {
-      next_value: item.value * (1 + (Math.random() - 0.5) * 0.1),
+      score: Math.random() * 100,
+      trend: Math.random() > 0.5 ? "INCREASING" : "DECREASING",
       confidence: Math.random() * 100,
-      trend: Math.random() > 0.5 ? "increasing" : "decreasing",
-    }
-  }
-
-  public getProcessingStats(): any {
-    return {
-      processedRecords: this.processedRecords,
-      errorCount: this.errorCount,
-      algorithms: this.algorithms,
-      processingRate: this.processingRate,
     }
   }
 }

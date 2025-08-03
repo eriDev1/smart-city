@@ -1,6 +1,7 @@
 // CLASS 2: Big Data Cluster Manager (Singleton Pattern)
 import type { IClusterManager } from "../interfaces/IClusterManager"
 import { SystemException } from "../exceptions/SystemException"
+import { AlertSeverity } from "../enums/SystemEnums"
 
 export class BigDataClusterManager implements IClusterManager {
   private static instance: BigDataClusterManager
@@ -28,7 +29,7 @@ export class BigDataClusterManager implements IClusterManager {
 
   public scaleCluster(nodeCount: number): void {
     if (nodeCount < 1 || nodeCount > 20) {
-      throw new SystemException("Invalid node count for cluster scaling", "SCALE_ERROR", "HIGH")
+      throw new SystemException("Invalid node count for cluster scaling", AlertSeverity.HIGH, "CLUSTER_MANAGER", "SCALE_ERROR")
     }
 
     const currentCount = this.nodes.length

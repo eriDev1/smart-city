@@ -64,9 +64,8 @@ export function Dashboard() {
   }
 
   const updateMetrics = () => {
-    // Update big data metrics
     setBigDataMetrics(processor.getMetrics())
-    setAnalyticsData(analytics.getMetrics())
+    setAnalyticsData(analytics.getRealtimeStats())
     setStreamMetrics(streamManager.getStreamMetrics())
   }
 
@@ -446,3 +445,4 @@ export function Dashboard() {
       </Tabs>
     </div>
   )
+}

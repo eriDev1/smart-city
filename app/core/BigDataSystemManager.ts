@@ -1,9 +1,9 @@
-// CLASS 15: Big Data System Manager (Main System Controller)
 import { BigDataClusterManager } from "./BigDataClusterManager"
 import { ProcessorFactory, ProcessorType } from "../patterns/FactoryPattern"
 import { BigDataEventManager, SystemMonitor } from "../patterns/ObserverPattern"
 import { CommandManager, BigDataCommand } from "../patterns/CommandPattern"
 import { SystemException } from "../exceptions/SystemException"
+import { AlertSeverity } from "../enums/SystemEnums"
 
 export class BigDataSystemManager {
   private static instance: BigDataSystemManager
@@ -20,7 +20,6 @@ export class BigDataSystemManager {
     this.commandManager = new CommandManager()
     this.systemMonitor = new SystemMonitor("main-monitor")
 
-    // Set up observer pattern
     this.eventManager.addObserver(this.systemMonitor)
 
     this.initializeProcessors()
@@ -35,14 +34,12 @@ export class BigDataSystemManager {
 
   private initializeProcessors(): void {
     try {
-      // Use Factory Pattern to create processors
       this.processors = [
         ProcessorFactory.createProcessor(ProcessorType.DATA_PROCESSOR),
-        ProcessorFactory.createProcessor(ProcessorType.STREAM_PROCESSOR),
-        ProcessorFactory.createProcessor(ProcessorType.ML_ANALYZER),
+        ProcessorFactory.createProcessor(ProcessorType.STREAM_PROCESSOR)
       ]
     } catch (error) {
-      throw new SystemException("Failed to initialize processors", "INIT_ERROR", "CRITICAL")
+      throw new SystemException("Failed to initialize processors", AlertSeverity.CRITICAL, "SYSTEM_MANAGER", "INIT_ERROR")
     }
   }
 
@@ -94,7 +91,7 @@ export class BigDataSystemManager {
       this.eventManager.publishBigDataEvent("SYSTEM_SCALED", { nodes })
     } catch (error) {
       if (error instanceof SystemException) {
-        this.eventManager.publishBigDataEvent("SCALE_ERROR", { error: error.getFormattedError() })
+        this.eventManager.publishBigDataEvent("SCALE_ERROR", { error: error.toJSON() })
       }
     }
   }
@@ -105,7 +102,7 @@ export class BigDataSystemManager {
       clusterHealth: this.clusterManager.getClusterHealth(),
       processorCount: this.processors.length,
       eventCount: this.eventManager.getEventCount(),
-      alerts: this.systemMonitor.getAlerts().slice(-5), // Last 5 alerts
+      alerts: this.systemMonitor.getAlerts().slice(-5),
       commandHistory: this.commandManager.getHistory().length,
     }
   }

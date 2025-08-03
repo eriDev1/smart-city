@@ -1,21 +1,20 @@
 import { ManagementService } from "../abstracts/ManagementService"
-import { ServiceType, RequestStatus, Priority } from "../enums/SystemEnums"
+import { ServiceType, ServiceRequestStatus, ServiceRequestPriority } from "../enums/SystemEnums"
 
-// Class 11: Citizen Service Request
 export class ServiceRequest {
   private id: string
   private citizenId: string
   private description: string
-  private priority: Priority
-  private status: RequestStatus
+  private priority: ServiceRequestPriority
+  private status: ServiceRequestStatus
   private createdAt: Date
 
-  constructor(id: string, citizenId: string, description: string, priority: Priority = Priority.MEDIUM) {
+  constructor(id: string, citizenId: string, description: string, priority: ServiceRequestPriority = ServiceRequestPriority.MEDIUM) {
     this.id = id
     this.citizenId = citizenId
     this.description = description
     this.priority = priority
-    this.status = RequestStatus.PENDING
+    this.status = ServiceRequestStatus.PENDING
     this.createdAt = new Date()
   }
 
@@ -28,32 +27,31 @@ export class ServiceRequest {
   public getDescription(): string {
     return this.description
   }
-  public getPriority(): Priority {
+  public getPriority(): ServiceRequestPriority {
     return this.priority
   }
-  public getStatus(): RequestStatus {
+  public getStatus(): ServiceRequestStatus {
     return this.status
   }
   public getCreatedAt(): Date {
     return this.createdAt
   }
 
-  public updateStatus(status: RequestStatus): void {
+  public updateStatus(status: ServiceRequestStatus): void {
     this.status = status
   }
 
-  public setPriority(priority: Priority): void {
+  public setPriority(priority: ServiceRequestPriority): void {
     this.priority = priority
   }
 }
 
-// Class 12: Citizen Service
 export class CitizenService extends ManagementService {
   private serviceRequests: Map<string, ServiceRequest> = new Map()
   private requestCounter = 0
 
   constructor() {
-    super(ServiceType.CITIZEN)
+    super(ServiceType.AIR_QUALITY)
   }
 
   public initialize(): void {
@@ -75,7 +73,7 @@ export class CitizenService extends ManagementService {
     }
   }
 
-  public createServiceRequest(citizenId: string, description: string, priority: Priority): ServiceRequest {
+  public createServiceRequest(citizenId: string, description: string, priority: ServiceRequestPriority): ServiceRequest {
     const requestId = `REQ${++this.requestCounter}`
     const serviceRequest = new ServiceRequest(requestId, citizenId, description, priority)
     this.serviceRequests.set(requestId, serviceRequest)
@@ -83,7 +81,7 @@ export class CitizenService extends ManagementService {
     return serviceRequest
   }
 
-  public updateRequestStatus(requestId: string, status: RequestStatus): void {
+  public updateRequestStatus(requestId: string, status: ServiceRequestStatus): void {
     const request = this.serviceRequests.get(requestId)
     if (request) {
       request.updateStatus(status)
@@ -95,7 +93,7 @@ export class CitizenService extends ManagementService {
     return Array.from(this.serviceRequests.values())
   }
 
-  public getRequestsByPriority(priority: Priority): ServiceRequest[] {
+  public getRequestsByPriority(priority: ServiceRequestPriority): ServiceRequest[] {
     return this.getServiceRequests().filter((req) => req.getPriority() === priority)
   }
 }

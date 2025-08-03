@@ -80,8 +80,10 @@ export function BigDataDashboard() {
     // Add system event to database
     await supabase.from("system_events").insert({
       event_type: "SYSTEM_STARTED",
-      description: "Big data processing system started",
       severity: "INFO",
+      source: "BigDataDashboard",
+      timestamp: new Date().toISOString(),
+      event_data: { description: "Big data processing system started" }
     })
 
     loadDashboardData()
@@ -95,8 +97,10 @@ export function BigDataDashboard() {
     // Add system event to database
     await supabase.from("system_events").insert({
       event_type: "SYSTEM_STOPPED",
-      description: "Big data processing system stopped",
       severity: "WARNING",
+      source: "BigDataDashboard",
+      timestamp: new Date().toISOString(),
+      event_data: { description: "Big data processing system stopped" }
     })
 
     loadDashboardData()
@@ -109,8 +113,10 @@ export function BigDataDashboard() {
     // Add system event to database
     await supabase.from("system_events").insert({
       event_type: "SYSTEM_SCALED",
-      description: `System scaled to ${nodes} nodes`,
       severity: "INFO",
+      source: "BigDataDashboard",
+      timestamp: new Date().toISOString(),
+      event_data: { description: `System scaled to ${nodes} nodes` }
     })
 
     loadDashboardData()
@@ -128,8 +134,10 @@ export function BigDataDashboard() {
 
     await supabase.from("system_events").insert({
       event_type: "POLYMORPHISM_DEMO",
-      description: "Polymorphism demonstration executed - check console for details",
       severity: "INFO",
+      source: "BigDataDashboard",
+      timestamp: new Date().toISOString(),
+      event_data: { description: "Polymorphism demonstration executed - check console for details" }
     })
 
     loadDashboardData()
@@ -144,8 +152,10 @@ export function BigDataDashboard() {
       updateMetrics()
       await supabase.from("system_events").insert({
         event_type: "OPERATION_UNDONE",
-        description: "Last operation was undone successfully",
         severity: "INFO",
+        source: "BigDataDashboard",
+        timestamp: new Date().toISOString(),
+        event_data: { description: "Last operation was undone successfully" }
       })
       loadDashboardData()
       alert("Last operation undone successfully!")
@@ -160,8 +170,10 @@ export function BigDataDashboard() {
       updateMetrics()
       await supabase.from("system_events").insert({
         event_type: "OPERATION_REDONE",
-        description: "Operation was redone successfully",
         severity: "INFO",
+        source: "BigDataDashboard",
+        timestamp: new Date().toISOString(),
+        event_data: { description: "Operation was redone successfully" }
       })
       loadDashboardData()
       alert("Operation redone successfully!")

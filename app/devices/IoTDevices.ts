@@ -1,71 +1,74 @@
-// IoT Device Implementations (Classes 1-6)
 import { IoTDevice } from "../abstracts/IoTDevice"
 import type { IOptimizable } from "../interfaces/IOptimizable"
-import { DeviceStatus } from "../enums/SystemEnums"
+import { DeviceStatus, DeviceType } from "../enums/SystemEnums"
 
-// Class 1: Traffic Light Controller (3-level inheritance: IoTDevice -> TrafficDevice -> TrafficLightController)
-abstract class TrafficDevice extends IoTDevice {
-  protected trafficDensity = 0
-
-  constructor(id: string, location: string) {
-    super(id, location)
-  }
-
-  public reportTrafficDensity(density: number): void {
-    this.trafficDensity = density
-    this.processData({ density })
-  }
-
-  public getTrafficDensity(): number {
-    return this.trafficDensity
-  }
-
-  abstract adjustTiming(): void
-}
-
-export class TrafficLightController extends TrafficDevice {
-  private currentPhase = "RED"
-  private timing: { red: number; yellow: number; green: number }
+export class AirQualityMonitor extends IoTDevice {
+  private pm25 = 0
+  private pm10 = 0
+  private no2 = 0
+  private o3 = 0
+  private so2 = 0
+  private co = 0
+  private aqi = 0
 
   constructor(id: string, location: string) {
     super(id, location)
-    this.timing = { red: 30, yellow: 5, green: 25 }
   }
 
   public initialize(): void {
     this.status = DeviceStatus.ONLINE
-    console.log(`Traffic light ${this.id} initialized at ${this.location}`)
+    console.log(`Air quality monitor ${this.id} initialized at ${this.location}`)
   }
 
   public processData(data: any): void {
-    if (data.density > 80) {
-      this.adjustTiming()
-    }
-  }
-
-  public adjustTiming(): void {
-    // Increase green time for high traffic
-    this.timing.green = Math.min(this.timing.green + 10, 60)
-    console.log(`Traffic light ${this.id} timing adjusted for high traffic`)
+    if (data.pm25) this.pm25 = data.pm25
+    if (data.pm10) this.pm10 = data.pm10
+    if (data.no2) this.no2 = data.no2
+    if (data.o3) this.o3 = data.o3
+    if (data.so2) this.so2 = data.so2
+    if (data.co) this.co = data.co
+    if (data.aqi) this.aqi = data.aqi
   }
 
   public getDeviceType(): string {
-    return "TrafficLightController"
+    return "AirQualityMonitor"
   }
 
-  public getCurrentPhase(): string {
-    return this.currentPhase
+  public getPM25(): number {
+    return this.pm25
   }
 
-  public setPhase(phase: string): void {
-    this.currentPhase = phase
+  public getPM10(): number {
+    return this.pm10
+  }
+
+  public getNO2(): number {
+    return this.no2
+  }
+
+  public getO3(): number {
+    return this.o3
+  }
+
+  public getSO2(): number {
+    return this.so2
+  }
+
+  public getCO(): number {
+    return this.co
+  }
+
+  public getAQI(): number {
+    return this.aqi
   }
 }
 
-// Class 2: Smart Street Light
-export class SmartStreetLight extends IoTDevice implements IOptimizable {
-  private brightness = 100
-  private motionDetected = false
+export class WeatherStation extends IoTDevice implements IOptimizable {
+  private temperature = 0
+  private humidity = 0
+  private pressure = 0
+  private windSpeed = 0
+  private windDirection = 0
   private optimizationLevel = 0
 
   constructor(id: string, location: string) {
@@ -74,32 +77,23 @@ export class SmartStreetLight extends IoTDevice implements IOptimizable {
 
   public initialize(): void {
     this.status = DeviceStatus.ONLINE
-    console.log(`Smart street light ${this.id} initialized at ${this.location}`)
+    console.log(`Weather station ${this.id} initialized at ${this.location}`)
   }
 
   public processData(data: any): void {
-    if (data.motion !== undefined) {
-      this.motionDetected = data.motion
-      if (this.motionDetected) {
-        this.brightness = 100
-      }
-    }
+    if (data.temperature) this.temperature = data.temperature
+    if (data.humidity) this.humidity = data.humidity
+    if (data.pressure) this.pressure = data.pressure
+    if (data.windSpeed) this.windSpeed = data.windSpeed
+    if (data.windDirection) this.windDirection = data.windDirection
   }
 
   public getDeviceType(): string {
-    return "SmartStreetLight"
-  }
-
-  public adjustBrightness(level: number): void {
-    this.brightness = Math.max(0, Math.min(100, level))
-    console.log(`Street light ${this.id} brightness set to ${this.brightness}%`)
+    return "WeatherStation"
   }
 
   public optimize(): void {
-    if (!this.motionDetected && new Date().getHours() > 22) {
-      this.brightness = 30 // Dim during late hours
-      this.optimizationLevel = 70
-    }
+    this.optimizationLevel = 80
   }
 
   public getOptimizationLevel(): number {
@@ -107,21 +101,36 @@ export class SmartStreetLight extends IoTDevice implements IOptimizable {
   }
 
   public setOptimizationParameters(params: any): void {
-    if (params.dimLevel) {
-      this.brightness = params.dimLevel
+    if (params.calibrationLevel) {
+      this.optimizationLevel = params.calibrationLevel
     }
   }
 
-  public getBrightness(): number {
-    return this.brightness
+  public getTemperature(): number {
+    return this.temperature
+  }
+
+  public getHumidity(): number {
+    return this.humidity
+  }
+
+  public getPressure(): number {
+    return this.pressure
+  }
+
+  public getWindSpeed(): number {
+    return this.windSpeed
+  }
+
+  public getWindDirection(): number {
+    return this.windDirection
   }
 }
 
-// Class 3: Water Quality Sensor
-export class WaterQualitySensor extends IoTDevice {
-  private qualityReading = 0
-  private ph = 7.0
-  private temperature = 20.0
+export class NoiseMonitor extends IoTDevice {
+  private decibelLevel = 0
+  private averageNoise = 0
+  private peakNoise = 0
 
   constructor(id: string, location: string) {
     super(id, location)
@@ -129,39 +138,34 @@ export class WaterQualitySensor extends IoTDevice {
 
   public initialize(): void {
     this.status = DeviceStatus.ONLINE
-    console.log(`Water quality sensor ${this.id} initialized at ${this.location}`)
+    console.log(`Noise monitor ${this.id} initialized at ${this.location}`)
   }
 
   public processData(data: any): void {
-    if (data.quality) {
-      this.qualityReading = data.quality
-    }
-    if (data.ph) {
-      this.ph = data.ph
-    }
-    if (data.temperature) {
-      this.temperature = data.temperature
+    if (data.decibels) {
+      this.decibelLevel = data.decibels
+      this.updateAverages()
     }
   }
 
   public getDeviceType(): string {
-    return "WaterQualitySensor"
+    return "NoiseMonitor"
   }
 
-  public reportQualityReading(quality: number): void {
-    this.qualityReading = quality
-    console.log(`Water quality sensor ${this.id} reports quality: ${quality}%`)
+  private updateAverages(): void {
+    this.averageNoise = (this.averageNoise + this.decibelLevel) / 2
+    this.peakNoise = Math.max(this.peakNoise, this.decibelLevel)
   }
 
-  public getQualityReading(): number {
-    return this.qualityReading
+  public getDecibelLevel(): number {
+    return this.decibelLevel
   }
 
-  public getPH(): number {
-    return this.ph
+  public getAverageNoise(): number {
+    return this.averageNoise
   }
 
-  public getTemperature(): number {
-    return this.temperature
+  public getPeakNoise(): number {
+    return this.peakNoise
   }
 }

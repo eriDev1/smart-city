@@ -1,4 +1,3 @@
-// Singleton Pattern Implementation
 import type { IManagementService } from "../interfaces/IManagementService"
 import type { IoTDevice } from "../abstracts/IoTDevice"
 import { SystemException } from "../exceptions/SystemException"
@@ -10,9 +9,7 @@ export class CityManager {
   private devices: Map<string, IoTDevice> = new Map()
   private isMonitoring = false
 
-  private constructor() {
-    // Private constructor for Singleton pattern
-  }
+  private constructor() {}
 
   public static getInstance(): CityManager {
     if (!CityManager.instance) {
@@ -46,13 +43,6 @@ export class CityManager {
 
   public activateEmergencyMode(): void {
     this.services.forEach((service) => service.handleEmergency())
-  }
-
-  public optimizeEnergyConsumption(): void {
-    const energyService = this.services.get(ServiceType.ENERGY)
-    if (energyService) {
-      energyService.optimize()
-    }
   }
 
   public getDeviceCount(): number {

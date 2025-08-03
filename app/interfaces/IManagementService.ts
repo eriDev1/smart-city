@@ -1,4 +1,3 @@
-// Interface 1: Management Service Interface
 import type { ServiceType } from "../enums/SystemEnums"
 
 export interface IManagementService {

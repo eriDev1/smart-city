@@ -3,13 +3,8 @@
 
 export enum DeviceType {
   AIR_QUALITY_MONITOR = "AIR_QUALITY_MONITOR",
-  TRAFFIC_COUNTER = "TRAFFIC_COUNTER",
-  ENERGY_METER = "ENERGY_METER",
   WEATHER_STATION = "WEATHER_STATION",
-  NOISE_MONITOR = "NOISE_MONITOR",
-  WATER_QUALITY_SENSOR = "WATER_QUALITY_SENSOR",
-  SMART_STREETLIGHT = "SMART_STREETLIGHT",
-  PARKING_SENSOR = "PARKING_SENSOR"
+  NOISE_MONITOR = "NOISE_MONITOR"
 }
 
 export enum DeviceStatus {
@@ -61,9 +56,7 @@ export enum AirQualityLevel {
 }
 
 export enum AnalyticsInsightType {
-  TRAFFIC_PREDICTION = "TRAFFIC_PREDICTION",
   HEALTH_RECOMMENDATION = "HEALTH_RECOMMENDATION",
-  ENERGY_PREDICTION = "ENERGY_PREDICTION",
   ANOMALY_DETECTION = "ANOMALY_DETECTION",
   GLOBAL_AIR_QUALITY_ALERT = "GLOBAL_AIR_QUALITY_ALERT",
   CITY_AIR_QUALITY_ALERT = "CITY_AIR_QUALITY_ALERT"
@@ -72,7 +65,6 @@ export enum AnalyticsInsightType {
 export enum SystemEventType {
   DEVICE_ONLINE = "DEVICE_ONLINE",
   DEVICE_OFFLINE = "DEVICE_OFFLINE",
-  HIGH_TRAFFIC = "HIGH_TRAFFIC",
   POOR_AIR_QUALITY = "POOR_AIR_QUALITY",
   SYSTEM_STARTUP = "SYSTEM_STARTUP",
   SYSTEM_SHUTDOWN = "SYSTEM_SHUTDOWN",
@@ -88,18 +80,30 @@ export enum DataSourceType {
   WEATHER_SERVICE = "WEATHER_SERVICE"
 }
 
-// Helper functions for enum usage
+export enum ServiceType {
+  AIR_QUALITY = "AIR_QUALITY"
+}
+
+export enum ProcessingPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  CRITICAL = "CRITICAL"
+}
+
+export enum BigDataOperation {
+  PROCESS = "PROCESS",
+  ANALYZE = "ANALYZE",
+  STREAM = "STREAM",
+  CACHE = "CACHE"
+}
+
 export class EnumHelper {
   static getDeviceTypeDisplayName(type: DeviceType): string {
     const displayNames: Record<DeviceType, string> = {
       [DeviceType.AIR_QUALITY_MONITOR]: "Air Quality Monitor",
-      [DeviceType.TRAFFIC_COUNTER]: "Traffic Counter",
-      [DeviceType.ENERGY_METER]: "Energy Meter",
       [DeviceType.WEATHER_STATION]: "Weather Station",
-      [DeviceType.NOISE_MONITOR]: "Noise Monitor",
-      [DeviceType.WATER_QUALITY_SENSOR]: "Water Quality Sensor",
-      [DeviceType.SMART_STREETLIGHT]: "Smart Streetlight",
-      [DeviceType.PARKING_SENSOR]: "Parking Sensor"
+      [DeviceType.NOISE_MONITOR]: "Noise Monitor"
     }
     return displayNames[type]
   }

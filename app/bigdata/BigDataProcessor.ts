@@ -1,267 +1,184 @@
 // Big Data Processing Engine - Core Class for Large-Scale Data Processing
+import { BigDataEngine } from "../abstracts/BigDataEngine"
+import { BigDataOperation } from "../enums/SystemEnums"
 import { supabase } from "../../lib/supabase"
-import type { SensorReading, TrafficData, EnergyConsumption } from "../../lib/supabase"
 
-export interface DataBatch {
-  id: string
-  data: any[]
-  timestamp: Date
-  size: number
-  type: string
-}
-
-export interface ProcessingMetrics {
-  totalRecords: number
-  processedRecords: number
+interface ProcessingMetrics {
+  totalProcessed: number
+  successRate: number
+  averageLatency: number
   errorCount: number
-  averageProcessingTime: number
-  throughput: number
+  throughputPerSecond: number
 }
 
-// Class 18: Big Data Processor (Main Big Data Engine)
-export class BigDataProcessor {
-  private isProcessing = false
-  private batchSize = 1000
-  private processingQueue: DataBatch[] = []
-  private metrics: ProcessingMetrics = {
-    totalRecords: 0,
-    processedRecords: 0,
-    errorCount: 0,
-    averageProcessingTime: 0,
-    throughput: 0,
-  }
-  private workers: DataWorker[] = []
+interface BatchData {
+  type: string
+  data: any[]
+  size: number
+  timestamp: Date
+}
+
+export class BigDataProcessor extends BigDataEngine {
+  private processedCount = 0
+  private errorCount = 0
+  private startTime = Date.now()
+  private lastBatchTime = Date.now()
+  private batches: BatchData[] = []
 
   constructor() {
-    for (let i = 0; i < 4; i++) {
-      this.workers.push(new DataWorker(`worker-${i}`))
-    }
+    super(BigDataOperation.PROCESS)
   }
 
-  public startProcessing(): void {
-    if (this.isProcessing) return
-
-    this.isProcessing = true
-
-    this.processDataLoop()
+  public initializeEngine(): void {
+    console.log("Big Data Engine initialized for air quality processing")
   }
 
-  public stopProcessing(): void {
-    this.isProcessing = false
+  public async processLargeDataset(data: any[]): Promise<void> {
+    await this.processBigData(data)
   }
 
-  private async processDataLoop(): Promise<void> {
-    while (this.isProcessing) {
+  public async processBigData(data: any[]): Promise<any[]> {
+    const batchSize = 50
+    const results: any[] = []
+
+    for (let i = 0; i < data.length; i += batchSize) {
+      const batch = data.slice(i, i + batchSize)
       try {
-        const batch = await this.generateDataBatch()
-        await this.processBatch(batch)
-
-        await new Promise((resolve) => setTimeout(resolve, 100))
+        const processedBatch = await this.processBatch(batch)
+        results.push(...processedBatch)
+        this.processedCount += batch.length
       } catch (error) {
-        this.metrics.errorCount++
-        console.error("Error in data processing loop:", error)
+        this.errorCount += batch.length
+        console.error("Batch processing error:", error)
       }
+    }
+
+    return results
+  }
+
+  private async processBatch(batch: any[]): Promise<any[]> {
+    return batch.map(item => ({
+      ...item,
+      processed: true,
+      processingTime: Date.now(),
+      batchId: this.generateBatchId()
+    }))
+  }
+
+  public async generateTestData(): Promise<void> {
+    const batchTypes = ["sensor_readings"]
+    const batches = 5
+    const recordsPerBatch = 100
+
+    for (let b = 0; b < batches; b++) {
+      const batchType = batchTypes[Math.floor(Math.random() * batchTypes.length)]
+      const data: any[] = []
+
+      for (let i = 0; i < recordsPerBatch; i++) {
+        switch (batchType) {
+          case "sensor_readings":
+            data.push(this.generateSensorData())
+            break
+        }
+      }
+
+      const batch: BatchData = {
+        type: batchType,
+        data,
+        size: data.length,
+        timestamp: new Date()
+      }
+
+      this.batches.push(batch)
+      await this.storeBatch(batch)
     }
   }
 
-  private async generateDataBatch(): Promise<DataBatch> {
-    const data: any[] = []
-    const batchTypes = ["sensor_readings", "traffic_data", "energy_consumption"]
-    const batchType = batchTypes[Math.floor(Math.random() * batchTypes.length)]
-
-    for (let i = 0; i < this.batchSize; i++) {
-      switch (batchType) {
-        case "sensor_readings":
-          data.push(this.generateSensorReading())
-          break
-        case "traffic_data":
-          data.push(this.generateTrafficData())
-          break
-        case "energy_consumption":
-          data.push(this.generateEnergyData())
-          break
-      }
-    }
-
+  private generateSensorData(): any {
+    const cities = ["Beijing", "Delhi", "Los Angeles", "London", "Tokyo"]
+    const city = cities[Math.floor(Math.random() * cities.length)]
+    
     return {
-      id: `batch-${Date.now()}-${Math.random()}`,
-      data,
+      device_id: `AQ${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+      location: city,
+      pm25: Math.random() * 200,
+      pm10: Math.random() * 300,
+      o3: Math.random() * 150,
+      no2: Math.random() * 100,
+      so2: Math.random() * 80,
+      co: Math.random() * 10,
+      aqi: Math.floor(Math.random() * 300),
       timestamp: new Date(),
-      size: data.length,
-      type: batchType,
+      temperature: Math.random() * 40 - 10,
+      humidity: Math.random() * 100
     }
   }
 
-  private generateSensorReading(): Partial<SensorReading> {
-    const devices = ["TL001", "TL002", "SL001", "SL002", "WS001", "WS002"]
-    const readingTypes = ["temperature", "humidity", "pressure", "quality", "density"]
-
-    return {
-      device_id: devices[Math.floor(Math.random() * devices.length)],
-      reading_type: readingTypes[Math.floor(Math.random() * readingTypes.length)],
-      value: Math.random() * 100,
-      unit: "units",
-      timestamp: new Date().toISOString(),
-    }
-  }
-
-  private generateTrafficData(): Partial<TrafficData> {
-    const devices = ["TL001", "TL002", "TL003", "TL004"]
-
-    return {
-      device_id: devices[Math.floor(Math.random() * devices.length)],
-      vehicle_count: Math.floor(Math.random() * 200),
-      average_speed: Math.random() * 60 + 20,
-      congestion_level: Math.random() * 100,
-      timestamp: new Date().toISOString(),
-    }
-  }
-
-  private generateEnergyData(): Partial<EnergyConsumption> {
-    const devices = ["SL001", "SL002", "SL003", "SL004"]
-
-    return {
-      device_id: devices[Math.floor(Math.random() * devices.length)],
-      consumption_kwh: Math.random() * 10,
-      efficiency_rating: Math.random() * 100,
-      timestamp: new Date().toISOString(),
-    }
-  }
-
-  private async processBatch(batch: DataBatch): Promise<void> {
-    const startTime = Date.now()
-
-    try {
-      // Distribute batch processing across workers (parallel processing)
-      const chunkSize = Math.ceil(batch.data.length / this.workers.length)
-      const promises = this.workers.map((worker, index) => {
-        const start = index * chunkSize
-        const end = Math.min(start + chunkSize, batch.data.length)
-        const chunk = batch.data.slice(start, end)
-        return worker.processChunk(chunk, batch.type)
-      })
-
-      await Promise.all(promises)
-
-      await this.storeProcessedData(batch)
-
-      const processingTime = Date.now() - startTime
-      this.updateMetrics(batch.size, processingTime)
-
-    } catch (error) {
-      this.metrics.errorCount++
-      console.error(`Error processing batch ${batch.id}:`, error)
-    }
-  }
-
-  private async storeProcessedData(batch: DataBatch): Promise<void> {
+  private async storeBatch(batch: BatchData): Promise<void> {
     try {
       switch (batch.type) {
         case "sensor_readings":
           await supabase.from("sensor_readings").insert(batch.data)
           break
-        case "traffic_data":
-          await supabase.from("traffic_data").insert(batch.data)
-          break
-        case "energy_consumption":
-          await supabase.from("energy_consumption").insert(batch.data)
-          break
       }
     } catch (error) {
-      console.error("Error storing data to Supabase:", error)
+      console.error(`Error storing ${batch.type} batch:`, error)
+      this.errorCount += batch.size
     }
   }
 
-  private updateMetrics(recordCount: number, processingTime: number): void {
-    this.metrics.totalRecords += recordCount
-    this.metrics.processedRecords += recordCount
-    this.metrics.averageProcessingTime = (this.metrics.averageProcessingTime + processingTime) / 2
-    this.metrics.throughput = recordCount / (processingTime / 1000) // records per second
+  public async startProcessing(): Promise<void> {
+    await this.generateTestData()
+    
+    this.batches.forEach(batch => {
+      this.processBatchData(batch)
+    })
+  }
+
+  public stopProcessing(): void {
+    console.log("Big Data processing stopped")
+  }
+
+  private processBatchData(batch: BatchData): void {
+    batch.data.forEach(record => {
+      switch (batch.type) {
+        case "sensor_readings":
+          this.processSensorData(record)
+          break
+      }
+    })
+  }
+
+  private processSensorData(record: any): void {
+    if (record.aqi > 150) {
+      console.log(`High AQI detected: ${record.aqi} in ${record.location}`)
+    }
+  }
+
+  private generateBatchId(): string {
+    return `batch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
   }
 
   public getMetrics(): ProcessingMetrics {
-    return { ...this.metrics }
-  }
+    const runtime = Date.now() - this.startTime
+    const throughput = this.processedCount / (runtime / 1000)
 
-  public getBatchSize(): number {
-    return this.batchSize
-  }
-
-  public setBatchSize(size: number): void {
-    this.batchSize = Math.max(100, Math.min(10000, size))
-  }
-}
-
-// Class 19: Data Worker (Parallel Processing Worker)
-export class DataWorker {
-  private id: string
-  private isActive = false
-
-  constructor(id: string) {
-    this.id = id
-  }
-
-  public async processChunk(data: any[], type: string): Promise<void> {
-    this.isActive = true
-
-    try {
-      // Simulate data processing operations
-      for (const record of data) {
-        await this.processRecord(record, type)
-      }
-    } finally {
-      this.isActive = false
+    return {
+      totalProcessed: this.processedCount,
+      successRate: this.processedCount / (this.processedCount + this.errorCount) * 100,
+      averageLatency: this.calculateAverageLatency(),
+      errorCount: this.errorCount,
+      throughputPerSecond: throughput
     }
   }
 
-  private async processRecord(record: any, type: string): Promise<void> {
-    // Simulate processing time
-    await new Promise((resolve) => setTimeout(resolve, Math.random() * 2))
-
-    // Apply data transformations based on type
-    switch (type) {
-      case "sensor_readings":
-        this.processSensorReading(record)
-        break
-      case "traffic_data":
-        this.processTrafficData(record)
-        break
-      case "energy_consumption":
-        this.processEnergyData(record)
-        break
-    }
-  }
-
-  private processSensorReading(record: any): void {
-    // Data validation and transformation
-    if (record.value < 0) record.value = 0
-    if (record.value > 100) record.value = 100
-
-    // Add computed fields
-    record.processed_at = new Date().toISOString()
-    record.worker_id = this.id
-  }
-
-  private processTrafficData(record: any): void {
-    // Calculate traffic efficiency
-    record.efficiency_score = (record.average_speed / 60) * (1 - record.congestion_level / 100)
-    record.processed_at = new Date().toISOString()
-    record.worker_id = this.id
-  }
-
-  private processEnergyData(record: any): void {
-    // Calculate energy efficiency
-    record.efficiency_category =
-      record.efficiency_rating > 80 ? "HIGH" : record.efficiency_rating > 60 ? "MEDIUM" : "LOW"
-    record.processed_at = new Date().toISOString()
-    record.worker_id = this.id
-  }
-
-  public getId(): string {
-    return this.id
-  }
-
-  public isWorkerActive(): boolean {
-    return this.isActive
+  private calculateAverageLatency(): number {
+    if (this.batches.length === 0) return 0
+    
+    const totalLatency = this.batches.reduce((sum, batch) => {
+      return sum + (Date.now() - batch.timestamp.getTime())
+    }, 0)
+    
+    return totalLatency / this.batches.length
   }
 }

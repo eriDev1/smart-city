@@ -1,4 +1,3 @@
-// Abstract Class 2: Base Management Service
 import type { IManagementService } from "../interfaces/IManagementService"
 import type { IReportable } from "../interfaces/IReportable"
 import type { ServiceType } from "../enums/SystemEnums"

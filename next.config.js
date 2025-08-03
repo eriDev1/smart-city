@@ -3,9 +3,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   serverExternalPackages: ["@supabase/supabase-js"],
   images: {
     domains: ["placeholder.svg"],

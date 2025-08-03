@@ -1,9 +1,7 @@
-// ABSTRACT CLASS 1: Base Data Processor (Level 1)
 import type { IDataProcessor } from "../interfaces/IDataProcessor"
 import { ProcessingPriority } from "../enums/SystemEnums"
 
 export abstract class BaseDataProcessor implements IDataProcessor {
-  protected batchSize = 1000
   protected processingRate = 0
   protected priority: ProcessingPriority
 
@@ -11,24 +9,29 @@ export abstract class BaseDataProcessor implements IDataProcessor {
     this.priority = priority
   }
 
-  // Abstract methods - must be implemented by subclasses
   abstract processData(data: any[]): Promise<any[]>
   abstract validateData(data: any): boolean
 
-  // Concrete methods
-  public getBatchSize(): number {
-    return this.batchSize
+  protected updateProcessingRate(recordCount: number, timeMs: number): void {
+    this.processingRate = recordCount / (timeMs / 1000)
   }
 
-  public setBatchSize(size: number): void {
-    this.batchSize = Math.max(100, Math.min(10000, size))
+  public getProcessingPriority(): ProcessingPriority {
+    return this.priority
+  }
+
+  public setProcessingPriority(priority: ProcessingPriority): void {
+    this.priority = priority
   }
 
   public getProcessingRate(): number {
     return this.processingRate
   }
 
-  protected updateProcessingRate(recordsProcessed: number, timeMs: number): void {
-    this.processingRate = recordsProcessed / (timeMs / 1000)
+  public getBatchSize(): number {
+    return 1000
+  }
+
+  public setBatchSize(size: number): void {
   }
 }
