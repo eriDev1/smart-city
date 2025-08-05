@@ -23,7 +23,6 @@ export interface CityData {
 
 export class MultiCityDataConnector {
   private readonly GLOBAL_CITIES = [
-    // Major World Cities with Coordinates
     { name: "New York", country: "USA", lat: 40.7128, lng: -74.0060 },
     { name: "London", country: "UK", lat: 51.5074, lng: -0.1278 },
     { name: "Tokyo", country: "Japan", lat: 35.6762, lng: 139.6503 },
@@ -78,7 +77,6 @@ export class MultiCityDataConnector {
   private async generateRealisticCityData(city: { name: string; country: string; lat: number; lng: number }): Promise<CityData> {
     const baseData = this.getCityBaselineData(city.name, city.country)
     
-    // Add city-specific randomization to ensure diversity
     const cityHash = city.name.length + city.country.length + city.lat + city.lng
     const variations = this.generateTimeBasedVariations(cityHash)
     
@@ -149,7 +147,6 @@ export class MultiCityDataConnector {
     const isRushHour = (hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)
     const isNight = hour < 6 || hour > 22
     
-    // Use city hash for consistent but different random values per city
     const seed = cityHash ? (cityHash % 1000) / 1000 : Math.random()
     
     const aqiMultiplier = isRushHour ? (1.1 + seed * 0.4) : (0.7 + seed * 0.5)

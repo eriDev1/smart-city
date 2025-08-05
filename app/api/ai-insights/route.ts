@@ -22,9 +22,8 @@ export async function GET() {
       );
     }
 
-    // Convert to format expected by DeepSeek service
     const processedData: AirQualityData[] = airQualityData.map(city => ({
-      city: city.cityName,
+      city: city.location,
       aqi: city.aqi,
       pm25: city.pm25 || 0,
       pm10: city.pm10 || 0,
@@ -33,7 +32,7 @@ export async function GET() {
       so2: city.so2 || 0,
       co: city.co || 0,
       timestamp: city.timestamp,
-      dominentPollutant: city.dominentPol
+      dominantPollutant: city.dominantPollutant || 'Unknown'
     }));
 
     // Generate AI insights using DeepSeek
