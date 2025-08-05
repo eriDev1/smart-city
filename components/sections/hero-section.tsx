@@ -47,7 +47,7 @@ export function HeroSection({ isConnected, connectionError, lastUpdate }: HeroSe
                 Real-time Active
                 {lastUpdate && (
                   <span className="ml-2 text-xs">
-                    ({lastUpdate.toLocaleTimeString()})
+                    (Updated)
                   </span>
                 )}
               </Badge>
