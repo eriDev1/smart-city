@@ -4,7 +4,6 @@ import {
   getAirQualityByCity, 
   getMultipleCitiesAirQuality, 
   getGlobalAirQualityInsights,
-  getCityAirQualityAlert,
   getAQICNAPIStats
 } from "./AQICNQueries"
 import type { ProcessedAirQualityData } from "./AQICNQueries"
@@ -82,22 +81,17 @@ export class RealTimeAnalytics {
     }
   }
 
-  /**
-   * Refresh AI insights by calling the DeepSeek service directly
-   */
+
   public async refreshAIInsights(): Promise<void> {
     try {
-      // Only attempt if we have an API key configured
       const apiKey = process.env.Deepseek_API_KEY || process.env.DEEPSEEK_API_KEY;
       if (!apiKey) {
         console.warn('DeepSeek API key not configured, using fallback insights')
         return
       }
 
-      // Import DeepSeek service dynamically to avoid circular dependencies
       const { DeepSeekInsightsService } = await import('../../lib/deepseek-service')
       
-      // Get real-time air quality data
       const airQualityData = await getMultipleCitiesAirQuality(10)
       
       if (!airQualityData || airQualityData.length === 0) {
@@ -105,7 +99,6 @@ export class RealTimeAnalytics {
         return
       }
 
-      // Convert to format expected by DeepSeek service
       const processedData = airQualityData.map(city => ({
         city: city.location,
         aqi: city.aqi,
@@ -119,12 +112,10 @@ export class RealTimeAnalytics {
         dominentPollutant: city.dominantPollutant
       }))
 
-      // Generate AI insights using DeepSeek
       const deepSeekService = new DeepSeekInsightsService()
       const aiInsights = await deepSeekService.generateInsights(processedData)
       
       if (aiInsights && aiInsights.length > 0) {
-        // Convert AIInsight to AnomalyDetectionResult format
         const convertedInsights: AnomalyDetectionResult[] = aiInsights.map(insight => ({
           type: this.mapInsightType(insight.type),
           city: insight.city,
@@ -144,7 +135,6 @@ export class RealTimeAnalytics {
       
     } catch (error) {
       console.error('Error refreshing AI insights:', error)
-      // Keep existing insights if refresh fails
     }
   }
 
@@ -223,7 +213,7 @@ export class RealTimeAnalytics {
     }
   }
 
-  private async cacheDataToSupabase(cityName: string, data: ProcessedAirQualityData): Promise<void> {
+  public async cacheDataToSupabase(cityName: string, data: ProcessedAirQualityData): Promise<void> {
     try {
       const cacheEntry = {
         city_name: cityName || 'Unknown',
@@ -310,14 +300,9 @@ export class RealTimeAnalytics {
     this.stopAIInsightRefresh()
   }
 
-  /**
-   * Start periodic AI insight refresh
-   */
   private startAIInsightRefresh(): void {
-    // Clear any existing timer
     this.stopAIInsightRefresh()
     
-    // Refresh AI insights every 10 minutes (600,000 ms)
     this.aiInsightRefreshTimer = setInterval(async () => {
       try {
         await this.refreshAIInsights()
@@ -325,14 +310,12 @@ export class RealTimeAnalytics {
       } catch (error) {
         console.error('Error in automatic AI insight refresh:', error)
       }
-    }, 10 * 60 * 1000) // 10 minutes
+    }, 10 * 60 * 1000) 
     
     console.log('AI insight refresh timer started (every 10 minutes)')
   }
 
-  /**
-   * Stop periodic AI insight refresh
-   */
+  
   private stopAIInsightRefresh(): void {
     if (this.aiInsightRefreshTimer) {
       clearInterval(this.aiInsightRefreshTimer)
@@ -341,9 +324,6 @@ export class RealTimeAnalytics {
     }
   }
 
-  /**
-   * Map DeepSeek insight types to AnomalyDetectionResult types
-   */
   private mapInsightType(aiType: string): AnomalyDetectionResult['type'] {
     const typeMap: Record<string, AnomalyDetectionResult['type']> = {
       'HEALTH_ALERT': 'HEALTH_ALERT',

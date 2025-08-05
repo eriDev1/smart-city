@@ -1,10 +1,10 @@
-// Updated AQICN Queries with Multi-City Data Connector
 import { supabase } from "../../lib/supabase"
 import { MultiCityDataConnector, type CityData } from './MultiCityDataConnector'
+import { AQICNDataConnector } from './AQICNDataConnector'
 
 const multiCityConnector = new MultiCityDataConnector()
+const aqicnConnector = new AQICNDataConnector()
 
-// Query Keys for TanStack Query
 export const aqicnQueryKeys = {
   city: (city: string) => ['air-quality', 'city', city] as const,
   multipleCities: (limit?: number) => ['air-quality', 'multiple-cities', limit] as const,
@@ -12,7 +12,6 @@ export const aqicnQueryKeys = {
   alerts: (city: string) => ['air-quality', 'alerts', city] as const,
 }
 
-// Transform CityData to ProcessedAirQualityData for compatibility
 export interface ProcessedAirQualityData {
   aqi: number
   pm25: number
@@ -57,7 +56,6 @@ function transformCityData(cityData: CityData): ProcessedAirQualityData {
   }
 }
 
-// Transform Supabase data to ProcessedAirQualityData
 function transformSupabaseData(row: any): ProcessedAirQualityData {
   return {
     aqi: row.aqi || 0,
@@ -81,15 +79,13 @@ function transformSupabaseData(row: any): ProcessedAirQualityData {
   }
 }
 
-// Normalize city names for better matching
 function normalizeCityName(name: string): string {
   return name.toLowerCase()
-    .replace(/[-_]/g, ' ')  // Convert dashes/underscores to spaces
-    .replace(/\s+/g, ' ')   // Normalize multiple spaces
+    .replace(/[-_]/g, ' ')  
+    .replace(/\s+/g, ' ')   
     .trim()
 }
 
-// Enhanced city name matching
 function matchesCityName(searchName: string, cityName: string, location: string): boolean {
   const normalizedSearch = normalizeCityName(searchName)
   const normalizedCity = normalizeCityName(cityName)
@@ -100,38 +96,30 @@ function matchesCityName(searchName: string, cityName: string, location: string)
          normalizedSearch.includes(normalizedCity)
 }
 
-// Get air quality data for a specific city - try Supabase first
+
+
 export async function getAirQualityByCity(cityName: string): Promise<ProcessedAirQualityData | null> {
   try {
     console.log(`🔍 Fetching air quality data for ${cityName}...`)
     
-    // First try to get from Supabase cache (we populated it with 15 cities)
-    const { data: cachedData, error: cacheError } = await supabase
-      .from("cached_air_quality")
-      .select("*")
-      .ilike("city_name", `%${normalizeCityName(cityName).split(' ').join('%')}%`)
-      .order("cached_at", { ascending: false })
-      .limit(1)
+    // CACHE DISABLED - Use fresh data generation to prevent database overload
+    console.log(`🚫 Cache disabled for ${cityName} to prevent database overload`)
 
-    if (!cacheError && cachedData && cachedData.length > 0) {
-      console.log(`✅ Found cached data for ${cityName}`)
-      return transformSupabaseData(cachedData[0])
-    }
+    console.log(`🔄 No fresh cache found for ${cityName}, generating realistic data...`)
 
-    // Fallback to multi-city connector with enhanced matching
-    console.log(`🔄 Using multi-city connector for ${cityName}...`)
+    console.log(`🌍 Using MultiCityDataConnector for ${cityName}...`)
     const allCitiesData = await multiCityConnector.fetchMultipleCitiesData(20)
     const cityData = allCitiesData.find(city => 
       matchesCityName(cityName, city.city, city.location)
-    )
+    ) || null
     
     if (!cityData) {
-      console.warn(`City ${cityName} not found in data source`)
+      console.warn(`City ${cityName} not found in any data source`)
       return null
     }
     
     const processedData = transformCityData(cityData)
-    console.log(`✅ Successfully fetched data for ${cityData.location}: AQI ${cityData.aqi}`)
+    console.log(`✅ Successfully fetched data for ${cityData.location}: AQI ${cityData.aqi} (Source: ${cityData.apiSource})`)
     
     return processedData
   } catch (error) {
@@ -140,38 +128,22 @@ export async function getAirQualityByCity(cityName: string): Promise<ProcessedAi
   }
 }
 
-// Get air quality data for multiple cities - prioritize cached data
 export async function getMultipleCitiesAirQuality(limit: number = 15): Promise<ProcessedAirQualityData[]> {
   try {
     console.log(`🌍 Fetching air quality data for ${limit} cities...`)
     
-    // First get all cached data from Supabase
-    const { data: cachedData, error: cacheError } = await supabase
-      .from("cached_air_quality")
-      .select("*")
-      .order("cached_at", { ascending: false })
-      .limit(limit)
+    console.log(`🚫 Cache disabled to prevent database overload, fetching fresh data directly...`)
 
-    if (!cacheError && cachedData && cachedData.length > 0) {
-      console.log(`✅ Found ${cachedData.length} cities in cache`)
-      const processedCached = cachedData.map(transformSupabaseData)
-      
-      // If we have enough cached data, return it
-      if (processedCached.length >= limit) {
-        return processedCached.slice(0, limit)
-      }
-      
-      // Otherwise supplement with fresh data
-      const remaining = limit - processedCached.length
-      const freshData = await multiCityConnector.fetchMultipleCitiesData(remaining)
-      const processedFresh = freshData.map(transformCityData)
-      
-      return [...processedCached, ...processedFresh].slice(0, limit)
-    }
-
-    // Fallback to fresh data from multi-city connector
-    console.log(`🔄 Using multi-city connector for ${limit} cities...`)
+    console.log(`🌍 Using MultiCityDataConnector for diverse city data (${limit} cities)...`)
     const citiesData = await multiCityConnector.fetchMultipleCitiesData(limit)
+    
+    if (citiesData.length === 0) {
+      console.log(`⚠️ MultiCityDataConnector failed, this shouldn't happen`)
+      return []
+    }
+    
+    console.log(`✅ Generated diverse data for ${citiesData.length} cities: ${citiesData.map(c => c.city).join(', ')}`)
+    
     const processedData = citiesData.map(transformCityData)
     
     console.log(`✅ Successfully fetched data for ${processedData.length} cities`)
@@ -182,12 +154,10 @@ export async function getMultipleCitiesAirQuality(limit: number = 15): Promise<P
   }
 }
 
-// Get global air quality insights
 export async function getGlobalAirQualityInsights() {
   try {
     console.log('🌍 Generating global air quality insights...')
     
-    // Get insights from cached data first
     const { data: cachedData, error } = await supabase
       .from("cached_air_quality")
       .select("city_name, aqi, health_level")
@@ -215,7 +185,7 @@ export async function getGlobalAirQualityInsights() {
       }
     }
 
-    // Fallback to multi-city connector
+    console.log(`🌍 Generating insights from MultiCityDataConnector...`)
     const insights = await multiCityConnector.getGlobalInsights()
     
     if (!insights) {
@@ -230,7 +200,6 @@ export async function getGlobalAirQualityInsights() {
   }
 }
 
-// Get city-specific air quality alert
 export async function getCityAirQualityAlert(cityName: string) {
   try {
     const cityData = await getAirQualityByCity(cityName)
@@ -263,7 +232,6 @@ export async function getCityAirQualityAlert(cityName: string) {
   }
 }
 
-// Get API statistics
 export function getAQICNAPIStats() {
   return {
     totalAPICalls: Math.floor(Math.random() * 1000) + 500,

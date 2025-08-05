@@ -14,14 +14,11 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Get current air quality data for AI context
-    console.log('🌍 Fetching current air quality data for AI context...')
     const [citiesData, globalInsights] = await Promise.all([
-      getMultipleCitiesAirQuality(10), // Get data for 10 cities
+      getMultipleCitiesAirQuality(10), 
       getGlobalAirQualityInsights()
     ])
 
-    // Prepare air quality context for AI
     const currentData = citiesData.map(city => ({
       city: city.location,
       aqi: city.aqi,
@@ -51,7 +48,6 @@ Use this real-time data to provide accurate, current information about air quali
 
 User message: ${message}`
 
-             // Call DeepSeek API or provide fallback response
     const apiKey = process.env.DEEPSEEK_API_KEY
     let response: string
 
@@ -63,12 +59,10 @@ User message: ${message}`
                const alertCities = currentData.filter(city => city.aqi > 100)
         const goodCities = currentData.filter(city => city.aqi <= 50)
         
-        // Find best and worst from current data (not global insights which might be stale)
         const sortedCities = [...currentData].sort((a, b) => a.aqi - b.aqi)
         const bestCity = sortedCities[0]
         const worstCity = sortedCities[sortedCities.length - 1]
         
-        // Check if user is asking for specific pollutant data
         const isAskingForPollutants = message.toLowerCase().includes('pm2.5') || 
                                     message.toLowerCase().includes('pm10') || 
                                     message.toLowerCase().includes('pollutant') ||
@@ -117,7 +111,6 @@ User message: ${message}`
     return NextResponse.json({
       success: false,
       error: 'Failed to process your request. Please try again.',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 500 })
   }
 }

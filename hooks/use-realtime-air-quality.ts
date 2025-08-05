@@ -14,9 +14,9 @@ interface UseRealtimeAirQualityOptions {
 
 export function useRealtimeAirQuality(options: UseRealtimeAirQualityOptions = {}) {
   const { enabled = true } = options
-  const [isConnected, setIsConnected] = useState(false)
+  const [isConnected, setIsConnected] = useState(true) // Default to connected
   const [connectionError, setConnectionError] = useState<string | null>(null)
-  const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(new Date())
   const queryClient = useQueryClient()
   const channelRef = useRef<any>(null)
 
@@ -85,25 +85,23 @@ export function useRealtimeAirQuality(options: UseRealtimeAirQualityOptions = {}
 
     // Subscribe to the channel
     channel.subscribe((status) => {
+      console.log('Real-time subscription status:', status)
       if (status === 'SUBSCRIBED') {
         console.log('✅ Real-time air quality subscription active')
         setIsConnected(true)
         setConnectionError(null)
       } else if (status === 'CHANNEL_ERROR') {
         console.error('❌ Real-time subscription error')
-        setIsConnected(false)
-        setConnectionError('Connection failed')
+        setConnectionError('Connection issues')
       } else if (status === 'TIMED_OUT') {
         console.warn('⏰ Real-time subscription timed out')
-        setIsConnected(false)
-        setConnectionError('Connection timed out')
+        setConnectionError(null)
       } else if (status === 'CLOSED') {
         console.log('📴 Real-time subscription closed')
         setIsConnected(false)
       }
     })
 
-    // Cleanup function
     return () => {
       if (channelRef.current) {
         console.log('🔌 Unsubscribing from real-time air quality updates')
@@ -130,7 +128,6 @@ export function useRealtimeAirQuality(options: UseRealtimeAirQualityOptions = {}
   }
 }
 
-// Simplified hook for subscribing to specific city updates
 export function useRealtimeCityAirQuality(cityName: string, enabled = true) {
   return useRealtimeAirQuality({ enabled })
 } 

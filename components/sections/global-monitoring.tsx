@@ -251,7 +251,7 @@ export function GlobalMonitoring() {
           🌍 Major Cities Air Quality Dashboard
         </h2>
         <p className="text-gray-600 mb-6">
-          Real-time pollution monitoring across 6 major global cities with complete health assessments powered by ACIQN data
+          Real-time pollution monitoring across 6 major global cities with complete health assessments powered by AQICN data
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {majorCities.map((city) => (

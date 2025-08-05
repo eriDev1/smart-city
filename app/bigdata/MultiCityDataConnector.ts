@@ -78,7 +78,9 @@ export class MultiCityDataConnector {
   private async generateRealisticCityData(city: { name: string; country: string; lat: number; lng: number }): Promise<CityData> {
     const baseData = this.getCityBaselineData(city.name, city.country)
     
-    const variations = this.generateTimeBasedVariations()
+    // Add city-specific randomization to ensure diversity
+    const cityHash = city.name.length + city.country.length + city.lat + city.lng
+    const variations = this.generateTimeBasedVariations(cityHash)
     
     const aqi = Math.max(10, Math.min(500, Math.round(baseData.baseAQI * variations.aqiMultiplier)))
     const pm25 = Math.max(1, Math.round(baseData.basePM25 * variations.pmMultiplier))
@@ -142,14 +144,17 @@ export class MultiCityDataConnector {
     }
   }
 
-  private generateTimeBasedVariations() {
+  private generateTimeBasedVariations(cityHash?: number) {
     const hour = new Date().getHours()
     const isRushHour = (hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19)
     const isNight = hour < 6 || hour > 22
     
-    const aqiMultiplier = isRushHour ? (1.2 + Math.random() * 0.3) : (0.8 + Math.random() * 0.4)
-    const pmMultiplier = isRushHour ? (1.1 + Math.random() * 0.2) : (0.9 + Math.random() * 0.3)
-    const gasMultiplier = isRushHour ? (1.3 + Math.random() * 0.4) : (0.7 + Math.random() * 0.4)
+    // Use city hash for consistent but different random values per city
+    const seed = cityHash ? (cityHash % 1000) / 1000 : Math.random()
+    
+    const aqiMultiplier = isRushHour ? (1.1 + seed * 0.4) : (0.7 + seed * 0.5)
+    const pmMultiplier = isRushHour ? (1.0 + seed * 0.3) : (0.8 + seed * 0.4)
+    const gasMultiplier = isRushHour ? (1.2 + seed * 0.5) : (0.6 + seed * 0.6)
 
     return { aqiMultiplier, pmMultiplier, gasMultiplier }
   }
