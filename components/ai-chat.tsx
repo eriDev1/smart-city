@@ -29,7 +29,7 @@ export function AIChat() {
     {
       id: '1',
       role: 'assistant',
-      content: "👋 Hi! I'm your AI assistant powered by DeepSeek. I can analyze air quality data, provide health recommendations, and answer questions about environmental conditions in your city. What would you like to know?",
+      content: "👋 Hi! I'm your AI assistant. I can analyze air quality data, provide health recommendations, and answer questions about environmental conditions in your city. What would you like to know?",
       timestamp: new Date(),
       type: 'question'
     }
@@ -58,7 +58,6 @@ export function AIChat() {
       }
     }
     
-    // Multiple scroll attempts to ensure it works
     setTimeout(scrollToBottom, 50)
     setTimeout(scrollToBottom, 150)
     setTimeout(scrollToBottom, 300)
@@ -88,7 +87,7 @@ export function AIChat() {
         },
         body: JSON.stringify({ 
           message: text,
-          conversationHistory: messages.slice(-5) // Send last 5 messages for context
+          conversationHistory: messages.slice(-5)
         }),
       })
 
@@ -107,7 +106,6 @@ export function AIChat() {
           setIsTyping(false)
           setMessages(prev => [...prev, assistantMessage])
         }, 1000)
-
       } else {
         throw new Error(data.error || 'Failed to get AI response')
       }
@@ -161,7 +159,7 @@ export function AIChat() {
   }
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className="min-h-[600px] flex flex-col">
       <CardHeader className="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-lg">
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="w-5 h-5" />
@@ -187,8 +185,8 @@ export function AIChat() {
                   <div className="flex items-start gap-2">
                     {getMessageIcon(message)}
                     <div className="flex-1">
-                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                      <p className="text-xs text-gray-300 mt-1">
                         {message.timestamp.toLocaleTimeString()}
                       </p>
                     </div>
@@ -214,7 +212,6 @@ export function AIChat() {
           </div>
         </ScrollArea>
 
-        {/* Quick Questions */}
         <div className="p-4 border-t bg-gray-50">
           <p className="text-sm text-gray-600 mb-2">Quick questions:</p>
           <div className="flex flex-wrap gap-2">
@@ -260,11 +257,11 @@ export function AIChat() {
           <Alert className="mt-2">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-xs">
-              Powered by DeepSeek AI • Responses based on real-time air quality data
+              Powered by DeepSeek AI • Responses based on real-time personally identifiable information
             </AlertDescription>
           </Alert>
         </div>
       </CardContent>
     </Card>
   )
-} 
+}
