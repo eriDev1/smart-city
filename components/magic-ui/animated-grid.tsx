@@ -17,7 +17,7 @@ export default function AnimatedGrid({
   maxOpacity = 0.3,
 }: AnimatedGridProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number>(0)
 
   useEffect(() => {
     const canvas = canvasRef.current
