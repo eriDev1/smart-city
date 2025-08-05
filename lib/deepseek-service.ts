@@ -31,7 +31,6 @@ export class DeepSeekInsightsService {
   private deepseek: any;
 
   constructor() {
-    // Support both naming conventions for the API key
     this.apiKey = process.env.Deepseek_API_KEY || process.env.DEEPSEEK_API_KEY || '';
     if (!this.apiKey) {
       throw new Error('DeepSeek API key not found in environment variables. Please set either Deepseek_API_KEY or DEEPSEEK_API_KEY');
@@ -43,9 +42,6 @@ export class DeepSeekInsightsService {
     });
   }
 
-  /**
-   * Generate AI insights based on air quality data from multiple cities
-   */
   async generateInsights(airQualityData: AirQualityData[]): Promise<AIInsight[]> {
     try {
       const prompt = this.createAnalysisPrompt(airQualityData);
@@ -53,8 +49,7 @@ export class DeepSeekInsightsService {
       const { text } = await generateText({
         model: this.deepseek('deepseek-chat'),
         prompt,
-        maxTokens: 2000,
-        temperature: 0.3, // Lower temperature for more consistent, factual responses
+        temperature: 0.3, 
       });
 
       return this.parseInsights(text, airQualityData);
@@ -64,9 +59,6 @@ export class DeepSeekInsightsService {
     }
   }
 
-  /**
-   * Create a structured prompt for analyzing air quality data
-   */
   private createAnalysisPrompt(data: AirQualityData[]): string {
     const cityData = data.map(city => ({
       name: city.city,
@@ -115,9 +107,6 @@ Format your response as a JSON array with this structure:
 Focus on practical, actionable insights that help citizens and authorities make informed decisions about outdoor activities and health precautions.`;
   }
 
-  /**
-   * Parse the AI response and convert to structured insights
-   */
   private parseInsights(aiResponse: string, originalData: AirQualityData[]): AIInsight[] {
     try {
       // Try to extract JSON from the response
@@ -145,13 +134,10 @@ Focus on practical, actionable insights that help citizens and authorities make 
     }
   }
 
-  /**
-   * Create fallback insights if AI parsing fails
-   */
+
   private createFallbackInsights(data: AirQualityData[]): AIInsight[] {
     const insights: AIInsight[] = [];
     
-    // Find cities with high AQI
     const criticalCities = data.filter(city => city.aqi > 150);
     const unhealthyCities = data.filter(city => city.aqi > 100 && city.aqi <= 150);
     
@@ -188,9 +174,7 @@ Focus on practical, actionable insights that help citizens and authorities make 
     return insights.slice(0, 3);
   }
 
-  /**
-   * Generate a single insight for a specific city
-   */
+
   async generateCityInsight(cityData: AirQualityData): Promise<AIInsight | null> {
     try {
       const prompt = `Analyze this air quality data for ${cityData.city} and provide one specific insight:
@@ -206,7 +190,6 @@ Provide a JSON response with one actionable insight about the current air qualit
       const { text } = await generateText({
         model: this.deepseek('deepseek-chat'),
         prompt,
-        maxTokens: 500,
         temperature: 0.2,
       });
 

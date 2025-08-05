@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useToast } from '@/hooks/use-toast'
 
 const analytics = new RealTimeAnalytics()
 
@@ -41,7 +42,6 @@ function AnalyticsDashboard() {
       analytics.startAnalytics()
       loadDashboard()
       
-      // Update dashboard every 30 seconds
       interval = setInterval(loadDashboard, 30000)
       
       statsInterval = setInterval(() => {
@@ -106,7 +106,6 @@ function AnalyticsDashboard() {
         </Card>
       ) : (
         <div className="space-y-6">
-          {/* Real-time Metrics Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
               <CardContent className="p-4">
@@ -185,7 +184,6 @@ function AnalyticsDashboard() {
             </Card>
           </div>
 
-          {/* Processing Status */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -390,14 +388,18 @@ function AnalyticsDashboard() {
 
 export default function SmartAirDashboard() {
   const [activeTab, setActiveTab] = useState('monitoring')
+  const { toast } = useToast()
   
   const { isConnected, connectionError, lastUpdate } = useRealtimeAirQuality({
-    enabled: true,
+    enabled: true
   })
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Navbar activeTab={activeTab} onTabChange={setActiveTab} />
+      
+
       
       <div className="container mx-auto px-4 py-8">
         <HeroSection 
@@ -406,7 +408,6 @@ export default function SmartAirDashboard() {
           lastUpdate={lastUpdate}
         />
 
-        {/* Tab Content */}
         <div className="space-y-6">
           {activeTab === 'monitoring' && <GlobalMonitoring />}
           {activeTab === 'analytics' && <AnalyticsDashboard />}

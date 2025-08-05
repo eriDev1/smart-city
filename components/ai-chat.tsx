@@ -49,9 +49,19 @@ export function AIChat() {
   ]
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
+    const scrollToBottom = () => {
+      if (scrollAreaRef.current) {
+        const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]')
+        if (scrollContainer) {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight
+        }
+      }
     }
+    
+    // Multiple scroll attempts to ensure it works
+    setTimeout(scrollToBottom, 50)
+    setTimeout(scrollToBottom, 150)
+    setTimeout(scrollToBottom, 300)
   }, [messages, isTyping])
 
   const handleSend = async (messageText?: string) => {
