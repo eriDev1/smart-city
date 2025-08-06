@@ -4,7 +4,6 @@ import { getMultipleCitiesAirQuality } from '@/app/bigdata/AQICNQueries';
 
 export async function GET() {
   try {
-    // Check if API key is available
     if (!process.env.Deepseek_API_KEY) {
       return NextResponse.json(
         { error: 'DeepSeek API key not configured' },
@@ -12,7 +11,6 @@ export async function GET() {
       );
     }
 
-    // Get real-time air quality data
     const airQualityData = await getMultipleCitiesAirQuality(10);
     
     if (!airQualityData || airQualityData.length === 0) {
@@ -35,7 +33,6 @@ export async function GET() {
       dominantPollutant: city.dominantPollutant || 'Unknown'
     }));
 
-    // Generate AI insights using DeepSeek
     const deepSeekService = new DeepSeekInsightsService();
     const insights = await deepSeekService.generateInsights(processedData);
 
@@ -65,7 +62,6 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if API key is available
     if (!process.env.Deepseek_API_KEY) {
       return NextResponse.json(
         { error: 'DeepSeek API key not configured' },
@@ -83,7 +79,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate AI insights using provided data
     const deepSeekService = new DeepSeekInsightsService();
     const insights = await deepSeekService.generateInsights(airQualityData);
 
@@ -111,7 +106,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Optional: Generate insight for a specific city
 export async function PUT(request: NextRequest) {
   try {
     if (!process.env.Deepseek_API_KEY) {

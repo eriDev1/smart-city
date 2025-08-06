@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { ExternalLink, FileText, BookOpen, GraduationCap } from 'lucide-react'
@@ -14,7 +13,6 @@ export function Footer() {
     <footer className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-12 mt-16">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Project Info */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold flex items-center gap-2">
               <GraduationCap className="h-5 w-5" />
@@ -31,7 +29,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Academic Documents */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold flex items-center gap-2">
               <BookOpen className="h-5 w-5" />
@@ -73,7 +70,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Technical Highlights */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Technical Achievements</h3>
             <div className="space-y-2 text-sm text-gray-300">

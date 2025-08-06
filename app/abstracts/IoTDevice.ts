@@ -1,4 +1,3 @@
-// Abstract Class 1: Base IoT Device
 import type { IMonitorable } from "../interfaces/IMonitorable"
 import type { IControllable } from "../interfaces/IControllable"
 import { DeviceStatus } from "../enums/SystemEnums"
@@ -16,7 +15,6 @@ export abstract class IoTDevice implements IMonitorable, IControllable {
     this.lastUpdate = new Date()
   }
 
-  // Abstract methods that must be implemented by subclasses
   abstract initialize(): void
   abstract processData(data: any): void
   abstract getDeviceType(): string

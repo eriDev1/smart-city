@@ -1,7 +1,4 @@
-// Real-Time Data Connector using AQICN API for Smart City Big Data Processing
-import { supabase } from "../../lib/supabase"
 
-// AQICN API Interfaces - Based on real API response structure
 export interface AQICNResponse {
   status: string
   data: AQICNData
@@ -32,22 +29,22 @@ export interface CityInfo {
 
 export interface IndividualAQI {
   co?: { v: number }
-  h?: { v: number }    // humidity
+  h?: { v: number }    
   no2?: { v: number }
   o3?: { v: number }
-  p?: { v: number }    // pressure
+  p?: { v: number }    
   pm10?: { v: number }
   pm25?: { v: number }
   so2?: { v: number }
-  t?: { v: number }    // temperature
-  w?: { v: number }    // wind speed
+  t?: { v: number }    
+  w?: { v: number }   
 }
 
 export interface TimeInfo {
-  s: string      // "2025-07-27 04:00:00"
-  tz: string     // "+08:00"
-  v: number      // Unix timestamp
-  iso: string    // "2025-07-27T04:00:00+08:00"
+  s: string      
+  tz: string    
+  v: number      
+  iso: string    
 }
 
 export interface ForecastData {
@@ -66,7 +63,6 @@ export interface ForecastItem {
   min: number
 }
 
-// Processed Air Quality Data for our system
 export interface ProcessedAirQualityData {
   aqi: number
   pm25: number
@@ -89,7 +85,7 @@ export interface ProcessedAirQualityData {
 
 export class RealTimeDataConnector {
   private readonly BASE_URL = "http://api.waqi.info"
-  private readonly API_TOKEN = "demo" // Replace with real token: process.env.AQICN_API_TOKEN || "demo"
+  private readonly API_TOKEN = "demo"
   private requestCount = 0
 
   private readonly SUPPORTED_CITIES = [
@@ -222,14 +218,6 @@ export class RealTimeDataConnector {
     }
   }
 
-  private getHealthLevel(aqi: number): string {
-    if (aqi <= 50) return "Good"
-    if (aqi <= 100) return "Moderate"
-    if (aqi <= 150) return "Unhealthy for Sensitive Groups"
-    if (aqi <= 200) return "Unhealthy"
-    if (aqi <= 300) return "Very Unhealthy"
-    return "Hazardous"
-  }
 
   public async searchStations(query: string): Promise<ProcessedAirQualityData[]> {
     try {

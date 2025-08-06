@@ -24,15 +24,7 @@ interface AnomalyDetectionResult {
   detectedAt: string
 }
 
-interface PredictiveInsight {
-  type: 'HEALTH_RECOMMENDATION' | 'TRAFFIC_PREDICTION' | 'ENERGY_FORECAST' | 'WEATHER_CORRELATION'
-  prediction: string
-  confidence: number
-  affectedCities: string[]
-  timeframe: string
-  actionRequired: boolean
-  impact: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
-}
+
 
 export class RealTimeAnalytics {
   private isRunning = false
@@ -57,14 +49,12 @@ export class RealTimeAnalytics {
       this.processedDataPoints = Math.floor(Math.random() * 10000) + 5000
       this.processingRate = Math.floor(Math.random() * 50) + 25
       
-      // Initialize with AI-generated insights
       await this.refreshAIInsights()
       
       this.alertsGenerated = this.activeInsights.length
       
     } catch (error) {
       console.error("Error initializing baseline data:", error)
-      // Fallback to static insights if AI fails
       this.activeInsights = [
         {
           type: 'HEALTH_ALERT',
@@ -264,7 +254,6 @@ export class RealTimeAnalytics {
     
     this.populateInitialDashboardData()
     
-    // Start AI insight refresh every 10 minutes
     this.startAIInsightRefresh()
   }
 
@@ -435,7 +424,6 @@ export class RealTimeAnalytics {
   public async getLiveDataDashboard() {
     try {
       const globalInsights = await getGlobalAirQualityInsights()
-      const apiStats = getAQICNAPIStats()
       
       const uptimeHours = Math.floor((Date.now() - this.systemStartTime) / (1000 * 60 * 60))
       const uptimeMinutes = Math.floor((Date.now() - this.systemStartTime) / (1000 * 60)) % 60

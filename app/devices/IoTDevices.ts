@@ -77,7 +77,6 @@ export class WeatherStation extends IoTDevice implements IOptimizable {
 
   public initialize(): void {
     this.status = DeviceStatus.ONLINE
-    console.log(`Weather station ${this.id} initialized at ${this.location}`)
   }
 
   public processData(data: any): void {

@@ -6,7 +6,6 @@ export default function ProjectRequirementsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Advanced Programming Project Assignment
@@ -24,7 +23,6 @@ export default function ProjectRequirementsPage() {
         </div>
 
         <div className="space-y-8">
-          {/* Project Assignment Overview */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -39,7 +37,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* OOP Application Requirements */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">1. OOP Application</CardTitle>
@@ -94,7 +91,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* Big Data, Grid Computing, Blockchain, or Peer-to-Peer Application */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">2. Big Data, Grid Computing, Blockchain, or Peer-to-Peer Application</CardTitle>
@@ -127,7 +123,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* Parallel Processing Application */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">3. Parallel Processing Application</CardTitle>
@@ -141,7 +136,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* General Requirements */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2">
@@ -178,7 +172,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* Additional Requirements */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Additional Requirements</CardTitle>
@@ -218,7 +211,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* Deliverables */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl flex items-center gap-2">
@@ -268,7 +260,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* Public Project Defense */}
           <Card className="border-2 border-yellow-200 bg-yellow-50">
             <CardHeader>
               <CardTitle className="text-2xl text-yellow-900">Public Project Defense</CardTitle>
@@ -303,7 +294,6 @@ export default function ProjectRequirementsPage() {
             </CardContent>
           </Card>
 
-          {/* Teammate Feedback */}
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Teammate Feedback</CardTitle>

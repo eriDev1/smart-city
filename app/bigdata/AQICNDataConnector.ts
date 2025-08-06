@@ -1,12 +1,8 @@
-// Real AQICN API Connector
-// Replaces mock data with actual AQICN API calls
-
 import { CityData } from './MultiCityDataConnector'
 
 export class AQICNDataConnector {
   private readonly API_BASE_URL = 'https://api.waqi.info'
-  private readonly API_TOKEN = process.env.NEXT_PUBLIC_AQICN_API_KEY || 'demo' // Use demo for development
-  
+  private readonly API_TOKEN = process.env.NEXT_PUBLIC_AQICN_API_KEY || 'demo' 
   private readonly GLOBAL_CITIES = [
     { name: "New York", country: "USA", lat: 40.7128, lng: -74.0060 },
     { name: "London", country: "UK", lat: 51.5074, lng: -0.1278 },
@@ -34,7 +30,6 @@ export class AQICNDataConnector {
   public async fetchCityDataByCoords(lat: number, lng: number): Promise<CityData | null> {
     try {
       const url = `${this.API_BASE_URL}/feed/geo:${lat};${lng}/?token=${this.API_TOKEN}`
-      console.log(`🌍 Fetching AQICN data for coords: ${lat}, ${lng}`)
       
       const response = await fetch(url, {
         method: 'GET',
@@ -68,7 +63,6 @@ export class AQICNDataConnector {
     try {
       const encodedCity = encodeURIComponent(cityName)
       const url = `${this.API_BASE_URL}/feed/${encodedCity}/?token=${this.API_TOKEN}`
-      console.log(`🏙️ Fetching AQICN data for city: ${cityName}`)
       
       const response = await fetch(url, {
         method: 'GET',
@@ -102,7 +96,6 @@ export class AQICNDataConnector {
     const citiesToFetch = limit ? this.GLOBAL_CITIES.slice(0, limit) : this.GLOBAL_CITIES.slice(0, 15)
     const results: CityData[] = []
 
-    console.log(`🌍 Fetching AQICN data for ${citiesToFetch.length} cities...`)
 
     const batchSize = 3
     for (let i = 0; i < citiesToFetch.length; i += batchSize) {

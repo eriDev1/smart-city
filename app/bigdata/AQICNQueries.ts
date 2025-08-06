@@ -3,7 +3,6 @@ import { MultiCityDataConnector, type CityData } from './MultiCityDataConnector'
 import { AQICNDataConnector } from './AQICNDataConnector'
 
 const multiCityConnector = new MultiCityDataConnector()
-const aqicnConnector = new AQICNDataConnector()
 
 export const aqicnQueryKeys = {
   city: (city: string) => ['air-quality', 'city', city] as const,
@@ -56,29 +55,6 @@ function transformCityData(cityData: CityData): ProcessedAirQualityData {
   }
 }
 
-function transformSupabaseData(row: any): ProcessedAirQualityData {
-  return {
-    aqi: row.aqi || 0,
-    pm25: Number(row.pm25) || 0,
-    pm10: Number(row.pm10) || 0,
-    no2: Number(row.no2) || 0,
-    so2: Number(row.so2) || 0,
-    o3: Number(row.o3) || 0,
-    co: Number(row.co) || 0,
-    temperature: row.temperature ? Number(row.temperature) : undefined,
-    humidity: row.humidity || undefined,
-    pressure: row.pressure ? Number(row.pressure) : undefined,
-    windSpeed: row.wind_speed ? Number(row.wind_speed) : undefined,
-    latitude: Number(row.latitude) || 0,
-    longitude: Number(row.longitude) || 0,
-    location: `${row.city_name}`,
-    timestamp: row.timestamp,
-    dominantPollutant: row.dominant_pollutant || 'pm25',
-    healthLevel: row.health_level || 'Moderate',
-    apiSource: row.api_source || 'CACHED'
-  }
-}
-
 function normalizeCityName(name: string): string {
   return name.toLowerCase()
     .replace(/[-_]/g, ' ')  
@@ -100,14 +76,7 @@ function matchesCityName(searchName: string, cityName: string, location: string)
 
 export async function getAirQualityByCity(cityName: string): Promise<ProcessedAirQualityData | null> {
   try {
-    console.log(`🔍 Fetching air quality data for ${cityName}...`)
     
-    // CACHE DISABLED - Use fresh data generation to prevent database overload
-    console.log(`🚫 Cache disabled for ${cityName} to prevent database overload`)
-
-    console.log(`🔄 No fresh cache found for ${cityName}, generating realistic data...`)
-
-    console.log(`🌍 Using MultiCityDataConnector for ${cityName}...`)
     const allCitiesData = await multiCityConnector.fetchMultipleCitiesData(20)
     const cityData = allCitiesData.find(city => 
       matchesCityName(cityName, city.city, city.location)
@@ -119,7 +88,6 @@ export async function getAirQualityByCity(cityName: string): Promise<ProcessedAi
     }
     
     const processedData = transformCityData(cityData)
-    console.log(`✅ Successfully fetched data for ${cityData.location}: AQI ${cityData.aqi} (Source: ${cityData.apiSource})`)
     
     return processedData
   } catch (error) {
@@ -130,23 +98,14 @@ export async function getAirQualityByCity(cityName: string): Promise<ProcessedAi
 
 export async function getMultipleCitiesAirQuality(limit: number = 15): Promise<ProcessedAirQualityData[]> {
   try {
-    console.log(`🌍 Fetching air quality data for ${limit} cities...`)
-    
-    console.log(`🚫 Cache disabled to prevent database overload, fetching fresh data directly...`)
-
-    console.log(`🌍 Using MultiCityDataConnector for diverse city data (${limit} cities)...`)
     const citiesData = await multiCityConnector.fetchMultipleCitiesData(limit)
     
     if (citiesData.length === 0) {
       console.log(`⚠️ MultiCityDataConnector failed, this shouldn't happen`)
       return []
     }
-    
-    console.log(`✅ Generated diverse data for ${citiesData.length} cities: ${citiesData.map(c => c.city).join(', ')}`)
-    
     const processedData = citiesData.map(transformCityData)
     
-    console.log(`✅ Successfully fetched data for ${processedData.length} cities`)
     return processedData
   } catch (error) {
     console.error('Error fetching multiple cities air quality data:', error)
@@ -156,7 +115,6 @@ export async function getMultipleCitiesAirQuality(limit: number = 15): Promise<P
 
 export async function getGlobalAirQualityInsights() {
   try {
-    console.log('🌍 Generating global air quality insights...')
     
     const { data: cachedData, error } = await supabase
       .from("cached_air_quality")
@@ -180,8 +138,8 @@ export async function getGlobalAirQualityInsights() {
         citiesWithAlerts,
         bestCity,
         worstCity,
-        dataVolume: cachedData.length * 7, // 7 pollutants per city
-        countriesRepresented: 19 // We have global coverage
+        dataVolume: cachedData.length * 7, 
+        countriesRepresented: 19 
       }
     }
 
@@ -192,7 +150,6 @@ export async function getGlobalAirQualityInsights() {
       throw new Error('Failed to generate global insights')
     }
     
-    console.log(`✅ Global insights generated: ${insights.totalCitiesMonitored} cities, avg AQI ${insights.averageAQI}`)
     return insights
   } catch (error) {
     console.error('Error getting global air quality insights:', error)

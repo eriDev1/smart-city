@@ -21,7 +21,6 @@ export default function ProjectProposalPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Smart City Big Data System - Project Proposal
@@ -43,7 +42,6 @@ export default function ProjectProposalPage() {
         </div>
 
         <div className="space-y-8">
-          {/* Team Members */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -70,7 +68,6 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          {/* Problem Statement */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -144,7 +141,6 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          {/* Proposed Solution */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -212,7 +208,6 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          {/* Project Scope & Deliverables */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -305,7 +300,6 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          {/* Academic Requirements Met */}
           <Card className="border-2 border-green-200 bg-green-50">
             <CardHeader>
               <CardTitle className="text-green-900">Expected Outcomes - Academic Requirements Met</CardTitle>
@@ -352,7 +346,6 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          {/* Risk Assessment */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -400,7 +393,6 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          {/* Success Criteria */}
           <Card className="border-2 border-blue-200 bg-blue-50">
             <CardHeader>
               <CardTitle className="text-blue-900">Success Criteria</CardTitle>
@@ -431,7 +423,6 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          {/* Conclusion */}
           <Card className="border-2 border-purple-200 bg-purple-50">
             <CardHeader>
               <CardTitle className="text-purple-900">Conclusion</CardTitle>

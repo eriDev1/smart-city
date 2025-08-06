@@ -28,7 +28,6 @@ export async function POST(request: NextRequest) {
       timestamp: city.timestamp
     }))
 
-    console.log(`🤖 AI Context Data:`, JSON.stringify(currentData, null, 2))
 
     const contextPrompt = `You are an AI environmental assistant with access to real-time air quality data. 
 
@@ -55,7 +54,6 @@ User message: ${message}`
 
     if (!apiKey) {
       console.log('⚠️ DeepSeek API key not found, using fallback response')
-       // Provide informative fallback response with current data
                const alertCities = currentData.filter(city => city.aqi > 100)
         const goodCities = currentData.filter(city => city.aqi <= 50)
         
