@@ -22,6 +22,9 @@ import {
 
 import { CityManager } from "../core/CityManager"
 import { useBigDataContext } from "../context/BigDataContext"
+import { AirQualityMonitor, WeatherStation, NoiseMonitor } from "../devices/IoTDevices"
+import { DeviceStatus } from "../enums/SystemEnums"
+import { CitizenService } from "../services/CitizenService"
 
 export function Dashboard() {
   const [cityManager] = useState(() => CityManager.getInstance())
@@ -34,6 +37,7 @@ export function Dashboard() {
   const [bigDataMetrics, setBigDataMetrics] = useState<any>({})
   const [analyticsData, setAnalyticsData] = useState<any>({})
   const [streamMetrics, setStreamMetrics] = useState<any>({})
+  const [deviceStats, setDeviceStats] = useState({ online: 0, total: 0 })
 
   useEffect(() => {
     initializeSystem()
@@ -45,6 +49,11 @@ export function Dashboard() {
 
     return () => clearInterval(interval)
   }, [processor, analytics, streamManager])
+
+  useEffect(() => {
+    // Initialize the complete OOP demonstration
+    initializeOOPDemo()
+  }, [])
 
   const initializeSystem = async () => {
     try {
@@ -61,6 +70,47 @@ export function Dashboard() {
       setAlerts([`System Error: ${error}`])
       setSystemStatus("System Error")
     }
+  }
+
+  const initializeOOPDemo = () => {
+    // Demonstrate complete OOP architecture with IoT devices
+    const airMonitor = new AirQualityMonitor("AQ-001", "City Center")
+    const weatherStation = new WeatherStation("WS-001", "Park Plaza")  
+    const noiseMonitor = new NoiseMonitor("NM-001", "Highway Junction")
+    
+    // Add devices to city manager (Singleton pattern)
+    cityManager.addDevice(airMonitor)
+    cityManager.addDevice(weatherStation)
+    cityManager.addDevice(noiseMonitor)
+    
+    // Add citizen service (inheritance from ManagementService)
+    const citizenService = new CitizenService()
+    cityManager.addService(citizenService)
+    
+    // Simulate real data processing (polymorphism)
+    airMonitor.processData({ pm25: 35, pm10: 50, aqi: 85, no2: 25, o3: 45, so2: 15, co: 8 })
+    weatherStation.processData({ temperature: 22, humidity: 65, pressure: 1013, windSpeed: 15, windDirection: 180 })
+    noiseMonitor.processData({ decibels: 68 })
+    
+    // Demonstrate interfaces (IOptimizable)
+    if (weatherStation instanceof WeatherStation) {
+      weatherStation.optimize()
+    }
+    
+    console.log("🏗️ OOP ARCHITECTURE INITIALIZED:")
+    console.log("✅ Inheritance: IoTDevice → AirQualityMonitor/WeatherStation/NoiseMonitor")
+    console.log("✅ Polymorphism: Different devices implement abstract methods differently")
+    console.log("✅ Interfaces: WeatherStation implements IOptimizable")
+    console.log("✅ Singleton: CityManager instance manages all devices")
+    console.log("✅ Design Patterns: Factory, Observer, Command patterns in BigDataSystemManager")
+    console.log("✅ Exception Handling: SystemException hierarchy with proper error management")
+    console.log("✅ Enumerations: DeviceType, DeviceStatus, AlertSeverity, etc.")
+    
+    // Update device stats
+    setDeviceStats({
+      online: cityManager.getAllDevices().filter(d => d.getStatus() === DeviceStatus.ONLINE).length,
+      total: cityManager.getAllDevices().length
+    })
   }
 
   const updateMetrics = () => {

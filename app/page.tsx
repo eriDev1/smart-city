@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
 import { useRealtimeAirQuality } from '@/hooks/use-realtime-air-quality'
 import { HeroSection } from '@/components/sections/hero-section'
 import { GlobalMonitoring } from '@/components/sections/global-monitoring'
@@ -420,6 +421,8 @@ export default function SmartAirDashboard() {
           {activeTab === 'presentation' && <Presentation />}
         </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }
