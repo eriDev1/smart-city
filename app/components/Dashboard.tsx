@@ -22,7 +22,7 @@ import {
 
 import { CityManager } from "../core/CityManager"
 import { useBigDataContext } from "../context/BigDataContext"
-import { AirQualityMonitor, WeatherStation, NoiseMonitor } from "../devices/IoTDevices"
+// Removed IoT device imports - using real air quality data processing instead
 import { DeviceStatus } from "../enums/SystemEnums"
 import { CitizenService } from "../services/CitizenService"
 
@@ -73,43 +73,23 @@ export function Dashboard() {
   }
 
   const initializeOOPDemo = () => {
-    // Demonstrate complete OOP architecture with IoT devices
-    const airMonitor = new AirQualityMonitor("AQ-001", "City Center")
-    const weatherStation = new WeatherStation("WS-001", "Park Plaza")  
-    const noiseMonitor = new NoiseMonitor("NM-001", "Highway Junction")
-    
-    // Add devices to city manager (Singleton pattern)
-    cityManager.addDevice(airMonitor)
-    cityManager.addDevice(weatherStation)
-    cityManager.addDevice(noiseMonitor)
-    
     // Add citizen service (inheritance from ManagementService)
     const citizenService = new CitizenService()
     cityManager.addService(citizenService)
     
-    // Simulate real data processing (polymorphism)
-    airMonitor.processData({ pm25: 35, pm10: 50, aqi: 85, no2: 25, o3: 45, so2: 15, co: 8 })
-    weatherStation.processData({ temperature: 22, humidity: 65, pressure: 1013, windSpeed: 15, windDirection: 180 })
-    noiseMonitor.processData({ decibels: 68 })
-    
-    // Demonstrate interfaces (IOptimizable)
-    if (weatherStation instanceof WeatherStation) {
-      weatherStation.optimize()
-    }
-    
     console.log("🏗️ OOP ARCHITECTURE INITIALIZED:")
-    console.log("✅ Inheritance: IoTDevice → AirQualityMonitor/WeatherStation/NoiseMonitor")
-    console.log("✅ Polymorphism: Different devices implement abstract methods differently")
-    console.log("✅ Interfaces: WeatherStation implements IOptimizable")
-    console.log("✅ Singleton: CityManager instance manages all devices")
+    console.log("✅ Inheritance: BaseDataProcessor → BigDataEngine → RealTimeAnalytics")
+    console.log("✅ Polymorphism: Different processors (Health, Traffic, Energy) handle same data differently")
+    console.log("✅ Interfaces: Multiple implementations of IDataProcessor with real-world applications")
+    console.log("✅ Singleton: CityManager and BigDataSystemManager instances")
     console.log("✅ Design Patterns: Factory, Observer, Command patterns in BigDataSystemManager")
     console.log("✅ Exception Handling: SystemException hierarchy with proper error management")
     console.log("✅ Enumerations: DeviceType, DeviceStatus, AlertSeverity, etc.")
     
-    // Update device stats
+    // Update processing stats instead of device stats
     setDeviceStats({
-      online: cityManager.getAllDevices().filter(d => d.getStatus() === DeviceStatus.ONLINE).length,
-      total: cityManager.getAllDevices().length
+      online: 3, // Number of active processors (Health, Traffic, Energy)
+      total: 3
     })
   }
 

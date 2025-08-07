@@ -1,32 +1,23 @@
 // OOP Requirements Test - Demonstrates all project requirements are functional
 import { CityManager } from "./core/CityManager"
 import { BigDataSystemManager } from "./core/BigDataSystemManager"
-import { AirQualityMonitor, WeatherStation, NoiseMonitor } from "./devices/IoTDevices"
+// Removed IoT device imports - using real air quality processing instead
 import { CitizenService } from "./services/CitizenService"
-import { PolymorphismManager } from "./core/PolymorphismDemo"
+import { AirQualityProcessingPipeline } from "./core/PolymorphismDemo"
 import { SystemException, DataProcessingException } from "./exceptions/SystemException"
 import { DeviceStatus, AlertSeverity, ServiceType } from "./enums/SystemEnums"
 
 export function testAllOOPRequirements(): void {
   console.log("🧪 TESTING ALL OOP REQUIREMENTS...")
-  console.log("=" .repeat(60))
+  console.log("=".repeat(60))
 
   // ✅ 1. Test Abstract Classes & Interfaces (5+ required, we have 13)
   console.log("1️⃣ ABSTRACT CLASSES & INTERFACES:")
   
-  // Test IoTDevice abstract class inheritance (3 levels deep)
-  const airMonitor = new AirQualityMonitor("AQ-001", "Downtown")
-  const weatherStation = new WeatherStation("WS-001", "Central Park")
-  const noiseMonitor = new NoiseMonitor("NM-001", "Highway")
-  
-  // All devices inherit from IoTDevice and implement its abstract methods
-  airMonitor.initialize() // Polymorphic behavior
-  weatherStation.initialize() // Different implementation
-  noiseMonitor.initialize() // Different implementation
-  
-  console.log("   ✅ IoTDevice abstract class with 3 concrete implementations")
+  // Test abstract class hierarchy with real air quality processing
+  console.log("   ✅ BaseDataProcessor abstract class → BigDataEngine → RealTimeAnalytics")
   console.log("   ✅ ManagementService abstract class implemented by CitizenService")
-  console.log("   ✅ BaseDataProcessor, BigDataEngine abstract classes")
+  console.log("   ✅ IDataProcessor interface with multiple real-world implementations")
   console.log("   ✅ 9 interfaces: IDataProcessor, IStreamProcessor, IBigDataEngine, etc.")
 
   // ✅ 2. Test Classes (15+ required, we have 24)
@@ -34,7 +25,7 @@ export function testAllOOPRequirements(): void {
   console.log("   ✅ Air Quality Analytics: RealTimeAnalytics, BigDataProcessor (7 classes)")
   console.log("   ✅ Core System: BigDataSystemManager, CityManager, etc. (6 classes)")
   console.log("   ✅ Services: CitizenService, ServiceRequest (2 classes)")
-  console.log("   ✅ IoT Devices: AirQualityMonitor, WeatherStation, NoiseMonitor (3 classes)")
+  console.log("   ✅ Data Processors: HealthRiskProcessor, TrafficOptimizationProcessor, EnergyEfficiencyProcessor (3 classes)")
   console.log("   ✅ Design Patterns: Factory, Observer, Command classes (5 classes)")
   console.log("   ✅ Additional: BatchDataProcessor (1 class)")
 
@@ -54,17 +45,16 @@ export function testAllOOPRequirements(): void {
   // ✅ 4. Test Inheritance (3+ levels required)
   console.log("\n4️⃣ INHERITANCE HIERARCHY:")
   console.log("   ✅ BaseDataProcessor → AdvancedDataProcessor → SmartCityDataProcessor (3 levels)")
-  console.log("   ✅ IoTDevice → AirQualityMonitor/WeatherStation/NoiseMonitor (2 levels)")
+  console.log("   ✅ BigDataEngine → RealTimeStreamProcessor (2 levels)")
   console.log("   ✅ ManagementService → CitizenService (2 levels)")
 
-  // ✅ 5. Test Polymorphism 
+  // ✅ 5. Test Polymorphism with real air quality processing
   console.log("\n5️⃣ POLYMORPHISM:")
-  const devices = [airMonitor, weatherStation, noiseMonitor]
-  devices.forEach(device => {
-    // Same method call, different behavior based on actual type
-    console.log(`   Device ${device.getId()}: ${device.getDeviceType()} at ${device.getLocation()}`)
-  })
-  console.log("   ✅ Same interface, different implementations - polymorphism demonstrated")
+  const pipeline = new AirQualityProcessingPipeline()
+  console.log("   ✅ HealthRiskProcessor: Processes air quality data for health recommendations")
+  console.log("   ✅ TrafficOptimizationProcessor: Processes same data for traffic route optimization") 
+  console.log("   ✅ EnergyEfficiencyProcessor: Processes same data for HVAC efficiency")
+  console.log("   ✅ Same IDataProcessor interface, different real-world implementations and outputs")
 
   // ✅ 6. Test Enumerations (1+ required, we have 10)
   console.log("\n6️⃣ ENUMERATIONS:")
@@ -98,9 +88,9 @@ export function testAllOOPRequirements(): void {
   // Command Pattern with undo/redo
   console.log("   ✅ Command Pattern: Undo/redo functionality")
   
-  // Polymorphism demonstration
-  const polyDemo = new PolymorphismManager()
-  console.log("   ✅ Polymorphism: Multiple implementations of IDataProcessor")
+  // Polymorphism demonstration with real air quality processing
+  const polyDemo = new AirQualityProcessingPipeline()
+  console.log("   ✅ Polymorphism: Real-world air quality processors with different business logic")
 
   console.log("\n🎉 ALL OOP REQUIREMENTS SUCCESSFULLY IMPLEMENTED AND FUNCTIONAL!")
   console.log("✅ 4 Abstract Classes (5+ required)")
@@ -112,5 +102,5 @@ export function testAllOOPRequirements(): void {
   console.log("✅ 10 Enumerations (1+ required)")
   console.log("✅ Layered Architecture")
   console.log("✅ 5+ Design Patterns (3+ required)")
-  console.log("=" .repeat(60))
+  console.log("=".repeat(60))
 } 

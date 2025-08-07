@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { BigDataSystemManager } from "../core/BigDataSystemManager"
-import { PolymorphismManager } from "../core/PolymorphismDemo"
+import { AirQualityProcessingPipeline } from "../core/PolymorphismDemo"
 import { supabase } from "../../lib/supabase"
 import {
   Activity,
@@ -22,7 +22,7 @@ import {
 
 export function BigDataDashboard() {
   const [systemManager] = useState(() => BigDataSystemManager.getInstance())
-  const [polymorphismDemo] = useState(() => new PolymorphismManager())
+  const [polymorphismDemo] = useState(() => new AirQualityProcessingPipeline())
   const [metrics, setMetrics] = useState(() => systemManager.getSystemMetrics())
   const [isProcessing, setIsProcessing] = useState(false)
   const [recentEvents, setRecentEvents] = useState<any[]>([])
@@ -127,23 +127,58 @@ export function BigDataDashboard() {
   }
 
   const handlePolymorphismDemo = async () => {
-    // Actually demonstrate polymorphism with visible results
-    polymorphismDemo.demonstratePolymorphism()
+    setIsProcessing(true)
+    
+    try {
+      // Fetch real air quality data for polymorphism demonstration
+      const response = await fetch('/api/air-quality?limit=4')
+      const airQualityData = await response.json()
+      
+      if (airQualityData.length > 0) {
+        // Demonstrate real-world polymorphism with actual air quality data
+        const results = await polymorphismDemo.demonstrateRealWorldPolymorphism(airQualityData)
+        
+        console.log("🌍 REAL-WORLD POLYMORPHISM RESULTS:", results)
+        
+        // Update processing stats with real results
+        setProcessingStats({
+          totalProcessed: airQualityData.length,
+          healthAnalysis: results.insights.health.averageRiskScore,
+          trafficOptimization: results.insights.traffic.averageTrafficImpact,
+          energyEfficiency: results.insights.energy.averageEfficiencyScore
+        })
 
+        await supabase.from("system_events").insert({
+          event_type: "POLYMORPHISM_DEMO",
+          severity: "INFO",
+          source: "BigDataDashboard",
+          timestamp: new Date().toISOString(),
+          event_data: { 
+            description: `Real-world polymorphism: ${results.summary}`,
+            recommendations: results.recommendations.slice(0, 3),
+            insights: results.insights
+          }
+        })
 
-
-    await supabase.from("system_events").insert({
-      event_type: "POLYMORPHISM_DEMO",
-      severity: "INFO",
-      source: "BigDataDashboard",
-      timestamp: new Date().toISOString(),
-      event_data: { description: "Polymorphism demonstration executed - check console for details" }
-    })
-
-    loadDashboardData()
-    alert(
-      "Polymorphism demonstrated! Check the browser console for detailed output showing how different processors implement the same interface differently.",
-    )
+        alert(
+          `Real-world polymorphism demonstrated!\n\n` +
+          `${results.summary}\n\n` +
+          `Key insights:\n` +
+          `• Health Risk Score: ${results.insights.health.averageRiskScore}/100\n` +
+          `• Traffic Impact: ${results.insights.traffic.averageTrafficImpact}/100\n` +
+          `• Energy Efficiency: ${results.insights.energy.averageEfficiencyScore}/100\n\n` +
+          `Top recommendations:\n${results.recommendations.slice(0, 3).map(r => `• ${r}`).join('\n')}`
+        )
+      } else {
+        alert("No air quality data available for demonstration")
+      }
+    } catch (error) {
+      console.error("Error in polymorphism demo:", error)
+      alert("Error running polymorphism demonstration")
+    } finally {
+      setIsProcessing(false)
+      loadDashboardData()
+    }
   }
 
   const handleUndo = async () => {
