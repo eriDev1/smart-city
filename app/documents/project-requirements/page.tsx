@@ -13,11 +13,11 @@ export default function ProjectRequirementsPage() {
           <div className="flex justify-center gap-4 mb-4">
             <Badge variant="outline" className="px-4 py-2">
               <Users className="h-4 w-4 mr-2" />
-              Course Instructors: E. Jajaga & A. Kadriu
+              Course Instructors: Dr.Sc Edmond Jajaga
             </Badge>
             <Badge variant="outline" className="px-4 py-2">
               <BookOpen className="h-4 w-4 mr-2" />
-              UBT Master Students – Advanced Programming Course
+              Erind Avdiu – UBT - Advanced Programming Course
             </Badge>
           </div>
         </div>

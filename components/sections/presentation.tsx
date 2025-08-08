@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { PolymorphismDemoCard } from "@/app/components/PolymorphismDemoCard";
 
 export function Presentation() {
   return (
@@ -63,6 +64,9 @@ export function Presentation() {
           </div>
         </CardContent>
       </Card>
+            <div className="mb-8">
+          <PolymorphismDemoCard />
+        </div>
     </div>
   );
 }
