@@ -338,9 +338,11 @@ export function BigDataDashboard() {
           <div className="space-y-3">
             <button
               onClick={handlePolymorphismDemo}
-              className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors"
+              disabled={isProcessing}
+              className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
             >
-              Run System Diagnostics
+              <Activity className="h-4 w-4" />
+              {isProcessing ? "Running Demo..." : "🔄 Demonstrate Polymorphism"}
             </button>
 
             <div className="grid grid-cols-2 gap-3">

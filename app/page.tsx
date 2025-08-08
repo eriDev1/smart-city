@@ -9,6 +9,7 @@ import { GlobalMonitoring } from '@/components/sections/global-monitoring'
 import { AIInsights } from '@/components/sections/ai-insights'
 import { Presentation } from '@/components/sections/presentation'
 import { AIChat } from '@/components/ai-chat'
+import { PolymorphismDemoCard } from './components/PolymorphismDemoCard'
 import { RealTimeAnalytics } from './bigdata/RealTimeAnalytics'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -408,6 +409,11 @@ export default function SmartAirDashboard() {
           connectionError={connectionError}
           lastUpdate={lastUpdate}
         />
+
+        {/* Polymorphism Demo - Prominent Feature */}
+        <div className="mb-8">
+          <PolymorphismDemoCard />
+        </div>
 
         <div className="space-y-6">
           {activeTab === 'monitoring' && <GlobalMonitoring />}

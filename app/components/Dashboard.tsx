@@ -25,6 +25,7 @@ import { useBigDataContext } from "../context/BigDataContext"
 // Removed IoT device imports - using real air quality data processing instead
 import { DeviceStatus } from "../enums/SystemEnums"
 import { CitizenService } from "../services/CitizenService"
+import { AIPredictionsPanel } from "./AIPredictionsPanel"
 
 export function Dashboard() {
   const [cityManager] = useState(() => CityManager.getInstance())
@@ -200,12 +201,13 @@ export function Dashboard() {
       </div>
 
       <Tabs defaultValue="bigdata" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="bigdata">Big Data</TabsTrigger>
           <TabsTrigger value="traffic">Traffic</TabsTrigger>
           <TabsTrigger value="energy">Energy</TabsTrigger>
           <TabsTrigger value="water">Water</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="predictions">🤖 AI Predictions</TabsTrigger>
         </TabsList>
 
         <TabsContent value="bigdata" className="space-y-4">
@@ -440,6 +442,38 @@ export function Dashboard() {
                       <Database className="h-4 w-4" />
                       <AlertDescription>Anomaly detection: Unusual water consumption pattern in District 3</AlertDescription>
                     </Alert>
+                    
+                    <button
+                      onClick={async () => {
+                        try {
+                          const response = await fetch('/api/air-quality?limit=4')
+                          const airQualityData = await response.json()
+                          
+                          if (airQualityData.length > 0) {
+                            const { AirQualityProcessingPipeline } = await import('../core/PolymorphismDemo')
+                            const pipeline = new AirQualityProcessingPipeline()
+                            const results = await pipeline.demonstrateRealWorldPolymorphism(airQualityData)
+                            
+                            alert(
+                              `🔄 POLYMORPHISM DEMONSTRATION\n\n` +
+                              `${results.summary}\n\n` +
+                              `Health Analysis: ${results.insights.health.averageRiskScore}/100 risk score\n` +
+                              `Traffic Optimization: ${results.insights.traffic.averageTrafficImpact}/100 impact\n` +
+                              `Energy Efficiency: ${results.insights.energy.averageEfficiencyScore}/100 efficiency\n\n` +
+                              `Top Recommendations:\n${results.recommendations.slice(0, 3).map(r => `• ${r}`).join('\n')}`
+                            )
+                          } else {
+                            alert("No air quality data available for demonstration")
+                          }
+                        } catch (error) {
+                          console.error("Polymorphism demo error:", error)
+                          alert("Error running polymorphism demonstration")
+                        }
+                      }}
+                      className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors mt-3"
+                    >
+                      🔄 Demonstrate Polymorphism
+                    </button>
                   </div>
                 </div>
                 <div>
@@ -471,6 +505,10 @@ export function Dashboard() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+        
+        <TabsContent value="predictions" className="space-y-4">
+          <AIPredictionsPanel />
         </TabsContent>
       </Tabs>
     </div>

@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle } from 'lucide-react'
+import { AIPredictionsPanel } from "@/app/components/AIPredictionsPanel"
 
 export function AIInsights() {
   return (
@@ -94,6 +95,7 @@ export function AIInsights() {
           </div>
         </CardContent>
       </Card>
+      <AIPredictionsPanel/>
     </div>
   )
 } 

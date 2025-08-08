@@ -1,9 +1,6 @@
-// Custom Exception Classes for Smart City System
-// Provides structured error handling with specific error types
 
 import { AlertSeverity } from "../enums/SystemEnums"
 
-// Base exception class for all system exceptions
 export class SystemException extends Error {
   public readonly timestamp: Date
   public readonly severity: AlertSeverity
@@ -26,7 +23,6 @@ export class SystemException extends Error {
     this.errorCode = errorCode
     this.context = context
 
-    // Maintains proper stack trace for where error was thrown (only available on V8)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor)
     }
@@ -46,7 +42,6 @@ export class SystemException extends Error {
   }
 }
 
-// Data processing related exceptions
 export class DataProcessingException extends SystemException {
   constructor(message: string, context?: Record<string, any>) {
     super(
@@ -59,7 +54,6 @@ export class DataProcessingException extends SystemException {
   }
 }
 
-// API related exceptions
 export class APIException extends SystemException {
   public readonly httpStatus?: number
   public readonly apiEndpoint?: string
@@ -105,7 +99,6 @@ export class DeviceException extends SystemException {
   }
 }
 
-// Analytics/ML related exceptions
 export class AnalyticsException extends SystemException {
   public readonly analyticsType?: string
 
@@ -125,7 +118,6 @@ export class AnalyticsException extends SystemException {
   }
 }
 
-// Database related exceptions
 export class DatabaseException extends SystemException {
   public readonly query?: string
   public readonly table?: string
@@ -171,7 +163,6 @@ export class CacheException extends SystemException {
   }
 }
 
-// Validation related exceptions
 export class ValidationException extends SystemException {
   public readonly field?: string
   public readonly value?: any
@@ -194,7 +185,6 @@ export class ValidationException extends SystemException {
   }
 }
 
-// Configuration related exceptions
 export class ConfigurationException extends SystemException {
   public readonly configKey?: string
 
@@ -214,7 +204,6 @@ export class ConfigurationException extends SystemException {
   }
 }
 
-// Exception handler utility class
 export class ExceptionHandler {
   private static instance: ExceptionHandler
   private errorLog: SystemException[] = []
@@ -243,16 +232,13 @@ export class ExceptionHandler {
       )
     }
 
-    // Log the error
     this.errorLog.push(systemError)
     console.error(`[${systemError.component}] ${systemError.message}`, systemError.toJSON())
 
-    // In production, you might want to send this to a logging service
     this.notifyErrorService(systemError)
   }
 
   private notifyErrorService(error: SystemException): void {
-    // Simulate error reporting to external service
     if (error.severity === AlertSeverity.CRITICAL) {
       console.error("🚨 CRITICAL ERROR - Immediate attention required!", error.toJSON())
     }
@@ -275,12 +261,10 @@ export class ExceptionHandler {
   }
 }
 
-// Global error handler function
 export function handleSystemError(error: Error, component?: string): void {
   ExceptionHandler.getInstance().handleException(error, component)
 }
 
-// Decorator for automatic exception handling
 export function WithExceptionHandling(component: string) {
   return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value
@@ -290,7 +274,7 @@ export function WithExceptionHandling(component: string) {
         return await method.apply(this, args)
       } catch (error) {
         handleSystemError(error as Error, component)
-        throw error // Re-throw for upstream handling
+        throw error 
       }
     }
 
