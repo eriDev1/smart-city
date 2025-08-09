@@ -457,31 +457,6 @@ const slides = [
           </Card>
         </div>
 
-        <Card className="bg-gradient-to-r from-blue-50 to-purple-50 shadow-lg border border-blue-200">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold mb-4 text-center">
-              <GradientText>Development Achievements</GradientText>
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm">
-              <div>
-                <div className="text-2xl font-bold text-blue-600">100%</div>
-                <div className="text-blue-700">Type Coverage</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-emerald-600">Zero</div>
-                <div className="text-emerald-700">Runtime Errors</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-purple-600">1500+</div>
-                <div className="text-purple-700">Lines of Code</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-orange-600">95%</div>
-                <div className="text-orange-700">Code Quality</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     )
   },
