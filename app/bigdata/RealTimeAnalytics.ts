@@ -243,7 +243,7 @@ export class RealTimeAnalytics {
         o3: Number(data.o3) || null,
         co: Number(data.co) || null,
         temperature: data.temperature ? Number(data.temperature) : null,
-        humidity: Number(data.humidity ? data.humidity : null),
+        humidity: Math.floor(data.humidity ? data.humidity : 0),
         pressure: data.pressure ? Number(data.pressure) : null,
         wind_speed: data.windSpeed ? Number(data.windSpeed) : null,
         latitude: Number(data.latitude) || 0.0,
