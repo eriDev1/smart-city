@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ChevronLeft, ChevronRight, Users, Target, Code, Database, Zap, CheckCircle } from 'lucide-react'
+import Image from 'next/image'
 
 // Magic UI Components
 import RetroGrid from '@/components/magic-ui/retro-grid'
@@ -193,6 +194,90 @@ const slides = [
   },
   {
     id: 4,
+    title: "Class Diagram",
+    subtitle: "Complete System Architecture Overview",
+    content: (
+      <div className="space-y-6">
+        <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
+          <CardContent className="p-6">
+            <div className="relative w-full" style={{ height: "1800px" }}> {/* Increased height for better visibility */}
+              <Image
+                src="/class-diagram.jpeg"
+                alt="Smart City System Class Diagram"
+                style={{ objectFit: "contain" }}
+                quality={100}
+                priority
+                width={1100}
+                height={400}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <Card className="bg-blue-50 p-4">
+            <h3 className="font-semibold text-blue-900 mb-2">Abstract Classes</h3>
+            <ul className="text-sm space-y-1">
+              <li>• BaseDataProcessor</li>
+              <li>• BigDataEngine</li>
+              <li>• ManagementService</li>
+            </ul>
+          </Card>
+
+          <Card className="bg-green-50 p-4">
+            <h3 className="font-semibold text-green-900 mb-2">Interfaces</h3>
+            <ul className="text-sm space-y-1">
+              <li>• IDataProcessor</li>
+              <li>• IBigDataEngine</li>
+              <li>• IManagementService</li>
+              <li>• IReportable</li>
+              <li>• IClusterManager</li>
+            </ul>
+          </Card>
+
+          <Card className="bg-yellow-50 p-4">
+            <h3 className="font-semibold text-yellow-900 mb-2">Concrete Classes</h3>
+            <ul className="text-sm space-y-1">
+              <li>• RealTimeAnalytics</li>
+              <li>• BigDataProcessor</li>
+              <li>• SmartCityDataProcessor</li>
+              <li>• BigDataSystemManager</li>
+            </ul>
+          </Card>
+
+          <Card className="bg-purple-50 p-4">
+            <h3 className="font-semibold text-purple-900 mb-2">Design Patterns</h3>
+            <ul className="text-sm space-y-1">
+              <li>• Factory Pattern</li>
+              <li>• Observer Pattern</li>
+              <li>• Command Pattern</li>
+              <li>• Singleton Pattern</li>
+            </ul>
+          </Card>
+
+          <Card className="bg-red-50 p-4">
+            <h3 className="font-semibold text-red-900 mb-2">Exception Classes</h3>
+            <ul className="text-sm space-y-1">
+              <li>• SystemException</li>
+              <li>• DataProcessingException</li>
+              <li>• ValidationException</li>
+            </ul>
+          </Card>
+
+          <Card className="bg-gray-50 p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">Key Relationships</h3>
+            <ul className="text-sm space-y-1">
+              <li>• Solid Lines: Inheritance</li>
+              <li>• Dashed Lines: Implementation</li>
+              <li>• Diamonds: Composition</li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: 5,
     title: "Big Data Implementation",
     subtitle: "Real-Time Processing & Analytics",
     content: (

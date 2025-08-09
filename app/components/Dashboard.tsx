@@ -23,7 +23,6 @@ import {
 import { CityManager } from "../core/CityManager"
 import { useBigDataContext } from "../context/BigDataContext"
 // Removed IoT device imports - using real air quality data processing instead
-import { DeviceStatus } from "../enums/SystemEnums"
 import { CitizenService } from "../services/CitizenService"
 import { AIPredictionsPanel } from "./AIPredictionsPanel"
 

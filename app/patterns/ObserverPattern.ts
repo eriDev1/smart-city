@@ -1,4 +1,3 @@
-// DESIGN PATTERN 2: Observer Pattern
 export interface Observer {
   update(data: any): void
   getId(): string
@@ -10,7 +9,6 @@ export interface Subject {
   notifyObservers(data: any): void
 }
 
-// CLASS 9: Big Data Event Manager
 export class BigDataEventManager implements Subject {
   private observers: Observer[] = []
   private eventCount = 0
@@ -43,7 +41,6 @@ export class BigDataEventManager implements Subject {
   }
 }
 
-// CLASS 10: System Monitor (Observer)
 export class SystemMonitor implements Observer {
   private id: string
   private alerts: any[] = []
@@ -59,7 +56,6 @@ export class SystemMonitor implements Observer {
       processed: new Date().toISOString(),
     })
 
-    // Keep only last 100 alerts
     if (this.alerts.length > 100) {
       this.alerts = this.alerts.slice(-100)
     }

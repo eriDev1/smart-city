@@ -1,11 +1,9 @@
-// DESIGN PATTERN 3: Command Pattern
 export interface Command {
   execute(): void
   undo(): void
   getDescription(): string
 }
 
-// CLASS 11: Big Data Command
 export class BigDataCommand implements Command {
   private action: () => void
   private undoAction: () => void
@@ -30,13 +28,11 @@ export class BigDataCommand implements Command {
   }
 }
 
-// CLASS 12: Command Manager
 export class CommandManager {
   private history: Command[] = []
   private currentIndex = -1
 
   public executeCommand(command: Command): void {
-    // Remove any commands after current index
     this.history = this.history.slice(0, this.currentIndex + 1)
 
     command.execute()

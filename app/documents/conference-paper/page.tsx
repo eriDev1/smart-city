@@ -18,7 +18,7 @@ import {
 
 export default function ConferencePaperPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen -br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -47,12 +47,12 @@ export default function ConferencePaperPage() {
 
         <div className="space-y-8">
           {/* Abstract */}
-          <Card className="border-2 border-blue-200 bg-blue-50">
+          <Card className=" -200 ">
             <CardHeader>
-              <CardTitle className="text-blue-900">Abstract</CardTitle>
+              <CardTitle className="">Abstract</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-blue-800 leading-relaxed">
+              <p className=" leading-relaxed">
                 This paper presents a comprehensive Smart City Big Data System
                 that addresses urban air quality monitoring through real-time
                 data processing and advanced object-oriented programming
@@ -65,8 +65,8 @@ export default function ConferencePaperPage() {
                 practical urban environmental challenges.
               </p>
               <div className="mt-4">
-                <strong className="text-blue-900">Keywords:</strong>
-                <span className="text-blue-700 text-sm ml-2">
+                <strong className="">Keywords:</strong>
+                <span className=" text-sm ml-2">
                   Smart Cities, Big Data, Object-Oriented Programming, Air
                   Quality Monitoring, Real-time Analytics, Design Patterns
                 </span>
@@ -99,11 +99,10 @@ export default function ConferencePaperPage() {
                   <h4 className="font-semibold mb-2 text-lg">
                     1.2 Team Information
                   </h4>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className=" p-4 rounded-lg">
                     <ul className="space-y-1 text-gray-700">
                       <li>
-                        <strong>Team Lead:</strong> Graduate Student, Software
-                        Engineering
+                        <strong>Team Lead:</strong> Erind Avdiu
                       </li>
                       <li>
                         <strong>Institution:</strong> UBT University
@@ -115,6 +114,9 @@ export default function ConferencePaperPage() {
                       <li>
                         <strong>Project Type:</strong> Individual comprehensive
                         implementation
+                      </li>
+                       <li>
+                        <strong>Instructor:</strong> Dr.Sc Edmond Jajaga
                       </li>
                       <li>
                         <strong>Duration:</strong> 8 weeks development cycle
@@ -134,23 +136,23 @@ export default function ConferencePaperPage() {
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+                      <div className="p-3  rounded-lg border -200">
                         <strong className="text-red-900">Delayed Data:</strong>
                         <span className="text-red-800 text-sm block">
                           Traditional systems provide hours-old information
                         </span>
                       </div>
-                      <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                        <strong className="text-orange-900">
+                      <div className="p-3  rounded-lg border -200">
+                        <strong className="-900">
                           Fragmented Sources:
                         </strong>
-                        <span className="text-orange-800 text-sm block">
+                        <span className="-800 text-sm block">
                           Multiple APIs with inconsistent formats
                         </span>
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                      <div className="p-3  rounded-lg border -200">
                         <strong className="text-yellow-900">
                           Limited Analytics:
                         </strong>
@@ -158,11 +160,11 @@ export default function ConferencePaperPage() {
                           Basic reporting without predictive insights
                         </span>
                       </div>
-                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
-                        <strong className="text-purple-900">
+                      <div className="p-3  rounded-lg border -200">
+                        <strong className="">
                           Poor Accessibility:
                         </strong>
-                        <span className="text-purple-800 text-sm block">
+                        <span className=" text-sm block">
                           Technical interfaces unsuitable for public use
                         </span>
                       </div>
@@ -197,11 +199,11 @@ export default function ConferencePaperPage() {
                     2.1.1 Class Hierarchy (15+ Classes)
                   </h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <h6 className="font-semibold text-blue-900 mb-2">
+                    <div className="p-3  rounded-lg">
+                      <h6 className="font-semibold  mb-2">
                         Core Analytics Classes
                       </h6>
-                      <ul className="text-blue-800 text-sm space-y-1">
+                      <ul className=" text-sm space-y-1">
                         <li>• RealTimeAnalytics</li>
                         <li>• BigDataProcessor</li>
                         <li>• DataStreamManager</li>
@@ -209,7 +211,7 @@ export default function ConferencePaperPage() {
                       </ul>
                     </div>
 
-                    <div className="p-3 bg-green-50 rounded-lg">
+                    <div className="p-3  rounded-lg">
                       <h6 className="font-semibold text-green-900 mb-2">
                         Data Connector Classes
                       </h6>
@@ -220,11 +222,11 @@ export default function ConferencePaperPage() {
                       </ul>
                     </div>
 
-                    <div className="p-3 bg-purple-50 rounded-lg">
-                      <h6 className="font-semibold text-purple-900 mb-2">
+                    <div className="p-3  rounded-lg">
+                      <h6 className="font-semibold  mb-2">
                         Service Layer Classes
                       </h6>
-                      <ul className="text-purple-800 text-sm space-y-1">
+                      <ul className=" text-sm space-y-1">
                         <li>• CityManager</li>
                         <li>• TrafficManagementService</li>
                         <li>• EnergyManagementService</li>
@@ -233,11 +235,11 @@ export default function ConferencePaperPage() {
                       </ul>
                     </div>
 
-                    <div className="p-3 bg-orange-50 rounded-lg">
-                      <h6 className="font-semibold text-orange-900 mb-2">
+                    <div className="p-3  rounded-lg">
+                      <h6 className="font-semibold -900 mb-2">
                         IoT Device Classes
                       </h6>
-                      <ul className="text-orange-800 text-sm space-y-1">
+                      <ul className="-800 text-sm space-y-1">
                         <li>• AirQualityMonitor</li>
                         <li>• TrafficCounter</li>
                         <li>• WeatherStation</li>
@@ -251,27 +253,27 @@ export default function ConferencePaperPage() {
                   <h5 className="font-semibold mb-3">
                     2.1.2 Interface Abstraction (5+ Interfaces)
                   </h5>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className=" p-4 rounded-lg">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <div className="p-2 bg-white rounded border">
-                          <code className="text-sm text-blue-600">
+                        <div className="p-2  border">
+                          <code className="text-sm ">
                             IDataProcessor
                           </code>
                           <div className="text-xs text-gray-600">
                             processData(), validateData()
                           </div>
                         </div>
-                        <div className="p-2 bg-white rounded border">
-                          <code className="text-sm text-blue-600">
+                        <div className="p-2  border">
+                          <code className="text-sm ">
                             IStreamProcessor
                           </code>
                           <div className="text-xs text-gray-600">
                             startStream(), stopStream(), handleStreamData()
                           </div>
                         </div>
-                        <div className="p-2 bg-white rounded border">
-                          <code className="text-sm text-blue-600">
+                        <div className="p-2  border">
+                          <code className="text-sm ">
                             IBigDataEngine
                           </code>
                           <div className="text-xs text-gray-600">
@@ -280,16 +282,16 @@ export default function ConferencePaperPage() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <div className="p-2 bg-white rounded border">
-                          <code className="text-sm text-blue-600">
+                        <div className="p-2  border">
+                          <code className="text-sm ">
                             IManagementService
                           </code>
                           <div className="text-xs text-gray-600">
                             initialize(), getStatus(), shutdown()
                           </div>
                         </div>
-                        <div className="p-2 bg-white rounded border">
-                          <code className="text-sm text-blue-600">
+                        <div className="p-2  border">
+                          <code className="text-sm ">
                             IAnalyticsProvider
                           </code>
                           <div className="text-xs text-gray-600">
@@ -305,7 +307,7 @@ export default function ConferencePaperPage() {
                   <h5 className="font-semibold mb-3">
                     2.1.3 Inheritance Hierarchy (3+ Levels)
                   </h5>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className=" p-4 rounded-lg">
                     <div className="font-mono text-sm text-gray-800">
                       <div className="mb-2">BaseDataProcessor (Level 1)</div>
                       <div className="ml-4 mb-1">
@@ -346,11 +348,11 @@ export default function ConferencePaperPage() {
                   </h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-4">
-                      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <h6 className="font-semibold text-blue-900 mb-2">
+                      <div className="p-4  rounded-lg border -200">
+                        <h6 className="font-semibold  mb-2">
                           Factory Pattern
                         </h6>
-                        <div className="bg-white p-2 rounded text-xs font-mono text-gray-700">
+                        <div className="-2 rounded text-xs font-mono text-gray-700">
                           <div>export class ServiceFactory &#123;</div>
                           <div className="ml-2">
                             static createService(type: ServiceType)
@@ -359,11 +361,11 @@ export default function ConferencePaperPage() {
                         </div>
                       </div>
 
-                      <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                      <div className="p-4  rounded-lg border -200">
                         <h6 className="font-semibold text-green-900 mb-2">
                           Observer Pattern
                         </h6>
-                        <div className="bg-white p-2 rounded text-xs font-mono text-gray-700">
+                        <div className="-2 rounded text-xs font-mono text-gray-700">
                           <div>
                             class AnalyticsEngine extends Observable &#123;
                           </div>
@@ -374,11 +376,11 @@ export default function ConferencePaperPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                        <h6 className="font-semibold text-purple-900 mb-2">
+                      <div className="p-4  rounded-lg border -200">
+                        <h6 className="font-semibold  mb-2">
                           Command Pattern
                         </h6>
-                        <div className="bg-white p-2 rounded text-xs font-mono text-gray-700">
+                        <div className="-2 rounded text-xs font-mono text-gray-700">
                           <div>class StartAnalyticsCommand &#123;</div>
                           <div className="ml-2">
                             execute(): Promise&lt;void&gt;
@@ -387,11 +389,11 @@ export default function ConferencePaperPage() {
                         </div>
                       </div>
 
-                      <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
-                        <h6 className="font-semibold text-orange-900 mb-2">
+                      <div className="p-4  rounded-lg border -200">
+                        <h6 className="font-semibold -900 mb-2">
                           Singleton Pattern
                         </h6>
-                        <div className="bg-white p-2 rounded text-xs font-mono text-gray-700">
+                        <div className="-2 rounded text-xs font-mono text-gray-700">
                           <div>class ExceptionHandler &#123;</div>
                           <div className="ml-2">static getInstance()</div>
                           <div>&#125;</div>
@@ -416,11 +418,11 @@ export default function ConferencePaperPage() {
                 Comprehensive custom exception hierarchy:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 bg-red-50 rounded-lg">
-                  <h5 className="font-semibold text-red-900 mb-2">
+                <div className="p-4  rounded-lg">
+                  <h5 className="font-semibold -900 mb-2">
                     Base Exception Class
                   </h5>
-                  <div className="bg-white p-2 rounded text-xs font-mono text-gray-700">
+                  <div className="-2 rounded text-xs font-mono text-gray-700">
                     <div>class SystemException extends Error &#123;</div>
                     <div className="ml-2">public severity: AlertSeverity</div>
                     <div className="ml-2">public component: string</div>
@@ -428,11 +430,11 @@ export default function ConferencePaperPage() {
                     <div>&#125;</div>
                   </div>
                 </div>
-                <div className="p-4 bg-orange-50 rounded-lg">
-                  <h5 className="font-semibold text-orange-900 mb-2">
+                <div className="p-4  rounded-lg">
+                  <h5 className="font-semibold -900 mb-2">
                     Specialized Exceptions
                   </h5>
-                  <ul className="space-y-1 text-orange-800 text-sm">
+                  <ul className="space-y-1 -800 text-sm">
                     <li>• DataProcessingException</li>
                     <li>• APIException</li>
                     <li>• DeviceException</li>
@@ -463,16 +465,16 @@ export default function ConferencePaperPage() {
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
-                      <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                        <div className="font-semibold text-blue-900">
+                      <div className="p-3  rounded-lg border -200">
+                        <div className="font-semibold ">
                           Volume
                         </div>
-                        <div className="text-blue-800 text-sm">
+                        <div className=" text-sm">
                           162,000+ data points daily (15 cities × 15 metrics ×
                           720 cycles)
                         </div>
                       </div>
-                      <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                      <div className="p-3  rounded-lg border -200">
                         <div className="font-semibold text-green-900">
                           Velocity
                         </div>
@@ -483,20 +485,20 @@ export default function ConferencePaperPage() {
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
-                        <div className="font-semibold text-purple-900">
+                      <div className="p-3  rounded-lg border -200">
+                        <div className="font-semibold ">
                           Variety
                         </div>
-                        <div className="text-purple-800 text-sm">
+                        <div className=" text-sm">
                           AQI indices, pollutant concentrations, weather data,
                           health recommendations
                         </div>
                       </div>
-                      <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                        <div className="font-semibold text-orange-900">
+                      <div className="p-3  rounded-lg border border-orange-200">
+                        <div className="font-semibold -900">
                           Veracity
                         </div>
-                        <div className="text-orange-800 text-sm">
+                        <div className="-800 text-sm">
                           Government monitoring stations, embassy sensors,
                           verified API sources
                         </div>
@@ -510,8 +512,8 @@ export default function ConferencePaperPage() {
                     3.2 Data Sources Integration
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-3 bg-gray-50 rounded-lg text-center">
-                      <Globe className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                    <div className="p-3  rounded-lg text-center">
+                      <Globe className="h-8 w-8 mx-auto mb-2 " />
                       <div className="font-semibold text-gray-900">
                         AQICN API
                       </div>
@@ -519,7 +521,7 @@ export default function ConferencePaperPage() {
                         11,000+ monitoring stations worldwide
                       </div>
                     </div>
-                    <div className="p-3 bg-gray-50 rounded-lg text-center">
+                    <div className="p-3  rounded-lg text-center">
                       <Database className="h-8 w-8 mx-auto mb-2 text-green-600" />
                       <div className="font-semibold text-gray-900">
                         Government Stations
@@ -528,8 +530,8 @@ export default function ConferencePaperPage() {
                         Official environmental monitoring networks
                       </div>
                     </div>
-                    <div className="p-3 bg-gray-50 rounded-lg text-center">
-                      <Shield className="h-8 w-8 mx-auto mb-2 text-purple-600" />
+                    <div className="p-3  rounded-lg text-center">
+                      <Shield className="h-8 w-8 mx-auto mb-2 " />
                       <div className="font-semibold text-gray-900">
                         Embassy Monitors
                       </div>
@@ -537,8 +539,8 @@ export default function ConferencePaperPage() {
                         Diplomatic mission air quality sensors
                       </div>
                     </div>
-                    <div className="p-3 bg-gray-50 rounded-lg text-center">
-                      <TrendingUp className="h-8 w-8 mx-auto mb-2 text-orange-600" />
+                    <div className="p-3  rounded-lg text-center">
+                      <TrendingUp className="h-8 w-8 mx-auto mb-2 -600" />
                       <div className="font-semibold text-gray-900">
                         Weather Services
                       </div>
@@ -566,7 +568,7 @@ export default function ConferencePaperPage() {
                     5.1 System Performance Metrics
                   </h4>
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div className="p-3 bg-green-50 rounded-lg text-center border border-green-200">
+                    <div className="p-3  rounded-lg text-center border border-green-200">
                       <div className="text-2xl font-bold text-green-600">
                         150ms
                       </div>
@@ -574,67 +576,67 @@ export default function ConferencePaperPage() {
                         Response Time
                       </div>
                     </div>
-                    <div className="p-3 bg-blue-50 rounded-lg text-center border border-blue-200">
-                      <div className="text-2xl font-bold text-blue-600">
+                    <div className="p-3  rounded-lg text-center border border-blue-200">
+                      <div className="text-2xl font-bold ">
                         85%
                       </div>
-                      <div className="text-blue-800 text-sm">
+                      <div className=" text-sm">
                         Cache Hit Rate
                       </div>
                     </div>
-                    <div className="p-3 bg-purple-50 rounded-lg text-center border border-purple-200">
-                      <div className="text-2xl font-bold text-purple-600">
+                    <div className="p-3  rounded-lg text-center border border-purple-200">
+                      <div className="text-2xl font-bold ">
                         162K+
                       </div>
-                      <div className="text-purple-800 text-sm">
+                      <div className=" text-sm">
                         Data Points Daily
                       </div>
                     </div>
-                    <div className="p-3 bg-orange-50 rounded-lg text-center border border-orange-200">
-                      <div className="text-2xl font-bold text-orange-600">
+                    <div className="p-3  rounded-lg text-center border border-orange-200">
+                      <div className="text-2xl font-bold ">
                         92%
                       </div>
-                      <div className="text-orange-800 text-sm">
+                      <div className="-800 text-sm">
                         Anomaly Detection
                       </div>
                     </div>
-                    <div className="p-3 bg-red-50 rounded-lg text-center border border-red-200">
-                      <div className="text-2xl font-bold text-red-600">
+                    <div className="p-3  rounded-lg text-center border bode-ed-200">
+                      <div className="text-2xl font-bold ">
                         99.8%
                       </div>
-                      <div className="text-red-800 text-sm">Uptime</div>
+                      <div className="text-ed-800 text-sm">Uptime</div>
                     </div>
                   </div>
                 </div>
 
                 <div>
                   <h4 className="font-semibold mb-3 text-lg">
-                    5.2 Academic Requirements Achievement
+                    5.2 Academic equirements Achievement
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>15+ Classes:</strong> 20 implemented classes
                           with clear responsibilities
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>5+ Interfaces:</strong> 8 interfaces providing
                           clean abstractions
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>Exception Handling:</strong> Comprehensive
                           hierarchy with component-specific errors
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>3+ Inheritance Levels:</strong> Multiple
@@ -643,28 +645,28 @@ export default function ConferencePaperPage() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>Polymorphism:</strong> Interface
                           implementations with dynamic method dispatch
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>Enumerations:</strong> Type-safe constants for
                           devices, statuses, and alerts
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>Design Patterns:</strong> Factory, Observer,
                           Command, Singleton patterns implemented
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                      <div className="flex items-center gap-2 p-2  rounded">
                         <CheckCircle className="h-4 w-4 text-green-600" />
                         <span className="text-green-800 text-sm">
                           <strong>Architectural Style:</strong> Clean layered
@@ -689,21 +691,21 @@ export default function ConferencePaperPage() {
                     Compared to Simulated Data Systems
                   </h4>
                   <div className="space-y-2">
-                    <div className="p-2 bg-blue-50 rounded text-sm">
-                      <strong className="text-blue-900">Authenticity:</strong>{" "}
-                      <span className="text-blue-800">
+                    <div className="p-2  rounded text-sm">
+                      <strong className="">Authenticity:</strong>{" "}
+                      <span className="">
                         Real environmental data vs. artificial patterns
                       </span>
                     </div>
-                    <div className="p-2 bg-green-50 rounded text-sm">
+                    <div className="p-2  rounded text-sm">
                       <strong className="text-green-900">Credibility:</strong>{" "}
                       <span className="text-green-800">
                         Actual pollution monitoring vs. random generation
                       </span>
                     </div>
-                    <div className="p-2 bg-purple-50 rounded text-sm">
-                      <strong className="text-purple-900">Relevance:</strong>{" "}
-                      <span className="text-purple-800">
+                    <div className="p-2  rounded text-sm">
+                      <strong className="">Relevance:</strong>{" "}
+                      <span className="">
                         Location-specific insights vs. generic simulations
                       </span>
                     </div>
@@ -715,13 +717,13 @@ export default function ConferencePaperPage() {
                     Compared to Legacy Architectures
                   </h4>
                   <div className="space-y-2">
-                    <div className="p-2 bg-orange-50 rounded text-sm">
-                      <strong className="text-orange-900">Modern Stack:</strong>{" "}
-                      <span className="text-orange-800">
+                    <div className="p-2  rounded text-sm">
+                      <strong className="-900">Modern Stack:</strong>{" "}
+                      <span className="-800">
                         TypeScript/React vs. outdated technologies
                       </span>
                     </div>
-                    <div className="p-2 bg-red-50 rounded text-sm">
+                    <div className="p-2  rounded text-sm">
                       <strong className="text-red-900">
                         Real-time Processing:
                       </strong>{" "}
@@ -729,7 +731,7 @@ export default function ConferencePaperPage() {
                         Live updates vs. batch processing
                       </span>
                     </div>
-                    <div className="p-2 bg-yellow-50 rounded text-sm">
+                    <div className="p-2  rounded text-sm">
                       <strong className="text-yellow-900">
                         Scalable Design:
                       </strong>{" "}
@@ -745,7 +747,7 @@ export default function ConferencePaperPage() {
                     Compared to Commercial Solutions
                   </h4>
                   <div className="space-y-2">
-                    <div className="p-2 bg-indigo-50 rounded text-sm">
+                    <div className="p-2  rounded text-sm">
                       <strong className="text-indigo-900">
                         Cost Efficiency:
                       </strong>{" "}
@@ -753,13 +755,13 @@ export default function ConferencePaperPage() {
                         Free AQICN API vs. expensive enterprise licenses
                       </span>
                     </div>
-                    <div className="p-2 bg-pink-50 rounded text-sm">
-                      <strong className="text-pink-900">Customization:</strong>{" "}
-                      <span className="text-pink-800">
+                    <div className="p-2  rounded text-sm">
+                      <strong className="">Customization:</strong>{" "}
+                      <span className="">
                         Tailored features vs. generic implementations
                       </span>
                     </div>
-                    <div className="p-2 bg-teal-50 rounded text-sm">
+                    <div className="p-2  rounded text-sm">
                       <strong className="text-teal-900">
                         Educational Value:
                       </strong>{" "}
@@ -773,20 +775,20 @@ export default function ConferencePaperPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-purple-200 bg-purple-50">
+          <Card className=" -200 ">
             <CardHeader>
-              <CardTitle className="text-purple-900">9. Conclusion</CardTitle>
+              <CardTitle className="">9. Conclusion</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <p className="text-purple-800">
+                <p className="">
                   This Smart City Big Data System successfully demonstrates
                   mastery of advanced object-oriented programming while solving
                   real-world urban challenges. The implementation exceeds all
                   academic requirements through:
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <ul className="space-y-2 text-purple-800 text-sm">
+                  <ul className="space-y-2  text-sm">
                     <li>
                       • <strong>Comprehensive OOP Architecture:</strong> 15+
                       classes, multiple design patterns, complete inheritance
@@ -797,7 +799,7 @@ export default function ConferencePaperPage() {
                       analytics on 162,000+ daily data points
                     </li>
                   </ul>
-                  <ul className="space-y-2 text-purple-800 text-sm">
+                  <ul className="space-y-2  text-sm">
                     <li>
                       • <strong>Production Quality:</strong> Modern tech stack
                       with professional development practices
@@ -808,7 +810,7 @@ export default function ConferencePaperPage() {
                     </li>
                   </ul>
                 </div>
-                <p className="text-purple-700 text-sm italic">
+                <p className=" text-sm italic">
                   The project bridges academic theory with industry practice,
                   providing both educational value and practical utility. Our
                   open-source implementation contributes to smart city
@@ -849,10 +851,10 @@ export default function ConferencePaperPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-blue-200 bg-blue-50">
+          <Card className=" -200 ">
             <CardContent className="pt-6">
               <div className="text-center">
-                <p className="text-blue-800 text-sm mb-4">
+                <p className=" text-sm mb-4">
                   <strong>Repository:</strong>{" "}
                   https://github.com/your-username/smart-city-system
                   <br />
@@ -864,7 +866,7 @@ export default function ConferencePaperPage() {
                   <strong>License:</strong> MIT License for educational and
                   research use
                 </p>
-                <p className="text-blue-700 text-xs italic">
+                <p className=" text-xs italic">
                   This project represents comprehensive implementation of
                   advanced programming concepts applied to real-world smart city
                   challenges, demonstrating both academic excellence and

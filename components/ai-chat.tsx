@@ -160,7 +160,7 @@ export function AIChat() {
 
   return (
     <Card className="min-h-[600px] flex flex-col">
-      <CardHeader className="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-lg">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-gray-600 text-white rounded-t-lg">
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="w-5 h-5" />
           AI Environmental Assistant
