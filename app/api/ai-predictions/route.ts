@@ -227,7 +227,6 @@ function calculatePredictionConfidence(results: any): number {
   return Math.round(((healthConfidence + trafficConfidence + energyConfidence) / 3) * 100) / 100
 }
 
-// GET endpoint for quick predictions
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -235,7 +234,6 @@ export async function GET(request: NextRequest) {
     const city = searchParams.get('city')
     const timeframe = searchParams.get('timeframe') || '24h'
 
-    // Use POST logic with query params
     const mockBody = { predictionType: type, cityName: city, timeframe }
     const mockRequest = new NextRequest(request.url, {
       method: 'POST',

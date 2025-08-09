@@ -67,7 +67,7 @@ export function PolymorphismDemoCard() {
           <Activity className="h-6 w-6" />
           🔄 Real-World Polymorphism Demo
           <Badge variant="outline" className="ml-auto bg-purple-100 text-purple-700">
-            OOP Excellence
+            OOP
           </Badge>
         </CardTitle>
       </CardHeader>

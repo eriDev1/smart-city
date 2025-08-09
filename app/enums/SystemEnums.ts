@@ -1,5 +1,4 @@
-// System Enumerations for Smart City Big Data System
-// Provides type-safe constants for various system components
+
 
 export enum DeviceType {
   AIR_QUALITY_MONITOR = "AIR_QUALITY_MONITOR",

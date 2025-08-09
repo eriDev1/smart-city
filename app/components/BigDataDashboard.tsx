@@ -28,12 +28,12 @@ export function BigDataDashboard() {
   const [recentEvents, setRecentEvents] = useState<any[]>([])
   const [deviceStats, setDeviceStats] = useState({ online: 0, total: 0 })
   const [processingStats, setProcessingStats] = useState({
+    totalProcessed: 0,
     recordsProcessed: 0,
     processingRate: 0,
     dataVolume: 0,
   })
 
-  // Load real data from Supabase
   useEffect(() => {
     loadDashboardData()
     const interval = setInterval(loadDashboardData, 5000) // Update every 5 seconds
@@ -42,7 +42,6 @@ export function BigDataDashboard() {
 
   const loadDashboardData = async () => {
     try {
-      // Load recent system events
       const { data: events } = await supabase
         .from("system_events")
         .select("*")
@@ -53,7 +52,6 @@ export function BigDataDashboard() {
         setRecentEvents(events)
       }
 
-      // Load device statistics
       const { data: devices } = await supabase.from("devices").select("status")
 
       if (devices) {
@@ -66,6 +64,7 @@ export function BigDataDashboard() {
         recordsProcessed: Math.floor(Math.random() * 10000) + 50000,
         processingRate: Math.floor(Math.random() * 1000) + 2000,
         dataVolume: Math.floor(Math.random() * 500) + 1000,
+        totalProcessed: Math.floor(Math.random() * 100000) + 50000,
       })
     } catch (error) {
       console.error("Error loading dashboard data:", error)
@@ -110,7 +109,6 @@ export function BigDataDashboard() {
     systemManager.scaleSystem(nodes)
     updateMetrics()
 
-    // Add system event to database
     await supabase.from("system_events").insert({
       event_type: "SYSTEM_SCALED",
       severity: "INFO",
@@ -140,12 +138,11 @@ export function BigDataDashboard() {
         
         console.log("🌍 REAL-WORLD POLYMORPHISM RESULTS:", results)
         
-        // Update processing stats with real results
         setProcessingStats({
           totalProcessed: airQualityData.length,
-          healthAnalysis: results.insights.health.averageRiskScore,
-          trafficOptimization: results.insights.traffic.averageTrafficImpact,
-          energyEfficiency: results.insights.energy.averageEfficiencyScore
+          recordsProcessed: results.insights.health.totalRecords,
+          processingRate: (results as any).processingRate ?? 0,
+          dataVolume: (results as any).dataVolume ?? 0,
         })
 
         await supabase.from("system_events").insert({
@@ -232,7 +229,6 @@ export function BigDataDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      {/* System Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white p-6 rounded-xl shadow-sm border">
           <div className="flex items-center justify-between">
@@ -363,7 +359,6 @@ export function BigDataDashboard() {
         </div>
       </div>
 
-      {/* City Services Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white p-6 rounded-xl shadow-sm border">
           <div className="flex items-center gap-3 mb-3">
@@ -402,7 +397,6 @@ export function BigDataDashboard() {
         </div>
       </div>
 
-      {/* Recent System Events */}
       <div className="bg-white p-6 rounded-xl shadow-sm border">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent System Events</h3>
         <div className="space-y-3">

@@ -6,7 +6,6 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '6')
     
-    // Fetch air quality data from multiple cities
     const airQualityData = await getMultipleCitiesAirQuality(limit)
     
     if (!airQualityData || airQualityData.length === 0) {

@@ -28,7 +28,7 @@ export default function ProjectProposalPage() {
           <div className="flex justify-center gap-4 mb-4 flex-wrap">
             <Badge variant="outline" className="px-4 py-2">
               <Users className="h-4 w-4 mr-2" />
-              Advanced Programming (Master's Level)
+              Master's Subject - Advanced Programming
             </Badge>
             <Badge variant="outline" className="px-4 py-2">
               <FileText className="h-4 w-4 mr-2" />
@@ -52,10 +52,8 @@ export default function ProjectProposalPage() {
             <CardContent>
               <div className="bg-blue-50 p-4 rounded-lg">
                 <div className="space-y-2">
-                  <div className="font-semibold text-blue-900">Team Lead: Software Engineering Graduate Student</div>
-                  <div className="text-blue-800"><strong>Role:</strong> Full-stack developer, System architect, Data analyst</div>
+                  <div className="font-semibold text-blue-900">Erind Avdiu: Software Engineering Student</div>
                   <div className="text-blue-700 text-sm">
-                    <strong>Responsibilities:</strong> Overall project coordination, backend development, OOP architecture design, big data implementation
                   </div>
                 </div>
               </div>
@@ -91,13 +89,13 @@ export default function ProjectProposalPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
-                        <div className="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
+                        <div className="w-2 h-2 rounded-full mt-2"></div>
                         <div>
                           <strong>Health Risks:</strong> Citizens can't make informed decisions about outdoor activities
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                        <div className="w-2 h-2 rounded-full mt-2"></div>
                         <div>
                           <strong>Urban Planning:</strong> City managers lack real-time data for traffic and energy optimization
                         </div>
@@ -105,13 +103,13 @@ export default function ProjectProposalPage() {
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                        <div className="w-2 h-2  rounded-full mt-2"></div>
                         <div>
                           <strong>Environmental Policy:</strong> Delayed data hinders rapid response to pollution events
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                        <div className="w-2 h-2 rounded-full mt-2"></div>
                         <div>
                           <strong>Economic Cost:</strong> Poor air quality reduces productivity and increases healthcare costs
                         </div>
@@ -123,17 +121,17 @@ export default function ProjectProposalPage() {
                 <div>
                   <h4 className="font-semibold mb-3 text-lg">Current Limitations</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-                      <div className="text-red-800">Most systems use simulated or delayed data</div>
+                    <div className="p-3  rounded-lg border">
+                      <div className="">Most systems use simulated or delayed data</div>
                     </div>
-                    <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                      <div className="text-orange-800">Limited integration between different data sources</div>
+                    <div className="p-3  rounded-lg border">
+                      <div className="">Limited integration between different data sources</div>
                     </div>
-                    <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                      <div className="text-yellow-800">Lack of predictive analytics and anomaly detection</div>
+                    <div className="p-3 rounded-lg border">
+                      <div className="">Lack of predictive analytics and anomaly detection</div>
                     </div>
-                    <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
-                      <div className="text-purple-800">Poor user experience with complex, technical interfaces</div>
+                    <div className="p-3  rounded-lg border">
+                      <div className="">Poor user experience with complex, technical interfaces</div>
                     </div>
                   </div>
                 </div>
@@ -157,21 +155,21 @@ export default function ProjectProposalPage() {
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
+                      <div className="flex items-center gap-2 p-3  rounded-lg">
                         <Database className="h-5 w-5 text-blue-600" />
                         <span><strong>Processes Big Data:</strong> Handles 162,000+ data points daily from 11,000+ global monitoring stations</span>
                       </div>
-                      <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
-                        <TrendingUp className="h-5 w-5 text-green-600" />
+                      <div className="flex items-center gap-2 p-3  rounded-lg">
+                        <TrendingUp className="h-5 w-5 " />
                         <span><strong>Provides Real-time Insights:</strong> Delivers immediate air quality updates and health recommendations</span>
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 p-3 bg-purple-50 rounded-lg">
+                      <div className="flex items-center gap-2 p-3  rounded-lg">
                         <Code className="h-5 w-5 text-purple-600" />
                         <span><strong>Implements Advanced OOP:</strong> Demonstrates mastery of object-oriented programming principles</span>
                       </div>
-                      <div className="flex items-center gap-2 p-3 bg-orange-50 rounded-lg">
+                      <div className="flex items-center gap-2 p-3  rounded-lg">
                         <BarChart3 className="h-5 w-5 text-orange-600" />
                         <span><strong>Enables Predictive Analytics:</strong> Uses machine learning for traffic, health, and energy predictions</span>
                       </div>
@@ -182,7 +180,7 @@ export default function ProjectProposalPage() {
                 <div>
                   <h4 className="font-semibold mb-3 text-lg">Technical Approach</h4>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="p-4 bg-blue-50 rounded-lg">
+                    <div className="p-4  rounded-lg">
                       <h5 className="font-semibold text-blue-900 mb-2">Big Data Processing:</h5>
                       <ul className="space-y-1 text-blue-800 text-sm">
                         <li><strong>Volume:</strong> 15+ cities × 15 data points × 720 cycles/day = 162,000+ data points daily</li>
@@ -191,9 +189,9 @@ export default function ProjectProposalPage() {
                         <li><strong>Veracity:</strong> Government monitoring stations, embassy sensors, verified API sources</li>
                       </ul>
                     </div>
-                    <div className="p-4 bg-green-50 rounded-lg">
+                    <div className="p-4  rounded-lg">
                       <h5 className="font-semibold text-green-900 mb-2">OOP Architecture:</h5>
-                      <ul className="space-y-1 text-green-800 text-sm">
+                      <ul className="space-y-1  text-sm">
                         <li><strong>15+ Classes:</strong> Complete service layer with analytics, data processing, and management classes</li>
                         <li><strong>5+ Interfaces:</strong> Abstract contracts for data processors, stream handlers, and analytics providers</li>
                         <li><strong>Multiple Design Patterns:</strong> Factory, Observer, Command, Singleton patterns</li>
@@ -220,9 +218,9 @@ export default function ProjectProposalPage() {
                 <div>
                   <h4 className="font-semibold mb-3 text-lg">Core Features</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 bg-blue-50 rounded-lg">
-                      <h5 className="font-semibold text-blue-900 mb-2">1. Real-time Air Quality Dashboard</h5>
-                      <ul className="space-y-1 text-blue-800 text-sm">
+                    <div className="p-4 rounded-lg">
+                      <h5 className="font-semibold mb-2">1. Real-time Air Quality Dashboard</h5>
+                      <ul className="space-y-1 text-sm">
                         <li>• Live data from 6 major global cities</li>
                         <li>• Color-coded health level indicators</li>
                         <li>• Detailed pollutant breakdown (PM2.5, PM10, NO₂, O₃, SO₂, CO)</li>
@@ -230,9 +228,9 @@ export default function ProjectProposalPage() {
                       </ul>
                     </div>
 
-                    <div className="p-4 bg-green-50 rounded-lg">
-                      <h5 className="font-semibold text-green-900 mb-2">2. Advanced Analytics Engine</h5>
-                      <ul className="space-y-1 text-green-800 text-sm">
+                    <div className="p-4 rounded-lg">
+                      <h5 className="font-semibold mb-2">2. Advanced Analytics Engine</h5>
+                      <ul className="space-y-1 text-sm">
                         <li>• Statistical anomaly detection (2σ threshold)</li>
                         <li>• Predictive health insights</li>
                         <li>• Traffic pattern predictions</li>
@@ -241,9 +239,9 @@ export default function ProjectProposalPage() {
                       </ul>
                     </div>
 
-                    <div className="p-4 bg-purple-50 rounded-lg">
-                      <h5 className="font-semibold text-purple-900 mb-2">3. Intelligent Caching System</h5>
-                      <ul className="space-y-1 text-purple-800 text-sm">
+                    <div className="p-4 rounded-lg">
+                      <h5 className="font-semibold mb-2">3. Intelligent Caching System</h5>
+                      <ul className="space-y-1 text-sm">
                         <li>• Supabase-based data persistence</li>
                         <li>• 30-minute cache TTL optimization</li>
                         <li>• Cache-first strategy for performance</li>
@@ -251,9 +249,9 @@ export default function ProjectProposalPage() {
                       </ul>
                     </div>
 
-                    <div className="p-4 bg-orange-50 rounded-lg">
-                      <h5 className="font-semibold text-orange-900 mb-2">4. Interactive Presentation System</h5>
-                      <ul className="space-y-1 text-orange-800 text-sm">
+                    <div className="p-4 rounded-lg">
+                      <h5 className="font-semibold mb-2">4. Interactive Presentation System</h5>
+                      <ul className="space-y-1 text-sm">
                         <li>• Framer Motion animated slides</li>
                         <li>• Complete project documentation</li>
                         <li>• OOP architecture demonstration</li>
@@ -300,46 +298,46 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-green-200 bg-green-50">
+          <Card className="border-2 ">
             <CardHeader>
-              <CardTitle className="text-green-900">Expected Outcomes - Academic Requirements Met</CardTitle>
+              <CardTitle className="0">Expected Outcomes - Academic Requirements Met</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>15+ Classes:</strong> RealTimeAnalytics, DataConnector, BigDataProcessor, ManagementServices, IoTDevices</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>15+ Classes:</strong> RealTimeAnalytics, DataConnector, BigDataProcessor, ManagementServices, IoTDevices</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>5+ Interfaces:</strong> IDataProcessor, IStreamProcessor, IBigDataEngine, IManagementService, IAnalyticsProvider</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>5+ Interfaces:</strong> IDataProcessor, IStreamProcessor, IBigDataEngine, IManagementService, IAnalyticsProvider</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>Exception Handling:</strong> SystemException hierarchy with component-specific error types</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>Exception Handling:</strong> SystemException hierarchy with component-specific error types</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>3+ Inheritance Levels:</strong> BaseDataProcessor → AbstractService → ConcreteImplementation</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>3+ Inheritance Levels:</strong> BaseDataProcessor → AbstractService → ConcreteImplementation</span>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>Polymorphism:</strong> Interface implementations with method overriding and dynamic dispatch</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>Polymorphism:</strong> Interface implementations with method overriding and dynamic dispatch</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>Enumerations:</strong> DeviceType, AlertSeverity, ProcessingStatus enums</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>Enumerations:</strong> DeviceType, AlertSeverity, ProcessingStatus enums</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>Design Patterns:</strong> Factory, Observer, Command, Singleton patterns</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>Design Patterns:</strong> Factory, Observer, Command, Singleton patterns</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-green-800"><strong>Architectural Style:</strong> Layered architecture with clear separation of concerns</span>
+                    <CheckCircle className="h-4 w-4 " />
+                    <span className=""><strong>Architectural Style:</strong> Layered architecture with clear separation of concerns</span>
                   </div>
                 </div>
               </div>
@@ -358,34 +356,34 @@ export default function ProjectProposalPage() {
                 <div>
                   <h4 className="font-semibold mb-3 text-lg">Technical Risks</h4>
                   <div className="space-y-2">
-                    <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                      <div className="font-medium text-yellow-900">API Rate Limits</div>
-                      <div className="text-yellow-800 text-sm">Mitigated by intelligent caching and demo token usage</div>
+                    <div className="p-3  rounded-lg border">
+                      <div className="font-medium">API Rate Limits</div>
+                      <div className=" text-sm">Mitigated by intelligent caching and demo token usage</div>
                     </div>
-                    <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                      <div className="font-medium text-orange-900">Data Quality</div>
-                      <div className="text-orange-800 text-sm">Handled through validation and fallback mechanisms</div>
+                    <div className="p-3  rounded-lg border ">
+                      <div className="font-medium">Data Quality</div>
+                      <div className=" text-sm">Handled through validation and fallback mechanisms</div>
                     </div>
-                    <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <div className="font-medium text-blue-900">Performance</div>
-                      <div className="text-blue-800 text-sm">Addressed via optimized queries and efficient data structures</div>
+                    <div className="p-3  rounded-lg border">
+                      <div className="font-medium">Performance</div>
+                      <div className=" text-sm">Addressed via optimized queries and efficient data structures</div>
                     </div>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-3 text-lg">Timeline Risks</h4>
                   <div className="space-y-2">
-                    <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-                      <div className="font-medium text-red-900">Scope Creep</div>
-                      <div className="text-red-800 text-sm">Managed through clear requirements and phased development</div>
+                    <div className="p-3 rounded-lg border">
+                      <div className="font-medium">Scope Creep</div>
+                      <div className="text-sm">Managed through clear requirements and phased development</div>
                     </div>
-                    <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
-                      <div className="font-medium text-purple-900">Technical Complexity</div>
-                      <div className="text-purple-800 text-sm">Reduced via incremental implementation and testing</div>
+                    <div className="p-3 rounded-lg border">
+                      <div className="font-medium">Technical Complexity</div>
+                      <div className="text-sm">Reduced via incremental implementation and testing</div>
                     </div>
-                    <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                      <div className="font-medium text-green-900">Integration Issues</div>
-                      <div className="text-green-800 text-sm">Minimized through early API testing and modular design</div>
+                    <div className="p-3 rounded-lg border">
+                      <div className="font-medium">Integration Issues</div>
+                      <div className="text-sm">Minimized through early API testing and modular design</div>
                     </div>
                   </div>
                 </div>
@@ -393,7 +391,7 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-blue-200 bg-blue-50">
+          <Card className="border-2 border-blue-200 ">
             <CardHeader>
               <CardTitle className="text-blue-900">Success Criteria</CardTitle>
             </CardHeader>
@@ -423,20 +421,20 @@ export default function ProjectProposalPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-purple-200 bg-purple-50">
+          <Card className="border-2  ">
             <CardHeader>
-              <CardTitle className="text-purple-900">Conclusion</CardTitle>
+              <CardTitle className="">Conclusion</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-purple-800 mb-4">
+              <p className=" mb-4">
                 This Smart City Big Data System project represents a comprehensive implementation of advanced programming concepts 
                 applied to solve real-world urban challenges. By combining rigorous OOP architecture with modern big data processing 
                 and real-time analytics, the project delivers both academic excellence and practical value.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h5 className="font-semibold text-purple-900 mb-2">The system demonstrates mastery of:</h5>
-                  <ul className="space-y-1 text-purple-800 text-sm">
+                  <h5 className="font-semibold  mb-2">The system demonstrates mastery of:</h5>
+                  <ul className="space-y-1  text-sm">
                     <li>• Object-oriented programming principles</li>
                     <li>• Big data processing and analytics</li>
                     <li>• Real-time system architecture</li>
@@ -447,11 +445,11 @@ export default function ProjectProposalPage() {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Github className="h-5 w-5 text-purple-600" />
-                    <span className="text-purple-800 text-sm">GitHub Repository</span>
+                    <span className=" text-sm">GitHub Repository</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Globe className="h-5 w-5 text-purple-600" />
-                    <span className="text-purple-800 text-sm">Live Demo</span>
+                    <span className=" text-sm">Live Demo</span>
                   </div>
                 </div>
               </div>

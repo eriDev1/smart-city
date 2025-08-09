@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { ExternalLink, FileText, BookOpen, GraduationCap } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ExternalLink, FileText, BookOpen, GraduationCap } from "lucide-react";
 
 export function Footer() {
   const openDocument = (path: string) => {
-    window.open(path, '_blank', 'noopener,noreferrer')
-  }
+    window.open(path, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <footer className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-12 mt-16">
@@ -19,8 +19,10 @@ export function Footer() {
               Academic Project
             </h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Smart City Big Data System developed for Advanced Programming course at UBT University. 
-              This project demonstrates comprehensive OOP principles, design patterns, and real-time big data processing.
+              Smart City Big Data System developed for Advanced Programming
+              course at UBT University. This project demonstrates comprehensive
+              OOP principles, design patterns, and real-time big data
+              processing.
             </p>
             <div className="text-xs text-gray-400">
               <p>Course: Advanced Programming (Master's Level)</p>
@@ -38,30 +40,30 @@ export function Footer() {
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-start text-left bg-transparent border-gray-600 text-white hover:bg-gray-700"
-                onClick={() => openDocument('/documents/project-requirements')}
+                className="w-full justify-start text-left bg-transparent border-gray-600 text-white hover:bg-gray:900"
+                onClick={() => openDocument("/documents/project-requirements")}
               >
                 <FileText className="h-4 w-4 mr-2" />
                 Project Requirements
                 <ExternalLink className="h-3 w-3 ml-auto" />
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-start text-left bg-transparent border-gray-600 text-white hover:bg-gray-700"
-                onClick={() => openDocument('/documents/project-proposal')}
+                className="w-full justify-start text-left bg-transparent border-gray-600 text-white hover:bg-gray:900"
+                onClick={() => openDocument("/documents/project-proposal")}
               >
                 <FileText className="h-4 w-4 mr-2" />
                 Project Proposal
                 <ExternalLink className="h-3 w-3 ml-auto" />
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full justify-start text-left bg-transparent border-gray-600 text-white hover:bg-gray-700"
-                onClick={() => openDocument('/documents/conference-paper')}
+                className="w-full justify-start text-left bg-transparent border-gray-600 text-white hover:bg-gray:900"
+                onClick={() => openDocument("/documents/conference-paper")}
               >
                 <FileText className="h-4 w-4 mr-2" />
                 Conference Paper
@@ -75,19 +77,19 @@ export function Footer() {
             <div className="space-y-2 text-sm text-gray-300">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>25+ Classes (15+ required)</span>
+                <span>25+ Classes</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>14 Interfaces & Abstract Classes (5+ required)</span>
+                <span>14 Interfaces & Abstract Classes</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>8 Exception Classes (1+ required)</span>
+                <span>8 Exception Classes</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>5+ Design Patterns (3+ required)</span>
+                <span>5+ Design Patterns</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -117,5 +119,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
-} 
+  );
+}

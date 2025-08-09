@@ -28,7 +28,7 @@ export function AIInsights() {
                   <span className="text-sm font-medium">Air Quality Measurements</span>
                   <Badge variant="default" className="bg-green-600">210+</Badge>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                   <span className="text-sm font-medium">Countries Represented</span>
                   <Badge variant="default" className="bg-purple-600">19</Badge>
                 </div>

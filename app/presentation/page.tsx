@@ -62,10 +62,7 @@ const slides = [
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <p className="text-gray-700">• Lead Developer & System Architect</p>
-              <p className="text-gray-700">• OOP Design & Implementation</p>
-              <p className="text-gray-700">• Database Integration Specialist</p>
-              <p className="text-gray-700">• Real-time Analytics Engineer</p>
+              <p className="text-gray-700">• Erind Avdiu</p>
             </div>
           </CardContent>
         </Card>

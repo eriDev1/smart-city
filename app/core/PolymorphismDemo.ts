@@ -1,8 +1,6 @@
 import type { IDataProcessor } from "../interfaces/IDataProcessor"
 import type { ProcessedAirQualityData } from "../bigdata/RealTimeDataConnector"
-import { AlertSeverity } from "../enums/SystemEnums"
 
-// Real-world polymorphism: Different processors handle air quality data differently based on purpose
 export class HealthRiskProcessor implements IDataProcessor {
   private batchSize = 100
   private processingRate = 0
@@ -12,7 +10,6 @@ export class HealthRiskProcessor implements IDataProcessor {
 
     return data.map((airData: ProcessedAirQualityData) => ({
       ...airData,
-      // Health-focused processing: Add health risk assessment
       healthRisk: this.calculateHealthRisk(airData),
       recommendations: this.generateHealthRecommendations(airData),
       riskCategory: this.getRiskCategory(airData.aqi),
@@ -23,7 +20,6 @@ export class HealthRiskProcessor implements IDataProcessor {
   }
 
   private calculateHealthRisk(data: ProcessedAirQualityData): number {
-    // Complex health risk calculation based on multiple pollutants
     const weights = { pm25: 0.3, pm10: 0.25, no2: 0.2, o3: 0.15, so2: 0.1 }
     return Math.round(
       (data.pm25 * weights.pm25 + 
@@ -102,7 +98,6 @@ export class TrafficOptimizationProcessor implements IDataProcessor {
 
     return data.map((airData: ProcessedAirQualityData) => ({
       ...airData,
-      // Traffic-focused processing: Optimize routes based on air quality
       trafficImpact: this.calculateTrafficImpact(airData),
       routeRecommendations: this.generateRouteRecommendations(airData),
       congestionLevel: this.estimateCongestionLevel(airData),
@@ -113,7 +108,6 @@ export class TrafficOptimizationProcessor implements IDataProcessor {
   }
 
   private calculateTrafficImpact(data: ProcessedAirQualityData): number {
-    // Traffic contributes significantly to NO2 and CO levels
     const trafficPollutants = data.no2 * 0.6 + data.co * 0.4
     return Math.round(trafficPollutants / 10)
   }
@@ -136,7 +130,6 @@ export class TrafficOptimizationProcessor implements IDataProcessor {
   }
 
   private estimateCongestionLevel(data: ProcessedAirQualityData): string {
-    // High NO2 and CO often correlate with traffic congestion
     const congestionScore = (data.no2 + data.co) / 2
     
     if (congestionScore > 100) return "SEVERE"
@@ -210,7 +203,6 @@ export class EnergyEfficiencyProcessor implements IDataProcessor {
   }
 
   private calculateEnergyEfficiency(data: ProcessedAirQualityData): number {
-    // Good outdoor air quality allows for more energy-efficient operation
     const baseEfficiency = 100 - (data.aqi / 3) // Higher AQI reduces efficiency
     const temperatureBonus = data.temperature && Math.abs(data.temperature - 22) < 3 ? 10 : 0
     
@@ -225,7 +217,6 @@ export class EnergyEfficiencyProcessor implements IDataProcessor {
   }
 
   private predictIndoorAirQuality(data: ProcessedAirQualityData): number {
-    // Indoor AQI is typically 20-50% better than outdoor with proper HVAC
     const reductionFactor = data.aqi > 100 ? 0.3 : 0.5
     return Math.round(data.aqi * (1 - reductionFactor))
   }
@@ -263,13 +254,10 @@ export class AirQualityProcessingPipeline {
   }> {
     const startTime = Date.now()
     
-    // Create different processors for different use cases
     const healthProcessor = new HealthRiskProcessor()
     const trafficProcessor = new TrafficOptimizationProcessor()
     const energyProcessor = new EnergyEfficiencyProcessor()
 
-    // Process the same air quality data through different processors
-    // This demonstrates polymorphism: same interface, different implementations, different outputs
     const [healthResults, trafficResults, energyResults] = await Promise.all([
       healthProcessor.processData(airQualityData),
       trafficProcessor.processData(airQualityData),
@@ -308,7 +296,6 @@ export class AirQualityProcessingPipeline {
 
     const results = await this.processAirQualityData(airQualityData)
     
-    // Extract insights from polymorphic processing
     const healthInsights = this.extractHealthInsights(results.healthAnalysis)
     const trafficInsights = this.extractTrafficInsights(results.trafficOptimization)
     const energyInsights = this.extractEnergyInsights(results.energyEfficiency)
