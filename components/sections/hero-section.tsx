@@ -5,11 +5,7 @@ import { Sparkles } from 'lucide-react'
 import RetroGrid from '@/components/magic-ui/retro-grid'
 import GradientText from '@/components/magic-ui/gradient-text'
 
-interface HeroSectionProps {
-  isConnected: boolean
-  connectionError: string | null
-  lastUpdate: Date | null
-}
+import { HeroSectionProps } from "@/types"
 
 export function HeroSection({ isConnected, connectionError, lastUpdate }: HeroSectionProps) {
   return (

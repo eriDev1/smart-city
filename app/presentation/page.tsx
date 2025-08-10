@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import { ChevronLeft, ChevronRight, Users, Target, Code, Database, Zap, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
 
-// Magic UI Components
 import RetroGrid from '@/components/magic-ui/retro-grid'
 import GradientText from '@/components/magic-ui/gradient-text'
 

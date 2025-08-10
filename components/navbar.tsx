@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles, Menu, X, BarChart3, Globe, Brain, Presentation, MessageCircle } from 'lucide-react'
 import { cn } from "@/lib/utils"
-
-interface NavbarProps {
-  activeTab: string
-  onTabChange: (tab: string) => void
-}
+import { NavbarProps } from "@/types"
 
 const navItems = [
   {

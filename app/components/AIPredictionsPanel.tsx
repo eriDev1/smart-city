@@ -18,21 +18,7 @@ import {
   Lightbulb
 } from "lucide-react"
 
-interface PredictionResult {
-  predictionType: string
-  cityName: string
-  timeframe: string
-  predictions: any
-  deepseekInsights?: any
-  confidence: number
-  dataPoints: number
-  generatedAt: string
-  metadata: {
-    processingTime: number
-    algorithmsUsed: string[]
-    enhancedWithDeepSeek?: boolean
-  }
-}
+import { PredictionResult } from "@/types"
 
 export function AIPredictionsPanel() {
   const [predictions, setPredictions] = useState<PredictionResult | null>(null)

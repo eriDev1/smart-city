@@ -402,14 +402,13 @@ export default function SmartAirDashboard() {
       
 
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 py-8">
         <HeroSection 
           isConnected={isConnected}
           connectionError={connectionError}
           lastUpdate={lastUpdate}
         />
 
-        {/* Polymorphism Demo - Prominent Feature */}
   
 
         <div className="space-y-6">

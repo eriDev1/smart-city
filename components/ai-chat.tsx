@@ -8,21 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Send, Bot, User, AlertCircle, Lightbulb, Sparkles } from 'lucide-react'
 import { Alert, AlertDescription } from "@/components/ui/alert"
-
-interface ChatMessage {
-  id: string
-  role: 'user' | 'assistant'
-  content: string
-  timestamp: Date
-  type?: 'insight' | 'analysis' | 'question'
-}
-
-interface AIResponse {
-  success: boolean
-  response?: string
-  insights?: any[]
-  error?: string
-}
+import { AIResponse, ChatMessage } from "@/types"
 
 export function AIChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
