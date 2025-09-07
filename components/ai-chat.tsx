@@ -23,6 +23,7 @@ export function AIChat() {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
+  const [typingMessage, setTypingMessage] = useState('')
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -33,6 +34,32 @@ export function AIChat() {
     "What are the main pollution sources?",
     "Give me health recommendations"
   ]
+
+  const typeMessage = async (fullMessage: string, messageType: string) => {
+    const words = fullMessage.split(' ')
+    let currentText = ''
+    const typingSpeed = 50 
+
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i]
+      currentText += (i > 0 ? ' ' : '') + word
+      setTypingMessage(currentText)
+
+      await new Promise(resolve => setTimeout(resolve, typingSpeed))
+    }
+
+    const assistantMessage: ChatMessage = {
+      id: (Date.now() + 1).toString(),
+      role: 'assistant',
+      content: fullMessage,
+      timestamp: new Date(),
+      type: messageType as any
+    }
+
+    setMessages(prev => [...prev, assistantMessage])
+    setTypingMessage('')
+    setIsTyping(false)
+  }
 
   useEffect(() => {
     const scrollToBottom = () => {
@@ -47,7 +74,7 @@ export function AIChat() {
     setTimeout(scrollToBottom, 50)
     setTimeout(scrollToBottom, 150)
     setTimeout(scrollToBottom, 300)
-  }, [messages, isTyping])
+  }, [messages, isTyping, typingMessage])
 
   const handleSend = async (messageText?: string) => {
     const text = messageText || input.trim()
@@ -63,7 +90,7 @@ export function AIChat() {
     setMessages(prev => [...prev, userMessage])
     setInput('')
     setIsLoading(true)
-    setIsTyping(true)
+    setIsTyping(true) 
 
     try {
       const response = await fetch('/api/ai-chat', {
@@ -71,32 +98,26 @@ export function AIChat() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           message: text,
           conversationHistory: messages.slice(-5)
         }),
       })
 
       const data: AIResponse = await response.json()
-      
+
       if (data.success && data.response) {
-        const assistantMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: data.response,
-          timestamp: new Date(),
-          type: text.toLowerCase().includes('recommend') || text.toLowerCase().includes('health') ? 'insight' : 'analysis'
-        }
+        const messageType = text.toLowerCase().includes('recommend') || text.toLowerCase().includes('health') ? 'insight' : 'analysis'
 
         setTimeout(() => {
-          setIsTyping(false)
-          setMessages(prev => [...prev, assistantMessage])
-        }, 1000)
+          typeMessage(data.response || '', messageType)
+        }, 800)
       } else {
         throw new Error(data.error || 'Failed to get AI response')
       }
     } catch (error) {
       setIsTyping(false)
+      setTypingMessage('')
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -183,18 +204,35 @@ export function AIChat() {
 
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 max-w-[80%]">
-                  <div className="flex items-center gap-2">
+                <div className="max-w-[80%] rounded-lg p-3 border bg-gray-50 border-gray-200">
+                  <div className="flex items-start gap-2">
                     <Bot className="w-4 h-4 text-green-500" />
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="flex-1">
+                      {typingMessage ? (
+                        <>
+                          <p className="text-sm whitespace-pre-wrap break-words">{typingMessage}</p>
+                          <div className="flex items-center gap-1 mt-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-sm text-gray-600 italic">Thinking...</p>
+                          <div className="flex items-center gap-1 mt-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             )}
+
           </div>
         </ScrollArea>
 
@@ -239,13 +277,7 @@ export function AIChat() {
               )}
             </Button>
           </div>
-          
-          <Alert className="mt-2">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-xs">
-              Powered by DeepSeek AI • Responses based on real-time personally identifiable information
-            </AlertDescription>
-          </Alert>
+
         </div>
       </CardContent>
     </Card>
