@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const pipeline = new AirQualityProcessingPipeline()
-    const results = await pipeline.processAirQualityData(targetData) 
+    const results = await pipeline.processAirQualityData(targetData as any[]) 
 
     const predictions = await generateAdvancedPredictions(
       predictionType,
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({
+    const responseData = {
       success: true,
       predictionType,
       cityName: cityName || 'Global',
@@ -83,12 +83,14 @@ export async function POST(request: NextRequest) {
       metadata: {
         source: 'POLYMORPHIC_AI_WITH_DEEPSEEK',
         processingTime: results.processingStats.processingTime,
-        algorithmsUsed: deepseekInsights 
+        algorithmsUsed: deepseekInsights
           ? ['HealthRiskML', 'TrafficOptimizationAI', 'EnergyEfficiencyPredictor', 'DeepSeekAI']
           : ['HealthRiskML', 'TrafficOptimizationAI', 'EnergyEfficiencyPredictor'],
         enhancedWithDeepSeek: !!deepseekInsights
       }
-    })
+    }
+
+    return NextResponse.json(responseData)
 
   } catch (error) {
     console.error('AI Prediction Error:', error)
@@ -111,19 +113,20 @@ async function generateAdvancedPredictions(
   const baseTime = new Date()
   const hours = timeframe === '24h' ? 24 : timeframe === '7d' ? 168 : 24
 
+  console.log('Results structure:', results)
   switch (type) {
     case 'health':
       return generateHealthPredictions(results.healthAnalysis, hours)
-    
+
     case 'traffic':
       return generateTrafficPredictions(results.trafficOptimization, hours)
-    
+
     case 'energy':
       return generateEnergyPredictions(results.energyEfficiency, hours)
-    
+
     case 'environmental':
       return generateEnvironmentalPredictions(results, hours)
-    
+
     default:
       throw new Error('Invalid prediction type')
   }
@@ -131,8 +134,9 @@ async function generateAdvancedPredictions(
 
 function generateHealthPredictions(healthData: any[], hours: number) {
   const avgRisk = healthData.reduce((sum, d) => sum + (d.healthRisk || 0), 0) / healthData.length
-  
-  return {
+
+
+  const result = {
     riskTrend: avgRisk > 50 ? 'INCREASING' : 'STABLE',
     predictedRiskScore: Math.min(100, avgRisk + (Math.random() * 10 - 5)),
     criticalHours: Array.from({ length: Math.min(hours, 24) }, (_, i) => {
@@ -153,6 +157,8 @@ function generateHealthPredictions(healthData: any[], hours: number) {
       `Recommendation: ${avgRisk > 60 ? 'Use air purifiers indoors' : 'Normal precautions sufficient'}`
     ]
   }
+
+  return result
 }
 
 function generateTrafficPredictions(trafficData: any[], hours: number) {
