@@ -20,22 +20,13 @@ Include the following object-oriented assets:
 - At least **3 design patterns** (e.g., Composite, Singleton, Factory, Wrapper, Bridge, Command, Iterator, etc.)
 
 ### 2. Big Data, Grid Computing, Blockchain, or Peer-to-Peer Application  
-- **Peer-to-Peer**: Share state-of-the-art research and facilitate real-world deployment.
-- **Grid Computing**: Share computing power, storage, and software apps. Core requirements:
   - Independent management of computing resources
   - Intelligent and transparent resource selection
   - Understanding of resource load, availability, and configuration
   - Failure detection and failover
   - Security mechanisms for access and integrity  
-  - *Examples*: SETI@home, World Community Grid
 
-- **Blockchain**: Implement a blockchain-based application (several ideas are provided in course material).
 - **Big Data**: Analyze or process data too large for traditional systems.
-
-### 3. Parallel Processing Application  
-- Compare performance of different parallel algorithms on different machines.
-- Add high-performance parallel bindings to systems like JavaScript or Python (e.g., PyCuda).
-- Any project discussed during class is acceptable.
 
 ---
 

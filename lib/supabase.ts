@@ -12,20 +12,17 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   },
 })
 
-// Type helpers
 export type Tables<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"]
 
 // Air Quality specific types
 export type AirQualityData = Tables<"cached_air_quality">
 
-// Real-time subscription types
 export type RealtimeAirQualityPayload = {
   new: AirQualityData
   old: AirQualityData | null
   eventType: 'INSERT' | 'UPDATE' | 'DELETE'
 }
 
-// Helper function to create real-time channel for air quality updates
 export function createAirQualityChannel(channelName: string = 'air-quality-updates') {
   return supabase.channel(channelName)
 }
